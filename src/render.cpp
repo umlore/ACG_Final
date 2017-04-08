@@ -177,36 +177,6 @@ void Mesh::SetupReflectedMesh() {
 	//TODO: FIGURE OUT IF THERE'S AN ACTUAL MIRROR REPRESENTATION OR 
 	//IF IT'S JUST HARDCODED
 
-	for (triangleshashtype::iterator iter = triangles.begin();
-		iter != triangles.end(); iter++) {
-		Triangle *t = iter->second;
-		glm::vec3 a = glm::vec3(-(*t)[0]->x() - .5,(*t)[0]->y(),(*t)[0]->z());
-		glm::vec3 b = glm::vec3(-(*t)[1]->x() - .5,(*t)[1]->y(),(*t)[1]->z());
-		glm::vec3 c = glm::vec3(-(*t)[2]->x() - .5,(*t)[2]->y(),(*t)[2]->z());
-		glm::vec3 na = ComputeNormal(a,b,c);
-		glm::vec3 nb = na;
-		glm::vec3 nc = na;
-		if (args->gouraud_normals) {
-			na = (*t)[0]->getGouraudNormal();
-			nb = (*t)[1]->getGouraudNormal();
-			nc = (*t)[2]->getGouraudNormal();
-		}
-		int start = mesh_tri_verts.size();
-		mesh_tri_verts.push_back(VBOPosNormalColor(a,na,mesh_color));
-		mesh_tri_verts.push_back(VBOPosNormalColor(b,nb,mesh_color));
-		mesh_tri_verts.push_back(VBOPosNormalColor(c,nc,mesh_color));
-		mesh_tri_indices.push_back(VBOIndexedTri(start,start+1,start+2));
-	}
-	glBindBuffer(GL_ARRAY_BUFFER,mesh_tri_verts_VBO); 
-	glBufferData(GL_ARRAY_BUFFER,
-	   sizeof(VBOPosNormalColor) * mesh_tri_verts.size(), 
-	   &mesh_tri_verts[0],
-	   GL_STATIC_DRAW); 
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,mesh_tri_indices_VBO); 
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER,
-	   sizeof(VBOIndexedTri) * mesh_tri_indices.size(),
-	   &mesh_tri_indices[0], GL_STATIC_DRAW);
-
   // ASSIGNMENT: WRITE THIS FUNCTION
 
 }
@@ -229,12 +199,6 @@ void Mesh::SetupSilhouetteEdges(const glm::vec3 &light_position) {
   // ASSIGNMENT: FIND THE SILOUETTE EDGES
 
   float thickness = 0.003*getBoundingBox().maxDim();
-
-  for (edgeshashtype::iterator iter = edges.begin(); iter != edges.end(); iter++) {
-  	Triangle* t1 = iter->second->getTriangle();
-  	Triangle* t2 = iter->second->getOpposite()->getTriangle();
-  	bool 
-  }
   
   // & use this helper function to create geometry for each edge
   // addEdgeGeometry(silhouette_edge_tri_verts,silhouette_edge_tri_indices,

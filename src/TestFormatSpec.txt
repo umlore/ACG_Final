@@ -1,0 +1,28 @@
+This is the file that specifies the format of our test case specifications.
+
+object // file name
+{
+	start state
+	f(0) // frame number
+	p( 1, 1, 1) // position
+	r( 30, 30, 30) // rotation
+	s(4) // scale
+	interpolate to
+	f(1) // frame
+	p( 1, 1, 1) // position
+	r( 30, 30, 30) // rotation
+	s(4) // scale
+	t(5) // time 
+	orbit around
+	o(1, 1, 1) // orbit around
+	n(1, 1, 1) // normal of the plane of rotation
+	t(5) // time
+	goto frame 0
+}
+
+object
+{ 
+	...
+}
+
+...

@@ -1,0 +1,3 @@
+/home/umlore/Documents/ACG/final/CMakeFiles/edit_cache.dir
+/home/umlore/Documents/ACG/final/CMakeFiles/rebuild_cache.dir
+/home/umlore/Documents/ACG/final/CMakeFiles/render.dir

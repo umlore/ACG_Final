@@ -19,6 +19,7 @@ add_executable(${my_executable}
   utils.cpp
   utils.h
   argparser.h
+  mesh.h
   camera.h
   glCanvas.h
   triangle.h

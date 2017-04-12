@@ -1,7 +1,7 @@
 #include <iostream>
 
 #include "glCanvas.h"
-#include "mesh.h"
+#include "geometry.h"
 #include "edge.h"
 #include "vertex.h"
 #include "triangle.h"
@@ -10,7 +10,7 @@
 #include "glm/ext.hpp"
 
 glm::vec4 floor_color(0.9,0.8,0.7,1);
-glm::vec4 mesh_color(0.8,0.8,0.8,1);
+glm::vec4 geometry_color(0.8,0.8,0.8,1);
 glm::vec4 mirror_color(0.1,0.1,0.2,1);
 glm::vec4 mirror_tint(0.85,0.9,0.95,1);
 
@@ -24,7 +24,7 @@ float floor_factor = 0.75;
 
 
 // the light position can be animated
-glm::vec3 Mesh::LightPosition() const {
+glm::vec3 Geometry::LightPosition() const {
   glm::vec3 min = bbox.getMin();
   glm::vec3 max = bbox.getMax();
   glm::vec3 tmp;
@@ -36,20 +36,20 @@ glm::vec3 Mesh::LightPosition() const {
 }
 
 
-void Mesh::initializeVBOs() {
-  glGenBuffers(1,&mesh_tri_verts_VBO);
-  glGenBuffers(1,&mesh_tri_indices_VBO);
+void Geometry::initializeVBOs() {
+  glGenBuffers(1,&geometry_tri_verts_VBO);
+  glGenBuffers(1,&geometry_tri_indices_VBO);
   glGenBuffers(1,&floor_tri_verts_VBO);
   glGenBuffers(1,&floor_tri_indices_VBO);
   glGenBuffers(1,&light_vert_VBO);
   bbox.initializeVBOs();
 }
 
-void Mesh::cleanupVBOs() {
-	/* TODO (Andrew): We will eventually have an arbitrary number of meshes to render
+void Geometry::cleanupVBOs() {
+	/* TODO (Andrew): We will eventually have an arbitrary number of geometryes to render
 	   when that happens, we will need a loop. */
-  glDeleteBuffers(1,&mesh_tri_verts_VBO);
-  glDeleteBuffers(1,&mesh_tri_indices_VBO);
+  glDeleteBuffers(1,&geometry_tri_verts_VBO);
+  glDeleteBuffers(1,&geometry_tri_indices_VBO);
   glDeleteBuffers(1,&floor_tri_verts_VBO);
   glDeleteBuffers(1,&floor_tri_indices_VBO);
   glDeleteBuffers(1,&light_vert_VBO);
@@ -59,13 +59,13 @@ void Mesh::cleanupVBOs() {
 // ================================================================================
 // ================================================================================
 
-void Mesh::SetupLight(const glm::vec3 &light_position) {
+void Geometry::SetupLight(const glm::vec3 &light_position) {
   light_vert.push_back(VBOPosNormalColor(light_position,glm::vec3(1,0,0),glm::vec4(1,1,0,0)));
   glBindBuffer(GL_ARRAY_BUFFER,light_vert_VBO); 
   glBufferData(GL_ARRAY_BUFFER,sizeof(VBOPosNormalColor)*1,&light_vert[0],GL_STATIC_DRAW); 
 }
 
-void Mesh::SetupFloor() {
+void Geometry::SetupFloor() {
   glm::vec3 diff = bbox.getMax()-bbox.getMin();
   // create vertices just a bit bigger than the bounding box
   glm::vec3 a = bbox.getMin() + glm::vec3(-floor_factor*diff.x,0,-floor_factor*diff.z);
@@ -91,7 +91,7 @@ void Mesh::SetupFloor() {
 }
 
 
-void Mesh::SetupMesh() {
+void Geometry::SetupGeometry() {
   for (triangleshashtype::iterator iter = triangles.begin();
        iter != triangles.end(); iter++) {
     Triangle *t = iter->second;
@@ -106,27 +106,27 @@ void Mesh::SetupMesh() {
       nb = (*t)[1]->getGouraudNormal();
       nc = (*t)[2]->getGouraudNormal();
     }
-    int start = mesh_tri_verts.size();
-    mesh_tri_verts.push_back(VBOPosNormalColor(a,na,mesh_color));
-    mesh_tri_verts.push_back(VBOPosNormalColor(b,nb,mesh_color));
-    mesh_tri_verts.push_back(VBOPosNormalColor(c,nc,mesh_color));
-    mesh_tri_indices.push_back(VBOIndexedTri(start,start+1,start+2));
+    int start = geometry_tri_verts.size();
+    geometry_tri_verts.push_back(VBOPosNormalColor(a,na,geometry_color));
+    geometry_tri_verts.push_back(VBOPosNormalColor(b,nb,geometry_color));
+    geometry_tri_verts.push_back(VBOPosNormalColor(c,nc,geometry_color));
+    geometry_tri_indices.push_back(VBOIndexedTri(start,start+1,start+2));
   }
-  glBindBuffer(GL_ARRAY_BUFFER,mesh_tri_verts_VBO); 
+  glBindBuffer(GL_ARRAY_BUFFER,geometry_tri_verts_VBO); 
   glBufferData(GL_ARRAY_BUFFER,
-	       sizeof(VBOPosNormalColor) * mesh_tri_verts.size(), 
-	       &mesh_tri_verts[0],
+	       sizeof(VBOPosNormalColor) * geometry_tri_verts.size(), 
+	       &geometry_tri_verts[0],
 	       GL_STATIC_DRAW); 
-  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,mesh_tri_indices_VBO); 
+  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,geometry_tri_indices_VBO); 
   glBufferData(GL_ELEMENT_ARRAY_BUFFER,
-	       sizeof(VBOIndexedTri) * mesh_tri_indices.size(),
-	       &mesh_tri_indices[0], GL_STATIC_DRAW);
+	       sizeof(VBOIndexedTri) * geometry_tri_indices.size(),
+	       &geometry_tri_indices[0], GL_STATIC_DRAW);
 }
 
 // ================================================================================
 // ================================================================================
 
-void Mesh::DrawLight() {
+void Geometry::DrawLight() {
   HandleGLError("enter draw mirror");
   glPointSize(10);
   glBindBuffer(GL_ARRAY_BUFFER, light_vert_VBO);
@@ -143,7 +143,7 @@ void Mesh::DrawLight() {
   HandleGLError("enter draw mirror");
 }
 
-void Mesh::DrawFloor() {
+void Geometry::DrawFloor() {
   HandleGLError("enter draw floor");
   glBindBuffer(GL_ARRAY_BUFFER,floor_tri_verts_VBO); 
   glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,floor_tri_indices_VBO); 
@@ -160,30 +160,30 @@ void Mesh::DrawFloor() {
   HandleGLError("leaving draw floor");
 }
 
-void Mesh::DrawMesh() {
-  HandleGLError("enter draw mesh");
-  glBindBuffer(GL_ARRAY_BUFFER,mesh_tri_verts_VBO); 
-  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,mesh_tri_indices_VBO); 
+void Geometry::DrawGeometry() {
+  HandleGLError("enter draw geometry");
+  glBindBuffer(GL_ARRAY_BUFFER,geometry_tri_verts_VBO); 
+  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,geometry_tri_indices_VBO); 
   glEnableVertexAttribArray(0);
   glVertexAttribPointer(0,3,GL_FLOAT,GL_FALSE,sizeof(VBOPosNormalColor),(void*)0);
   glEnableVertexAttribArray(1);
   glVertexAttribPointer(1,3,GL_FLOAT,GL_FALSE,sizeof(VBOPosNormalColor),(void*)sizeof(glm::vec3) );
   glEnableVertexAttribArray(2);
   glVertexAttribPointer(2, 3, GL_FLOAT,GL_FALSE,sizeof(VBOPosNormalColor), (void*)(sizeof(glm::vec3)*2));
-  glDrawElements(GL_TRIANGLES, mesh_tri_indices.size()*3,GL_UNSIGNED_INT, 0);
+  glDrawElements(GL_TRIANGLES, geometry_tri_indices.size()*3,GL_UNSIGNED_INT, 0);
   glDisableVertexAttribArray(0);
   glDisableVertexAttribArray(1);
   glDisableVertexAttribArray(2);
-  HandleGLError("leaving draw mesh");
+  HandleGLError("leaving draw geometry");
 }
 
 // ======================================================================================
 // ======================================================================================
 
-void Mesh::setupVBOs() {
+void Geometry::setupVBOs() {
   // delete all the old geometry
-  mesh_tri_verts.clear(); 
-  mesh_tri_indices.clear();
+  geometry_tri_verts.clear(); 
+  geometry_tri_indices.clear();
   floor_tri_verts.clear(); 
   floor_tri_indices.clear();
   light_vert.clear();
@@ -192,11 +192,11 @@ void Mesh::setupVBOs() {
   glm::vec3 light_position = LightPosition();
   SetupLight(light_position);
   SetupFloor();
-  SetupMesh();
+  SetupGeometry();
   bbox.setupVBOs();
 }
 
-void Mesh::drawVBOs() {
+void Geometry::drawVBOs() {
 
   // mode 1: STANDARD PHONG LIGHTING (LIGHT ON)
   glUniform1i(GLCanvas::colormodeID, 1);
@@ -219,7 +219,7 @@ void Mesh::drawVBOs() {
       // shader 3: other
       glUniform1i(GLCanvas::whichshaderID, args->whichshader);
       DrawFloor();
-      DrawMesh();
+      DrawGeometry();
       glUniform1i(GLCanvas::whichshaderID, 0);
     }
   } 

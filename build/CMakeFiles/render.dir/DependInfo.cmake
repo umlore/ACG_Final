@@ -7,9 +7,9 @@ set(CMAKE_DEPENDS_CHECK_CXX
   "/home/umlore/Documents/ACG/final/src/boundingbox.cpp" "/home/umlore/Documents/ACG/final/build/CMakeFiles/render.dir/boundingbox.cpp.o"
   "/home/umlore/Documents/ACG/final/src/camera.cpp" "/home/umlore/Documents/ACG/final/build/CMakeFiles/render.dir/camera.cpp.o"
   "/home/umlore/Documents/ACG/final/src/edge.cpp" "/home/umlore/Documents/ACG/final/build/CMakeFiles/render.dir/edge.cpp.o"
+  "/home/umlore/Documents/ACG/final/src/geometry.cpp" "/home/umlore/Documents/ACG/final/build/CMakeFiles/render.dir/geometry.cpp.o"
   "/home/umlore/Documents/ACG/final/src/glCanvas.cpp" "/home/umlore/Documents/ACG/final/build/CMakeFiles/render.dir/glCanvas.cpp.o"
   "/home/umlore/Documents/ACG/final/src/main.cpp" "/home/umlore/Documents/ACG/final/build/CMakeFiles/render.dir/main.cpp.o"
-  "/home/umlore/Documents/ACG/final/src/mesh.cpp" "/home/umlore/Documents/ACG/final/build/CMakeFiles/render.dir/mesh.cpp.o"
   "/home/umlore/Documents/ACG/final/src/render.cpp" "/home/umlore/Documents/ACG/final/build/CMakeFiles/render.dir/render.cpp.o"
   "/home/umlore/Documents/ACG/final/src/utils.cpp" "/home/umlore/Documents/ACG/final/build/CMakeFiles/render.dir/utils.cpp.o"
   )

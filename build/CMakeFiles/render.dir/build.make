@@ -153,28 +153,28 @@ CMakeFiles/render.dir/camera.cpp.o.provides: CMakeFiles/render.dir/camera.cpp.o.
 CMakeFiles/render.dir/camera.cpp.o.provides.build: CMakeFiles/render.dir/camera.cpp.o
 
 
-CMakeFiles/render.dir/mesh.cpp.o: CMakeFiles/render.dir/flags.make
-CMakeFiles/render.dir/mesh.cpp.o: /home/umlore/Documents/ACG/final/src/mesh.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/umlore/Documents/ACG/final/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/render.dir/mesh.cpp.o"
-	/usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/render.dir/mesh.cpp.o -c /home/umlore/Documents/ACG/final/src/mesh.cpp
+CMakeFiles/render.dir/geometry.cpp.o: CMakeFiles/render.dir/flags.make
+CMakeFiles/render.dir/geometry.cpp.o: /home/umlore/Documents/ACG/final/src/geometry.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/umlore/Documents/ACG/final/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/render.dir/geometry.cpp.o"
+	/usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/render.dir/geometry.cpp.o -c /home/umlore/Documents/ACG/final/src/geometry.cpp
 
-CMakeFiles/render.dir/mesh.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/render.dir/mesh.cpp.i"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/umlore/Documents/ACG/final/src/mesh.cpp > CMakeFiles/render.dir/mesh.cpp.i
+CMakeFiles/render.dir/geometry.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/render.dir/geometry.cpp.i"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/umlore/Documents/ACG/final/src/geometry.cpp > CMakeFiles/render.dir/geometry.cpp.i
 
-CMakeFiles/render.dir/mesh.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/render.dir/mesh.cpp.s"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/umlore/Documents/ACG/final/src/mesh.cpp -o CMakeFiles/render.dir/mesh.cpp.s
+CMakeFiles/render.dir/geometry.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/render.dir/geometry.cpp.s"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/umlore/Documents/ACG/final/src/geometry.cpp -o CMakeFiles/render.dir/geometry.cpp.s
 
-CMakeFiles/render.dir/mesh.cpp.o.requires:
+CMakeFiles/render.dir/geometry.cpp.o.requires:
 
-.PHONY : CMakeFiles/render.dir/mesh.cpp.o.requires
+.PHONY : CMakeFiles/render.dir/geometry.cpp.o.requires
 
-CMakeFiles/render.dir/mesh.cpp.o.provides: CMakeFiles/render.dir/mesh.cpp.o.requires
-	$(MAKE) -f CMakeFiles/render.dir/build.make CMakeFiles/render.dir/mesh.cpp.o.provides.build
-.PHONY : CMakeFiles/render.dir/mesh.cpp.o.provides
+CMakeFiles/render.dir/geometry.cpp.o.provides: CMakeFiles/render.dir/geometry.cpp.o.requires
+	$(MAKE) -f CMakeFiles/render.dir/build.make CMakeFiles/render.dir/geometry.cpp.o.provides.build
+.PHONY : CMakeFiles/render.dir/geometry.cpp.o.provides
 
-CMakeFiles/render.dir/mesh.cpp.o.provides.build: CMakeFiles/render.dir/mesh.cpp.o
+CMakeFiles/render.dir/geometry.cpp.o.provides.build: CMakeFiles/render.dir/geometry.cpp.o
 
 
 CMakeFiles/render.dir/render.cpp.o: CMakeFiles/render.dir/flags.make
@@ -255,7 +255,7 @@ render_OBJECTS = \
 "CMakeFiles/render.dir/edge.cpp.o" \
 "CMakeFiles/render.dir/glCanvas.cpp.o" \
 "CMakeFiles/render.dir/camera.cpp.o" \
-"CMakeFiles/render.dir/mesh.cpp.o" \
+"CMakeFiles/render.dir/geometry.cpp.o" \
 "CMakeFiles/render.dir/render.cpp.o" \
 "CMakeFiles/render.dir/boundingbox.cpp.o" \
 "CMakeFiles/render.dir/utils.cpp.o"
@@ -267,7 +267,7 @@ render: CMakeFiles/render.dir/main.cpp.o
 render: CMakeFiles/render.dir/edge.cpp.o
 render: CMakeFiles/render.dir/glCanvas.cpp.o
 render: CMakeFiles/render.dir/camera.cpp.o
-render: CMakeFiles/render.dir/mesh.cpp.o
+render: CMakeFiles/render.dir/geometry.cpp.o
 render: CMakeFiles/render.dir/render.cpp.o
 render: CMakeFiles/render.dir/boundingbox.cpp.o
 render: CMakeFiles/render.dir/utils.cpp.o
@@ -292,7 +292,7 @@ CMakeFiles/render.dir/requires: CMakeFiles/render.dir/main.cpp.o.requires
 CMakeFiles/render.dir/requires: CMakeFiles/render.dir/edge.cpp.o.requires
 CMakeFiles/render.dir/requires: CMakeFiles/render.dir/glCanvas.cpp.o.requires
 CMakeFiles/render.dir/requires: CMakeFiles/render.dir/camera.cpp.o.requires
-CMakeFiles/render.dir/requires: CMakeFiles/render.dir/mesh.cpp.o.requires
+CMakeFiles/render.dir/requires: CMakeFiles/render.dir/geometry.cpp.o.requires
 CMakeFiles/render.dir/requires: CMakeFiles/render.dir/render.cpp.o.requires
 CMakeFiles/render.dir/requires: CMakeFiles/render.dir/boundingbox.cpp.o.requires
 CMakeFiles/render.dir/requires: CMakeFiles/render.dir/utils.cpp.o.requires

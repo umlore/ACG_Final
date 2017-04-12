@@ -13,7 +13,7 @@ add_executable(${my_executable}
   edge.cpp
   glCanvas.cpp
   camera.cpp
-  mesh.cpp
+  geometry.cpp
   render.cpp
   boundingbox.cpp
   utils.cpp
@@ -26,7 +26,7 @@ add_executable(${my_executable}
   boundingbox.h
   edge.h
   hash.h
-  mesh.h
+  geometry.h
   vbo_structs.h
 )
 

@@ -20,7 +20,7 @@
 class ArgParser;
 class Camera;
 
-class Mesh;
+class Geometry;
 
 // ====================================================================
 // NOTE:  All the methods and variables of this class are static
@@ -32,9 +32,9 @@ public:
 
   // various static variables
   static ArgParser *args;
-  /* TODO (Andrew): We are going to have more than one mesh, and a bunch of lights. That should 
+  /* TODO (Andrew): We are going to have more than one geometry, and a bunch of lights. That should 
      probably be reflected here. */
-  static Mesh *mesh;
+  static Geometry *geometry;
 
   static BoundingBox bbox;
   static Camera* camera;

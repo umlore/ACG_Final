@@ -204,6 +204,33 @@ edge.cpp.s:
 	$(MAKE) -f CMakeFiles/render.dir/build.make CMakeFiles/render.dir/edge.cpp.s
 .PHONY : edge.cpp.s
 
+geometry.o: geometry.cpp.o
+
+.PHONY : geometry.o
+
+# target to build an object file
+geometry.cpp.o:
+	$(MAKE) -f CMakeFiles/render.dir/build.make CMakeFiles/render.dir/geometry.cpp.o
+.PHONY : geometry.cpp.o
+
+geometry.i: geometry.cpp.i
+
+.PHONY : geometry.i
+
+# target to preprocess a source file
+geometry.cpp.i:
+	$(MAKE) -f CMakeFiles/render.dir/build.make CMakeFiles/render.dir/geometry.cpp.i
+.PHONY : geometry.cpp.i
+
+geometry.s: geometry.cpp.s
+
+.PHONY : geometry.s
+
+# target to generate assembly for a file
+geometry.cpp.s:
+	$(MAKE) -f CMakeFiles/render.dir/build.make CMakeFiles/render.dir/geometry.cpp.s
+.PHONY : geometry.cpp.s
+
 glCanvas.o: glCanvas.cpp.o
 
 .PHONY : glCanvas.o
@@ -257,33 +284,6 @@ main.s: main.cpp.s
 main.cpp.s:
 	$(MAKE) -f CMakeFiles/render.dir/build.make CMakeFiles/render.dir/main.cpp.s
 .PHONY : main.cpp.s
-
-mesh.o: mesh.cpp.o
-
-.PHONY : mesh.o
-
-# target to build an object file
-mesh.cpp.o:
-	$(MAKE) -f CMakeFiles/render.dir/build.make CMakeFiles/render.dir/mesh.cpp.o
-.PHONY : mesh.cpp.o
-
-mesh.i: mesh.cpp.i
-
-.PHONY : mesh.i
-
-# target to preprocess a source file
-mesh.cpp.i:
-	$(MAKE) -f CMakeFiles/render.dir/build.make CMakeFiles/render.dir/mesh.cpp.i
-.PHONY : mesh.cpp.i
-
-mesh.s: mesh.cpp.s
-
-.PHONY : mesh.s
-
-# target to generate assembly for a file
-mesh.cpp.s:
-	$(MAKE) -f CMakeFiles/render.dir/build.make CMakeFiles/render.dir/mesh.cpp.s
-.PHONY : mesh.cpp.s
 
 render.o: render.cpp.o
 
@@ -357,15 +357,15 @@ help:
 	@echo "... edge.o"
 	@echo "... edge.i"
 	@echo "... edge.s"
+	@echo "... geometry.o"
+	@echo "... geometry.i"
+	@echo "... geometry.s"
 	@echo "... glCanvas.o"
 	@echo "... glCanvas.i"
 	@echo "... glCanvas.s"
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"
-	@echo "... mesh.o"
-	@echo "... mesh.i"
-	@echo "... mesh.s"
 	@echo "... render.o"
 	@echo "... render.i"
 	@echo "... render.s"

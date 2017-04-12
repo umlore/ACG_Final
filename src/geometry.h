@@ -1,5 +1,5 @@
-#ifndef MESH_H
-#define MESH_H
+#ifndef Geometry_H
+#define Geometry_H
 
 #include "glCanvas.h"
 #include <vector>
@@ -16,14 +16,14 @@ class Triangle;
 // ======================================================================
 // ======================================================================
 
-class Mesh {
+class Geometry {
 
 public:
 
   // ========================
   // CONSTRUCTOR & DESTRUCTOR
-  Mesh(ArgParser *_args) { args = _args; }
-  ~Mesh();
+  Geometry(ArgParser *_args) { args = _args; }
+  ~Geometry();
   void Load(); 
   void ComputeGouraudNormals();
 
@@ -47,7 +47,7 @@ public:
   // EDGES
   int numEdges() const { return edges.size(); }
   // this efficiently looks for an edge with the given vertices, using a hash table
-  Edge* getMeshEdge(Vertex *a, Vertex *b) const;
+  Edge* getGeometryEdge(Vertex *a, Vertex *b) const;
 
   // =========
   // TRIANGLES
@@ -65,11 +65,11 @@ private:
   // HELPER FUNCTIONS FOR PAINT
   void SetupLight(const glm::vec3 &light_position);
   void SetupFloor();
-  void SetupMesh();
+  void SetupGeometry();
 
   void DrawLight();
   void DrawFloor();
-  void DrawMesh();
+  void DrawGeometry();
 
   // ==============
   // REPRESENTATION
@@ -80,14 +80,14 @@ private:
   BoundingBox bbox;
 
   // VBOs
-  GLuint mesh_tri_verts_VBO;
-  GLuint mesh_tri_indices_VBO;
+  GLuint geometry_tri_verts_VBO;
+  GLuint geometry_tri_indices_VBO;
   GLuint floor_tri_verts_VBO;
   GLuint floor_tri_indices_VBO;
   GLuint light_vert_VBO;
 
-  std::vector<VBOPosNormalColor> mesh_tri_verts; 
-  std::vector<VBOIndexedTri> mesh_tri_indices;
+  std::vector<VBOPosNormalColor> geometry_tri_verts; 
+  std::vector<VBOIndexedTri> geometry_tri_indices;
   std::vector<VBOPosNormalColor> floor_tri_verts; 
   std::vector<VBOIndexedTri> floor_tri_indices;
   std::vector<VBOPosNormalColor> light_vert;
@@ -98,6 +98,7 @@ private:
 // ======================================================================
 
 #endif
+
 
 
 

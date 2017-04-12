@@ -1,7 +1,7 @@
 #include <iostream>
 #include <string.h>
 
-#include "mesh.h"
+#include "geometry.h"
 #include "edge.h"
 #include "utils.h"
 #include "vertex.h"
@@ -11,10 +11,10 @@
 int Triangle::next_triangle_id = 0;
 
 // =======================================================================
-// MESH DESTRUCTOR 
+// Geometry DESTRUCTOR 
 // =======================================================================
 
-Mesh::~Mesh() {
+Geometry::~Geometry() {
   // delete all the triangles
   std::vector<Triangle*> todo;
   for (triangleshashtype::iterator iter = triangles.begin();
@@ -38,7 +38,7 @@ Mesh::~Mesh() {
 // MODIFIERS:   ADD & REMOVE
 // =======================================================================
 
-Vertex* Mesh::addVertex(const glm::vec3 &position) {
+Vertex* Geometry::addVertex(const glm::vec3 &position) {
   int index = numVertices();
   Vertex *v = new Vertex(index, position);
   vertices.push_back(v);
@@ -50,7 +50,7 @@ Vertex* Mesh::addVertex(const glm::vec3 &position) {
 }
 
 
-void Mesh::addTriangle(Vertex *a, Vertex *b, Vertex *c) {
+void Geometry::addTriangle(Vertex *a, Vertex *b, Vertex *c) {
   // create the triangle
   Triangle *t = new Triangle();
   // create the edges
@@ -63,8 +63,8 @@ void Mesh::addTriangle(Vertex *a, Vertex *b, Vertex *c) {
   ea->setNext(eb);
   eb->setNext(ec);
   ec->setNext(ea);
-  // verify these edges aren't already in the mesh 
-  // (which would be a bug, or a non-manifold mesh)
+  // verify these edges aren't already in the Geometry 
+  // (which would be a bug, or a non-manifold Geometry)
   assert (edges.find(std::make_pair(a,b)) == edges.end());
   assert (edges.find(std::make_pair(b,c)) == edges.end());
   assert (edges.find(std::make_pair(c,a)) == edges.end());
@@ -85,7 +85,7 @@ void Mesh::addTriangle(Vertex *a, Vertex *b, Vertex *c) {
 }
 
 
-void Mesh::removeTriangle(Triangle *t) {
+void Geometry::removeTriangle(Triangle *t) {
   Edge *ea = t->getEdge();
   Edge *eb = ea->getNext();
   Edge *ec = eb->getNext();
@@ -106,7 +106,7 @@ void Mesh::removeTriangle(Triangle *t) {
 
 
 // Helper function for accessing data in the hash table
-Edge* Mesh::getMeshEdge(Vertex *a, Vertex *b) const {
+Edge* Geometry::getGeometryEdge(Vertex *a, Vertex *b) const {
   edgeshashtype::const_iterator iter = edges.find(std::make_pair(a,b));
   if (iter == edges.end()) return NULL;
   return iter->second;
@@ -116,7 +116,7 @@ Edge* Mesh::getMeshEdge(Vertex *a, Vertex *b) const {
 // the load function parses very simple .obj files
 // =======================================================================
 
-void Mesh::Load() {
+void Geometry::Load() {
   std::string input_file = args->path + "/" + args->input_file;
   
   FILE *objfile = fopen(input_file.c_str(),"r");
@@ -178,8 +178,8 @@ void Mesh::Load() {
 
 // =======================================================================
 
-// compute the gouraud normals of all vertices of the mesh and store at each vertex
-void Mesh::ComputeGouraudNormals() {
+// compute the gouraud normals of all vertices of the Geometry and store at each vertex
+void Geometry::ComputeGouraudNormals() {
   int i;
   // clear the normals
   for (i = 0; i < numVertices(); i++) {

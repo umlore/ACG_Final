@@ -9,7 +9,7 @@
 #include <sys/time.h>
 #endif
 
-#include "mesh.h"
+#include "geometry.h"
 #include "utils.h"
 
 // ========================================================
@@ -17,7 +17,7 @@
 
 ArgParser* GLCanvas::args = NULL;
 Camera* GLCanvas::camera = NULL;
-Mesh* GLCanvas::mesh = NULL;
+Geometry* GLCanvas::geometry = NULL;
 BoundingBox GLCanvas::bbox;
 GLFWwindow* GLCanvas::window = NULL;
 
@@ -55,9 +55,9 @@ GLuint GLCanvas::colormodeID;
 void GLCanvas::initialize(ArgParser *_args) {
 
   args = _args;
-  mesh = new Mesh(args);
-  mesh->Load();
-  bbox.Set(mesh->getBoundingBox());
+  geometry = new Geometry(args);
+  geometry->Load();
+  bbox.Set(geometry->getBoundingBox());
 
   glfwSetErrorCallback(error_callback);
 
@@ -150,7 +150,7 @@ void GLCanvas::animate(){
       frames = 0;
       last_fps_count = this_tick_count;
     }
-    mesh->setupVBOs();
+    geometry->setupVBOs();
   } else {
     last_tick_count = last_fps_count = GetTickCount();
   }
@@ -181,7 +181,7 @@ void GLCanvas::animate(){
       last_fps_time = this_time;
     }
     args->timer += diff;
-    mesh->setupVBOs();
+    geometry->setupVBOs();
   } else {
     gettimeofday(&last_time, NULL);
     last_fps_time = last_time;
@@ -204,15 +204,15 @@ void GLCanvas::initializeVBOs(){
   GLCanvas::ModelMatrixID = glGetUniformLocation(GLCanvas::programID, "M");
   GLCanvas::colormodeID = glGetUniformLocation(GLCanvas::programID, "colormode");
   GLCanvas::whichshaderID = glGetUniformLocation(GLCanvas::programID, "whichshader");
-  mesh->initializeVBOs();
+  geometry->initializeVBOs();
   HandleGLError("leaving initilizeVBOs()");
 }
 
 
 void GLCanvas::setupVBOs(){
   HandleGLError("enter GLCanvas::setupVBOs()");
-  assert (mesh != NULL);
-  mesh->setupVBOs();
+  assert (geometry != NULL);
+  geometry->setupVBOs();
   HandleGLError("leaving GLCanvas::setupVBOs()");
 }
 
@@ -222,7 +222,7 @@ void GLCanvas::drawVBOs(const glm::mat4 &ProjectionMatrix,const glm::mat4 &ViewM
 
   // prepare data to send to the shaders
   glm::mat4 MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
-  glm::vec3 lightPos = mesh->LightPosition();
+  glm::vec3 lightPos = geometry->LightPosition();
   glm::vec4 lightPos2 = glm::vec4(lightPos.x,lightPos.y,lightPos.z,1);
   lightPos2 = ModelMatrix * lightPos2;
   glUniform3f(GLCanvas::LightID, lightPos2.x, lightPos2.y, lightPos2.z);
@@ -231,14 +231,14 @@ void GLCanvas::drawVBOs(const glm::mat4 &ProjectionMatrix,const glm::mat4 &ViewM
   glUniformMatrix4fv(GLCanvas::ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
   glUniformMatrix4fv(GLCanvas::ViewMatrixID, 1, GL_FALSE, &ViewMatrix[0][0]);
 
-  mesh->drawVBOs();
+  geometry->drawVBOs();
   HandleGLError("leaving GlCanvas::drawVBOs()");
 }
 
 
 void GLCanvas::cleanupVBOs(){
   bbox.cleanupVBOs();
-  mesh->cleanupVBOs();
+  geometry->cleanupVBOs();
 }
 
 
@@ -326,22 +326,22 @@ void GLCanvas::keyboardCB(GLFWwindow* window, int key, int scancode, int action,
     switch (key) {
     case 'b': case 'B':
       args->bounding_box = !args->bounding_box;
-      mesh->setupVBOs();
+      geometry->setupVBOs();
       break;
     case 'g': case 'G':
       args->geometry = !args->geometry;
-      mesh->setupVBOs();
+      geometry->setupVBOs();
       break;
     case 'a': case 'A':
       args->animate = !args->animate;
       break;
     case ' ':
       args->timer += 0.1;
-      mesh->setupVBOs();
+      geometry->setupVBOs();
       break;
     case 'n': case 'N':
       args->gouraud_normals = !args->gouraud_normals;
-      mesh->setupVBOs();
+      geometry->setupVBOs();
       break;
     case 'x': case 'X':
       args->whichshader = (args->whichshader+1)%4;
@@ -350,11 +350,11 @@ void GLCanvas::keyboardCB(GLFWwindow* window, int key, int scancode, int action,
       if (args->whichshader == 1) { std::cout << " checkerboard" << std::endl; }
       if (args->whichshader == 2) { std::cout << " orange" << std::endl; }
       if (args->whichshader == 3) { std::cout << " wood" << std::endl; }
-      mesh->setupVBOs();
+      geometry->setupVBOs();
       break;
     case 'l' : case 'L':
       //LoadCompileLinkShaders();
-      mesh->setupVBOs();
+      geometry->setupVBOs();
       break;
     case 'q':  case 'Q':
       // quit

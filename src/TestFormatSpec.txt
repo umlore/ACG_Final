@@ -1,6 +1,6 @@
 This is the file that specifies the format of our test case specifications.
 
-object // file name
+object cube.obj // file name
 {
 	start state
 	f(0) // frame number

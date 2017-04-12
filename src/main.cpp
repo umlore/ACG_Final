@@ -38,6 +38,9 @@ int main(int argc, char *argv[]) {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glUseProgram(GLCanvas::programID);
     GLCanvas::camera->glPlaceCamera();
+
+    /* TODO (Andrew): It looks like this is hardcoded to render a single object. 
+       Retrofit for dozens/hundreds? */
     glm::vec3 center;
     GLCanvas::bbox.getCenter(center);
     glm::mat4 myTranslateMatrix = glm::translate(-center);
@@ -48,6 +51,9 @@ int main(int argc, char *argv[]) {
     // Build the matrix to position the camera based on keyboard and mouse input
     glm::mat4 ProjectionMatrix = GLCanvas::camera->getProjectionMatrix();
     glm::mat4 ViewMatrix = GLCanvas::camera->getViewMatrix();
+
+    /* TODO (Andrew): drawVBOs seems to rely on the idea of one modelMatrix, we will probably
+       need to store that matrix on the models, and put the draw function into the model. */
     GLCanvas::drawVBOs(ProjectionMatrix,ViewMatrix,ModelMatrix);
     GLCanvas::animate();
     // Swap buffers

@@ -332,26 +332,6 @@ void GLCanvas::keyboardCB(GLFWwindow* window, int key, int scancode, int action,
       args->geometry = !args->geometry;
       mesh->setupVBOs();
       break;
-    case 'm': case 'M':
-      args->mirror = !args->mirror;
-      mesh->setupVBOs();
-      break;
-    case 'r': case 'R':
-      args->reflected_geometry = !args->reflected_geometry;
-      mesh->setupVBOs();
-      break;
-    case 's': case 'S':
-      args->shadow = !args->shadow;
-      mesh->setupVBOs();
-      break;
-    case 'e': case 'E':
-      args->silhouette_edges = !args->silhouette_edges;
-      mesh->setupVBOs();
-      break;
-    case 'p': case 'P':
-      args->shadow_polygons = !args->shadow_polygons;
-      mesh->setupVBOs();
-      break;
     case 'a': case 'A':
       args->animate = !args->animate;
       break;

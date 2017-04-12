@@ -76,11 +76,9 @@ void Mesh::addTriangle(Vertex *a, Vertex *b, Vertex *c) {
   edgeshashtype::iterator ea_op = edges.find(std::make_pair(b,a)); 
   edgeshashtype::iterator eb_op = edges.find(std::make_pair(c,b)); 
   edgeshashtype::iterator ec_op = edges.find(std::make_pair(a,c)); 
-  std::cout << "hello\n";
   if (ea_op != edges.end()) { ea_op->second->setOpposite(ea); }
   if (eb_op != edges.end()) { eb_op->second->setOpposite(eb); }
   if (ec_op != edges.end()) { ec_op->second->setOpposite(ec); }
-  std::cout << "goodbye\n";
   // add the triangle to the master list
   assert (triangles.find(t->getID()) == triangles.end());
   triangles[t->getID()] = t;

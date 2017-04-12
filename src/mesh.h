@@ -64,22 +64,12 @@ private:
 
   // HELPER FUNCTIONS FOR PAINT
   void SetupLight(const glm::vec3 &light_position);
-  void SetupMirror();
   void SetupFloor();
   void SetupMesh();
-  void SetupReflectedMesh();
-  void SetupReflectedFloor();
-  void SetupSilhouetteEdges(const glm::vec3 &light_position);
-  void SetupShadowPolygons(const glm::vec3 &light_position);
 
   void DrawLight();
-  void DrawMirror();
   void DrawFloor();
   void DrawMesh();
-  void DrawReflectedMesh();
-  void DrawReflectedFloor();
-  void DrawSilhouetteEdges();
-  void DrawShadowPolygons();
 
   // ==============
   // REPRESENTATION
@@ -92,34 +82,14 @@ private:
   // VBOs
   GLuint mesh_tri_verts_VBO;
   GLuint mesh_tri_indices_VBO;
-  GLuint reflected_mesh_tri_verts_VBO;
-  GLuint reflected_mesh_tri_indices_VBO;
-  GLuint shadow_polygon_tri_verts_VBO;
-  GLuint shadow_polygon_tri_indices_VBO;
-  GLuint mirror_tri_verts_VBO;
-  GLuint mirror_tri_indices_VBO;
   GLuint floor_tri_verts_VBO;
   GLuint floor_tri_indices_VBO;
-  GLuint reflected_floor_tri_verts_VBO;
-  GLuint reflected_floor_tri_indices_VBO;
-  GLuint silhouette_edge_tri_verts_VBO;
-  GLuint silhouette_edge_tri_indices_VBO;
   GLuint light_vert_VBO;
 
   std::vector<VBOPosNormalColor> mesh_tri_verts; 
   std::vector<VBOIndexedTri> mesh_tri_indices;
-  std::vector<VBOPosNormalColor> reflected_mesh_tri_verts; 
-  std::vector<VBOIndexedTri> reflected_mesh_tri_indices;
-  std::vector<VBOPosNormalColor> shadow_polygon_tri_verts; 
-  std::vector<VBOIndexedTri> shadow_polygon_tri_indices;
-  std::vector<VBOPosNormalColor> mirror_tri_verts; 
-  std::vector<VBOIndexedTri> mirror_tri_indices;
   std::vector<VBOPosNormalColor> floor_tri_verts; 
   std::vector<VBOIndexedTri> floor_tri_indices;
-  std::vector<VBOPosNormalColor> reflected_floor_tri_verts; 
-  std::vector<VBOIndexedTri> reflected_floor_tri_indices;
-  std::vector<VBOPosNormalColor> silhouette_edge_tri_verts; 
-  std::vector<VBOIndexedTri> silhouette_edge_tri_indices;
   std::vector<VBOPosNormalColor> light_vert;
 
 };

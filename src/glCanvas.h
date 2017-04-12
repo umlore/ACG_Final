@@ -32,6 +32,8 @@ public:
 
   // various static variables
   static ArgParser *args;
+  /* TODO (Andrew): We are going to have more than one mesh, and a bunch of lights. That should 
+     probably be reflected here. */
   static Mesh *mesh;
 
   static BoundingBox bbox;

@@ -14,61 +14,6 @@ uniform vec3 LightPosition_worldspace;
 uniform int colormode;
 uniform int whichshader;
 
-
-// ----------------------------------------------
-// a shader for a black & white checkerboard
-vec3 checkerboard(vec3 pos) {
-  // determine the parity of this point in the 3D checkerboard
-  int count = 0;
-  if (mod(pos.x,0.3)> 0.15) count++;
-  if (mod(pos.y,0.3)> 0.15) count++;
-  if (mod(pos.z,0.3)> 0.15) count++;
-  if (count == 1 || count == 3) {
-    return vec3(0.1,0.1,0.1);
-  } else {
-    return vec3(1,1,1);
-  }
-}
-
-
-// ----------------------------------------------
-// a shader for a black & white checkerboard
-vec3 orange(vec3 pos, inout vec3 normal) {
-  // the base color is orange!
-  vec3 color = vec3(1.0,0.5,0.1);
-
-
-  // FIXME: uncommenting seems to have really slow performance even
-  //    when not rendering "orange".  Perhaps we should have separate
-  //    shaders and not load the orange shader if it's not being used.
-
-  // high frequency noise added to the normal for the bump map
-  
-  
-  // ASSIGNMENT: UNCOMMENT TO SEE THE WRINKLY ORANGE!
-  //   normal = normalize(normal+0.4*noise3(70.0*pos));
-
-  
-  return color;
-}
-
-// ----------------------------------------------
-// a shader for a black & white checkerboard
-vec3 wood(vec3 pos, vec3 normal) {
-
-
-  // ASSIGNMENT:  IMPLEMENT A CREATIVE "WOOD" SHADER
-  //  (you may also edit the vertex shader as you like)
-
-
-  // NOTE/FIXME: might be more performance efficient to pull this into a
-  //   separate shader file & only compile current shader?
-
-
-  // currently just a solid brown color
-  return vec3(0.6,0.4,0.2);
-}
-
 // ----------------------------------------------
 void main(){
 
@@ -80,15 +25,7 @@ void main(){
   
   // Material properties
   vec3 MaterialDiffuseColor = myColor;
-  if (whichshader == 1) {
-    MaterialDiffuseColor = checkerboard(vertexPosition_worldspace);
-  } else if (whichshader == 2) {
-    vec3 normal2;
-    MaterialDiffuseColor = orange(vertexPosition_worldspace,surface_normal);
-  } else if (whichshader == 3) {
-    MaterialDiffuseColor = wood(vertexPosition_worldspace,surface_normal);
-  }
-
+  
   vec3 MaterialAmbientColor = vec3(0.3,0.3,0.3) * MaterialDiffuseColor;
   vec3 MaterialSpecularColor = vec3(0.3,0.3,0.3);
   if(!gl_FrontFacing ) {

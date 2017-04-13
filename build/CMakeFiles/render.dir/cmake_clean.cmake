@@ -7,6 +7,7 @@ file(REMOVE_RECURSE
   "CMakeFiles/render.dir/render.cpp.o"
   "CMakeFiles/render.dir/boundingbox.cpp.o"
   "CMakeFiles/render.dir/utils.cpp.o"
+  "CMakeFiles/render.dir/mesh.cpp.o"
   "render.pdb"
   "render"
 )

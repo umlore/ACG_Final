@@ -123,6 +123,8 @@ boundingbox.h
 /home/umlore/Documents/ACG/final/src/boundingbox.h
 vbo_structs.h
 /home/umlore/Documents/ACG/final/src/vbo_structs.h
+mesh.h
+/home/umlore/Documents/ACG/final/src/mesh.h
 
 /home/umlore/Documents/ACG/final/src/glCanvas.cpp
 cstdlib
@@ -201,6 +203,18 @@ camera.h
 /home/umlore/Documents/ACG/final/src/camera.h
 time.h
 -
+
+/home/umlore/Documents/ACG/final/src/mesh.cpp
+mesh.h
+/home/umlore/Documents/ACG/final/src/mesh.h
+
+/home/umlore/Documents/ACG/final/src/mesh.h
+vector
+-
+string
+-
+boundingbox.h
+/home/umlore/Documents/ACG/final/src/boundingbox.h
 
 /home/umlore/Documents/ACG/final/src/render.cpp
 iostream

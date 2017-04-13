@@ -285,6 +285,33 @@ main.cpp.s:
 	$(MAKE) -f CMakeFiles/render.dir/build.make CMakeFiles/render.dir/main.cpp.s
 .PHONY : main.cpp.s
 
+mesh.o: mesh.cpp.o
+
+.PHONY : mesh.o
+
+# target to build an object file
+mesh.cpp.o:
+	$(MAKE) -f CMakeFiles/render.dir/build.make CMakeFiles/render.dir/mesh.cpp.o
+.PHONY : mesh.cpp.o
+
+mesh.i: mesh.cpp.i
+
+.PHONY : mesh.i
+
+# target to preprocess a source file
+mesh.cpp.i:
+	$(MAKE) -f CMakeFiles/render.dir/build.make CMakeFiles/render.dir/mesh.cpp.i
+.PHONY : mesh.cpp.i
+
+mesh.s: mesh.cpp.s
+
+.PHONY : mesh.s
+
+# target to generate assembly for a file
+mesh.cpp.s:
+	$(MAKE) -f CMakeFiles/render.dir/build.make CMakeFiles/render.dir/mesh.cpp.s
+.PHONY : mesh.cpp.s
+
 render.o: render.cpp.o
 
 .PHONY : render.o
@@ -366,6 +393,9 @@ help:
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"
+	@echo "... mesh.o"
+	@echo "... mesh.i"
+	@echo "... mesh.s"
 	@echo "... render.o"
 	@echo "... render.i"
 	@echo "... render.s"

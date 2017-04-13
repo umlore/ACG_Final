@@ -1,46 +1,50 @@
-//TODO (EUGENE): THIS IS NOT DONE, DONT WORRY ABOUT IT.  PROBABLY WONT USE
-
 #ifndef Mesh_H
 #define Mesh_H
+
+#include <vector>
+#include <string>
+#include "boundingbox.h"
 
 class Mesh {
 
 public:
 	//CONSTRUCTOR & DESTRUCTOR
 	Mesh();
+	Mesh(std::vector<int>, std::vector<glm::vec3>, std::vector<glm::vec3>, std::vector<double>, BoundingBox);
 	~Mesh();
 
+	//MODIFIERS
+	void setIndeces(std::vector<int> i) { indeces.swap(i); }
+	void setColors(std::vector<glm::vec3> c) { colors.swap(c); }
+	void setPositions(std::vector<glm::vec3> p) { positions.swap(p); }
+	void setTimesteps(std::vector<double> t) { timesteps.swap(t); }
+
 	//VERTICES
-	int numVertices() const { return lastVert - firstVert; }
+	int numVertices() const { return indeces[1] - indeces[0]; }
 	
 	//EDGES
-	int numEdges() const { return lastEdge - firstEdge; }
+	int numEdges() const { return indeces[3] - indeces[2]; }
 
 	//TRIANGLES
-	int numTriangles() const { return lastTri - firstTri; }
+	int numTriangles() const { return indeces[5] - indeces[4]; }
 
 private:
 
 	//REPRESENTATION
+	std::vector<glm::vec3> colors;
+	std::vector<glm::vec3> positions;
+	std::vector<double> timesteps;
 
-	//bounding indeces of the vertices in the geometry vertex structure
-	int firstVert;
-	int lastVert;
-
-	//bounding indeces of the vertices in the geometry edge structure
-	int firstEdge;
-	int lastEdge;
-
-	//bounding indeces of the triangles in the geometry edge structure
-	int firstTri;
-	int lastTri;
+	std::vector<int> indeces;
+	//first vertex 	 0
+	//last vertex 	 1
+	//first edge 	 2
+	//last edge 	 3
+	//first tri 	 4
+	//last tri 		 5
 
 	//bounding box of this individual object
 	BoundingBox bbox;
+};
 
-	//path variables
-	//must be same length, timestep[i] is the length of time to interpolate
-	//to meshPos[i]
-	std::vector<glm::vec3> meshPos;
-	std::vector<double> timestep;
-}
+#endif

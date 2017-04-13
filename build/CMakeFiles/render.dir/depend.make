@@ -29,6 +29,7 @@ CMakeFiles/render.dir/geometry.cpp.o: /home/umlore/Documents/ACG/final/src/geome
 CMakeFiles/render.dir/geometry.cpp.o: /home/umlore/Documents/ACG/final/src/geometry.h
 CMakeFiles/render.dir/geometry.cpp.o: /home/umlore/Documents/ACG/final/src/glCanvas.h
 CMakeFiles/render.dir/geometry.cpp.o: /home/umlore/Documents/ACG/final/src/hash.h
+CMakeFiles/render.dir/geometry.cpp.o: /home/umlore/Documents/ACG/final/src/mesh.h
 CMakeFiles/render.dir/geometry.cpp.o: /home/umlore/Documents/ACG/final/src/triangle.h
 CMakeFiles/render.dir/geometry.cpp.o: /home/umlore/Documents/ACG/final/src/utils.h
 CMakeFiles/render.dir/geometry.cpp.o: /home/umlore/Documents/ACG/final/src/vbo_structs.h
@@ -42,6 +43,7 @@ CMakeFiles/render.dir/glCanvas.cpp.o: /home/umlore/Documents/ACG/final/src/geome
 CMakeFiles/render.dir/glCanvas.cpp.o: /home/umlore/Documents/ACG/final/src/glCanvas.cpp
 CMakeFiles/render.dir/glCanvas.cpp.o: /home/umlore/Documents/ACG/final/src/glCanvas.h
 CMakeFiles/render.dir/glCanvas.cpp.o: /home/umlore/Documents/ACG/final/src/hash.h
+CMakeFiles/render.dir/glCanvas.cpp.o: /home/umlore/Documents/ACG/final/src/mesh.h
 CMakeFiles/render.dir/glCanvas.cpp.o: /home/umlore/Documents/ACG/final/src/utils.h
 CMakeFiles/render.dir/glCanvas.cpp.o: /home/umlore/Documents/ACG/final/src/vbo_structs.h
 CMakeFiles/render.dir/glCanvas.cpp.o: /home/umlore/Documents/ACG/final/src/vertex.h
@@ -55,12 +57,18 @@ CMakeFiles/render.dir/main.cpp.o: /home/umlore/Documents/ACG/final/src/main.cpp
 CMakeFiles/render.dir/main.cpp.o: /home/umlore/Documents/ACG/final/src/vbo_structs.h
 CMakeFiles/render.dir/main.cpp.o: /usr/local/include/GLFW/glfw3.h
 
+CMakeFiles/render.dir/mesh.cpp.o: /home/umlore/Documents/ACG/final/src/boundingbox.h
+CMakeFiles/render.dir/mesh.cpp.o: /home/umlore/Documents/ACG/final/src/mesh.cpp
+CMakeFiles/render.dir/mesh.cpp.o: /home/umlore/Documents/ACG/final/src/mesh.h
+CMakeFiles/render.dir/mesh.cpp.o: /home/umlore/Documents/ACG/final/src/vbo_structs.h
+
 CMakeFiles/render.dir/render.cpp.o: /home/umlore/Documents/ACG/final/src/argparser.h
 CMakeFiles/render.dir/render.cpp.o: /home/umlore/Documents/ACG/final/src/boundingbox.h
 CMakeFiles/render.dir/render.cpp.o: /home/umlore/Documents/ACG/final/src/edge.h
 CMakeFiles/render.dir/render.cpp.o: /home/umlore/Documents/ACG/final/src/geometry.h
 CMakeFiles/render.dir/render.cpp.o: /home/umlore/Documents/ACG/final/src/glCanvas.h
 CMakeFiles/render.dir/render.cpp.o: /home/umlore/Documents/ACG/final/src/hash.h
+CMakeFiles/render.dir/render.cpp.o: /home/umlore/Documents/ACG/final/src/mesh.h
 CMakeFiles/render.dir/render.cpp.o: /home/umlore/Documents/ACG/final/src/render.cpp
 CMakeFiles/render.dir/render.cpp.o: /home/umlore/Documents/ACG/final/src/triangle.h
 CMakeFiles/render.dir/render.cpp.o: /home/umlore/Documents/ACG/final/src/utils.h

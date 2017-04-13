@@ -135,17 +135,25 @@ void Geometry::Load() {
   
   int index = 0;
   int vert_count = 0;
-  int vert_index = 1;
+  int vert_index = 0; //possibly change this back to 1
+  int mesh_count = 0;
   
   while (fgets(line, 200, objfile)) {   
     int token_count = sscanf (line, "%s\n",token);
     if (token_count == -1) continue;
     a = b = c = d = e = -1;
     if (!strcmp(token,"usemtl") ||
-	!strcmp(token,"g")) {
+	      !strcmp(token,"g")) {
       vert_index = 1; 
       index++;
-    } else if (!strcmp(token,"v")) {
+    } else if (!strcmp(token,"o")){
+      //TODO (Eugene): this is the important implementation, finish this
+
+
+
+
+      
+    }else if (!strcmp(token,"v")) {
       vert_count++;
       sscanf (line, "%s %f %f %f\n",token,&x,&y,&z);
       addVertex(glm::vec3(x,y,z));
@@ -156,9 +164,12 @@ void Geometry::Load() {
       sscanf (btoken,"%d",&b);
       sscanf (ctoken,"%d",&c);
       assert (num == 4);
+      /* TODO (Eugene): This assumes that vert indexing starts at 1 for some reason
+      //not sure if it needs to be fixed, our implementation starts at 0
       a -= vert_index;
       b -= vert_index;
       c -= vert_index;
+      */
       assert (a >= 0 && a < numVertices());
       assert (b >= 0 && b < numVertices());
       assert (c >= 0 && c < numVertices());

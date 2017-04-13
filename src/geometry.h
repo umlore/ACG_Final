@@ -7,6 +7,7 @@
 #include "hash.h"
 #include "boundingbox.h"
 #include "vbo_structs.h"
+#include "mesh.h"
 
 class ArgParser;
 class Vertex;
@@ -75,6 +76,7 @@ private:
   // ==============
   // REPRESENTATION
   ArgParser *args;
+  std::vector<Mesh> meshes;
   std::vector<Vertex*> vertices;
   edgeshashtype edges;
   triangleshashtype triangles;

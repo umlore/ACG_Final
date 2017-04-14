@@ -234,7 +234,7 @@ void GLCanvas::drawVBOs(const glm::mat4 &ProjectionMatrix,const glm::mat4 &ViewM
   glUniformMatrix4fv(GLCanvas::ViewMatrixID, 1, GL_FALSE, &ViewMatrix[0][0]);
 
 	glm::vec3 cameraPosition = camera->camera_position;
-	glUniform3f(GLCanvas::cameraLocation,cameraPosition.x, cameraPosition.y, cameraPosition.z);
+	glUniform3f(GLCanvas::cameraLocation,cameraLocation.x, cameraLocation.y, cameraLocation.z);
 
   geometry->drawVBOs();
   HandleGLError("leaving GlCanvas::drawVBOs()");

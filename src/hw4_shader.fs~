@@ -19,7 +19,7 @@ void main()
 {
 	vec3 origin = vec3(0f,0f,0f);
 	float distance = length( vertexPosition_worldspace - cameraPosition_worldspace)/ 25.0f;
-  vec3 MaterialDiffuseColor = myColor;
+    MaterialDiffuseColor = vec3(0.0,0.0,0.6); 
   color = vec3(0.3,0.3,0.3) * MaterialDiffuseColor;
 	//color = (vertexNormal_worldspace + vec3(1f,1f,1f))/2f;
 }

@@ -217,7 +217,7 @@ void Geometry::drawVBOs() {
       // shader 1: CHECKERBOARD
       // shader 2: ORANGE
       // shader 3: other
-			glClearColor(0,0,0,1);
+			glClearColor(1,1,1,1);
       glUniform1i(GLCanvas::whichshaderID, args->whichshader);
       DrawFloor();
       DrawGeometry();

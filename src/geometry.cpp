@@ -132,32 +132,84 @@ void Geometry::Load() {
   char ctoken[100] = "";
   float x,y,z;
   int a,b,c,d,e;
+
+  Mesh mesh = Mesh();
   
   int index = 0;
   int vert_count = 0;
   int vert_index = 0; //possibly change this back to 1
+  int edge_count = 0;
+  int edge_index = 0;
+  int tri_count = 0;
+  int tri_index = 0;
   int mesh_count = 0;
+
+  std::vector<glm::vec3> colors;
+  std::vector<glm::vec3> positions;
+  std::vector<double> timesteps;
   
   while (fgets(line, 200, objfile)) {   
     int token_count = sscanf (line, "%s\n",token);
     if (token_count == -1) continue;
     a = b = c = d = e = -1;
-    if (!strcmp(token,"usemtl") ||
-	      !strcmp(token,"g")) {
-      vert_index = 1; 
-      index++;
-    } else if (!strcmp(token,"o")){
+    if (!strcmp(token,"o")){
       //TODO (Eugene): this is the important implementation, finish this
+      //compile list of indeces from current values
+      std::vector<int> indeces;
+      indeces.push_back(vert_index);
+      indeces.push_back(vert_index+vert_count-1);
+      indeces.push_back(edge_index);
+      indeces.push_back(edge_index+edge_count-1);
+      indeces.push_back(tri_index);
+      indeces.push_back(tri_index+tri_count-1);
+
+      vert_count = 0;
+      vert_index = numVertices();
+      edge_count = 0;
+      edge_index = numEdges();
+      tri_count = 0;
+      tri_index = numTriangles();
+      //add finalized lists to the mesh object
+      mesh.setIndeces(indeces);
+      mesh.setColors(colors);
+      mesh.setPositions(positions);
+      mesh.setTimesteps(timesteps); 
+      //add the mesh object to the master vector, and start a new one.
+      meshes.push_back(mesh);
+      mesh = Mesh();
 
 
 
-
+      //add a position
+    } else if (!strcmp(token,"p")) {
       
-    }else if (!strcmp(token,"v")) {
+      sscanf(line, "%s %s %s %s\n",token,atoken,btoken,ctoken);
+      double p1, p2, p3;
+      sscanf(atoken,"%lf",&p1);
+      sscanf(btoken,"%lf",&p2);
+      sscanf(ctoken,"%lf",&p3);
+      glm::vec3 temp_pos(p1,p2,p3);
+      positions.push_back(temp_pos);
+      
+      //add a color
+    } else if (!strcmp(token,"c")) {
+      /*
+      sscanf(line,"%s %s %s %s\n",token,atoken,btoken,ctoken);
+      glm::vec3 temp_clr(atoken,btoken,ctoken);
+      colors.push_back(temp_clr);
+      */
+      //add a timestep
+    } else if (!strcmp(token,"t")) {
+      sscanf(line,"%s %s",token,atoken);
+    }
+    else if (!strcmp(token,"v")) {
       vert_count++;
       sscanf (line, "%s %f %f %f\n",token,&x,&y,&z);
       addVertex(glm::vec3(x,y,z));
+      //add a face (triangle)
     } else if (!strcmp(token,"f")) {
+      tri_count++;
+      edge_count += 3;
       int num = sscanf (line, "%s %s %s %s\n",token,
 			atoken,btoken,ctoken);
       sscanf (atoken,"%d",&a);
@@ -176,6 +228,7 @@ void Geometry::Load() {
       addTriangle(getVertex(a),getVertex(b),getVertex(c)); 
     } else if (!strcmp(token,"vt")) {
     } else if (!strcmp(token,"vn")) {
+      //comment
     } else if (token[0] == '#') {
     } else {
       printf ("LINE: '%s'",line);

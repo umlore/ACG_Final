@@ -1,3 +1,0 @@
-C:/repositories/DifferedRenderer/winbuild/CMakeFiles/render.dir
-C:/repositories/DifferedRenderer/winbuild/CMakeFiles/ALL_BUILD.dir
-C:/repositories/DifferedRenderer/winbuild/CMakeFiles/ZERO_CHECK.dir

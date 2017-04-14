@@ -4,6 +4,7 @@
 #include <vector>
 #include <string>
 #include "boundingbox.h"
+#include "glm/ext.hpp"
 
 class Mesh {
 
@@ -18,6 +19,9 @@ public:
 	void setColors(std::vector<glm::vec3> c) { colors.swap(c); }
 	void setPositions(std::vector<glm::vec3> p) { positions.swap(p); }
 	void setTimesteps(std::vector<double> t) { timesteps.swap(t); }
+
+	//ACCESSORS
+	std::string to_string();
 
 	//VERTICES
 	int numVertices() const { return indeces[1] - indeces[0]; }

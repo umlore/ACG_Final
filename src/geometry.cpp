@@ -147,6 +147,13 @@ void Geometry::Load() {
   std::vector<glm::vec3> colors;
   std::vector<glm::vec3> positions;
   std::vector<double> timesteps;
+  while(fgets(line,200,objfile)) {
+    int token_count = sscanf(line,"%s\n",token);
+    if (token_count == -1) continue;
+    if (!strcmp(token,"o")){
+      break;
+    }
+  }
   
   while (fgets(line, 200, objfile)) {   
     int token_count = sscanf (line, "%s\n",token);
@@ -193,6 +200,14 @@ void Geometry::Load() {
       
       //add a color
     } else if (!strcmp(token,"c")) {
+      sscanf(line, "%s %s %s %s\n",token,atoken,btoken,ctoken);
+      double p1, p2, p3;
+      sscanf(atoken,"%lf",&p1);
+      sscanf(btoken,"%lf",&p2);
+      sscanf(ctoken,"%lf",&p3);
+      glm::vec3 temp_clr(p1,p2,p3);
+      positions.push_back(temp_clr);
+
       /*
       sscanf(line,"%s %s %s %s\n",token,atoken,btoken,ctoken);
       glm::vec3 temp_clr(atoken,btoken,ctoken);
@@ -201,6 +216,9 @@ void Geometry::Load() {
       //add a timestep
     } else if (!strcmp(token,"t")) {
       sscanf(line,"%s %s",token,atoken);
+      int p1;
+      sscanf(atoken,"%d",&p1);
+      timesteps.push_back(p1);
     }
     else if (!strcmp(token,"v")) {
       vert_count++;
@@ -225,7 +243,7 @@ void Geometry::Load() {
       assert (a >= 0 && a < numVertices());
       assert (b >= 0 && b < numVertices());
       assert (c >= 0 && c < numVertices());
-      addTriangle(getVertex(a),getVertex(b),getVertex(c)); 
+      addTriangle(getVertex(a+vert_index),getVertex(b+vert_index),getVertex(c+vert_index)); 
     } else if (!strcmp(token,"vt")) {
     } else if (!strcmp(token,"vn")) {
       //comment
@@ -234,6 +252,29 @@ void Geometry::Load() {
       printf ("LINE: '%s'",line);
     }
   }
+
+  std::vector<int> indeces;
+  indeces.push_back(vert_index);
+  indeces.push_back(vert_index+vert_count-1);
+  indeces.push_back(edge_index);
+  indeces.push_back(edge_index+edge_count-1);
+  indeces.push_back(tri_index);
+  indeces.push_back(tri_index+tri_count-1);
+
+  vert_count = 0;
+  vert_index = numVertices();
+  edge_count = 0;
+  edge_index = numEdges();
+  tri_count = 0;
+  tri_index = numTriangles();
+  //add finalized lists to the mesh object
+  mesh.setIndeces(indeces);
+  mesh.setColors(colors);
+  mesh.setPositions(positions);
+  mesh.setTimesteps(timesteps); 
+  //add the mesh object to the master vector, and start a new one.
+  meshes.push_back(mesh);
+  mesh = Mesh();
 
   ComputeGouraudNormals();
 

@@ -209,18 +209,22 @@ void Geometry::Load() {
 
       //add a position
     } else if (!strcmp(token,"lp")) {
-      sscanf(line, "%s, %f, %f, %f\n",token,&x,&y,&z);
+      int record = sscanf(line, "%s %f %f %f\n",token,&x,&y,&z);
+      //std::cout << "Succesful reads: "<<record<<" Line : " << line;
+      //std::cout << "Parse Light Position: " << string_from_vec3( glm::vec3(x,y,z)) << std::endl;
       glm::vec3 light_pos(x,y,z);
 
       lpos.push_back(light_pos);
 
     } else if (!strcmp(token,"lc")) {
-      sscanf(line, "%s, %f, %f, %f\n",token,&x,&y,&z);
+      sscanf(line, "%s %f %f %f\n",token,&x,&y,&z);
+      //std::cout << "Parse Light Color: " << string_from_vec3( glm::vec3(x,y,z)) << std::endl;
       glm::vec3 light_clr(x,y,z);
 
       lclrs.push_back(light_clr);
     } else if (!strcmp(token,"lt")) {
-      sscanf(line, "%s, %f", token, &x);
+      sscanf(line, "%s %f", token, &x);
+      //std::cout << "Parse Light timestep: " << x << std::endl;
       ltimes.push_back(x);
     } else if (!strcmp(token,"p")) {
       
@@ -310,6 +314,9 @@ void Geometry::Load() {
   meshes.push_back(mesh);
   mesh = Mesh();
 
+  //Light temp_light = Light(lpos,lclrs,ltimes);
+  //lights.push_back(temp_light);
+
   ComputeGouraudNormals();
 
   std::cout << "loaded " << numTriangles() << " triangles " << std::endl;
@@ -317,6 +324,14 @@ void Geometry::Load() {
   for (uint i = 0; i < meshes.size(); i++) {
     std::cout << meshes[i].to_string();
   } */
+
+  /*
+  std::cout << "Print " << lights.size() << " lights" << std::endl;
+  for (int i = 0; i < lights.size(); i++)
+  {
+	  std::cout << lights[i].to_string();
+  }
+  */
 }
 
 // =======================================================================

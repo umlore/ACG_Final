@@ -4,7 +4,6 @@
 #include <vector>
 #include <string>
 #include "boundingbox.h"
-#include "glm/ext.hpp"
 
 //TODO: Expand light to handle non-point light sources
 class Light {
@@ -17,6 +16,11 @@ public:
 		timesteps.swap(times);
 	}
 	~Light() {}
+
+	//ACCESSORS
+	glm::vec3 getPos(int i) {return positions[i];}
+	glm::vec3 getColor(int i) {return colors[i];}
+	double getTimestep(int i) {return timesteps[i];}
 
 private:
 	//REPRESENTATION

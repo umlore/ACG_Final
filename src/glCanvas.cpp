@@ -222,10 +222,10 @@ void GLCanvas::drawVBOs(const glm::mat4 &ProjectionMatrix,const glm::mat4 &ViewM
 
   // prepare data to send to the shaders
   glm::mat4 MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
-  glm::vec3 lightPos = geometry->LightPosition();
-  glm::vec4 lightPos2 = glm::vec4(lightPos.x,lightPos.y,lightPos.z,1);
-  lightPos2 = ModelMatrix * lightPos2;
-  glUniform3f(GLCanvas::LightID, lightPos2.x, lightPos2.y, lightPos2.z);
+  //glm::vec3 lightPos = geometry->LightPosition();
+  //glm::vec4 lightPos2 = glm::vec4(lightPos.x,lightPos.y,lightPos.z,1);
+  //lightPos2 = ModelMatrix * lightPos2;
+  //glUniform3f(GLCanvas::LightID, 0, 0, 0);
 
   glUniformMatrix4fv(GLCanvas::MatrixID, 1, GL_FALSE, &MVP[0][0]);
   glUniformMatrix4fv(GLCanvas::ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);

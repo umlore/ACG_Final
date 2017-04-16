@@ -18,7 +18,7 @@ uniform int whichshader;
 void main(){
 
   vec3 LightColor = vec3(1,1,1);
-  float LightPower = 4.0f; 
+  float LightPower = 0.0f;
 
   // surface normal
   vec3 surface_normal =  vertexNormal_worldspace;
@@ -36,27 +36,30 @@ void main(){
   }
 
   // Direction & distance to the light
+  /*
   vec3 dirToLight = (LightPosition_worldspace - vertexPosition_worldspace);
   float distanceToLight = length( dirToLight );
   dirToLight = normalize(dirToLight);
+  */
   
   // Cosine of the angle between the normal and the light direction, 
   // clamped above 0
   //  - light is at the vertical of the triangle -> 1
   //  - light is perpendicular to the triangle -> 0
   //  - light is behind the triangle -> 0
-  float cosTheta = clamp( dot( surface_normal,dirToLight ), 0,1 );
+  //float cosTheta = clamp( dot( surface_normal,dirToLight ), 0,1 );
 
   // REFLECTION  
   // Eye vector (towards the camera)
   vec3 E = normalize(EyeDirection_cameraspace);
   // Direction in which the triangle reflects the light
-  vec3 R = reflect(-dirToLight,surface_normal);
+  //vec3 R = reflect(-dirToLight,surface_normal);
   // Cosine of the angle between the Eye vector and the Reflect vector,
   // clamped to 0
   //  - Looking into the reflection -> 1
   //  - Looking elsewhere -> < 1
-  float cosAlpha = clamp( dot( E,R ), 0,1 );
+  //float cosAlpha = clamp( dot( E,R ), 0,1 );
+
   
 
   if (colormode == 0) {
@@ -67,8 +70,8 @@ void main(){
     // mode 1: STANDARD PHONG LIGHTING (LIGHT ON)
     color = 
       MaterialAmbientColor +
-      MaterialDiffuseColor * LightColor * LightPower * cosTheta / (distanceToLight) +
-      MaterialSpecularColor * LightColor * LightPower * pow(cosAlpha,5) / (distanceToLight); 
+      MaterialDiffuseColor * LightColor * LightPower * /*cosTheta / (distanceToLight)*/ +
+      MaterialSpecularColor * LightColor * LightPower /** pow(cosAlpha,5) / (distanceToLight)*/; 
     // NOTE: actually in real-world physics this should be divded by distance^2
     //    (but the dynamic range is probably too big for typical screens)
   } else if (colormode == 2) {

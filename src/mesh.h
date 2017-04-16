@@ -4,7 +4,9 @@
 #include <vector>
 #include <string>
 #include "boundingbox.h"
+#if 0
 #include "glm/ext.hpp"
+#endif
 
 class Mesh {
 

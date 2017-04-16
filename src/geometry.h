@@ -8,6 +8,7 @@
 #include "boundingbox.h"
 #include "vbo_structs.h"
 #include "mesh.h"
+#include "light.h"
 
 class ArgParser;
 class Vertex;
@@ -80,6 +81,7 @@ private:
   std::vector<Vertex*> vertices;
   edgeshashtype edges;
   triangleshashtype triangles;
+  std::vector<Light> lights;
   BoundingBox bbox;
 
   // VBOs

@@ -135,18 +135,23 @@ void Geometry::Load() {
 
   Mesh mesh = Mesh();
   
-  int index = 0;
   int vert_count = 0;
   int vert_index = 0; //possibly change this back to 1
   int edge_count = 0;
   int edge_index = 0;
   int tri_count = 0;
   int tri_index = 0;
-  int mesh_count = 0;
 
   std::vector<glm::vec3> colors;
   std::vector<glm::vec3> positions;
   std::vector<double> timesteps;
+
+  std::vector<glm::vec3> lpos;
+  std::vector<glm::vec3> lclrs;
+  std::vector<double> ltimes;
+
+
+  //DATA MUST BE AN OBJECT FIRST - LIGHTS MUST BE AT END
   while(fgets(line,200,objfile)) {
     int token_count = sscanf(line,"%s\n",token);
     if (token_count == -1) continue;
@@ -155,7 +160,7 @@ void Geometry::Load() {
     }
   }
   
-  while (fgets(line, 200, objfile)) {   
+  while (fgets(line, 200, objfile)) { 
     int token_count = sscanf (line, "%s\n",token);
     if (token_count == -1) continue;
     a = b = c = d = e = -1;
@@ -177,6 +182,7 @@ void Geometry::Load() {
       tri_count = 0;
       tri_index = numTriangles();
       //add finalized lists to the mesh object
+      //std::cout << "length: " << indeces.size() << '\n';
       mesh.setIndeces(indeces);
       mesh.setColors(colors);
       mesh.setPositions(positions);
@@ -184,10 +190,38 @@ void Geometry::Load() {
       //add the mesh object to the master vector, and start a new one.
       meshes.push_back(mesh);
       mesh = Mesh();
+      //std::cout << "length after: " << indeces.size() << '\n';
 
+      //CLEAR THE ARRAYS
+      indeces.clear();
+      colors.clear();
+      positions.clear();
+      timesteps.clear();
 
+      //add a light
+    } else if (!strcmp(token,"l")) {
+      Light temp_light = Light(lpos,lclrs,ltimes);
+      lights.push_back(temp_light);
+
+      lpos.clear();
+      lclrs.clear();
+      ltimes.clear();
 
       //add a position
+    } else if (!strcmp(token,"lp")) {
+      sscanf(line, "%s, %f, %f, %f\n",token,&x,&y,&z);
+      glm::vec3 light_pos(x,y,z);
+
+      lpos.push_back(light_pos);
+
+    } else if (!strcmp(token,"lc")) {
+      sscanf(line, "%s, %f, %f, %f\n",token,&x,&y,&z);
+      glm::vec3 light_clr(x,y,z);
+
+      lclrs.push_back(light_clr);
+    } else if (!strcmp(token,"lt")) {
+      sscanf(line, "%s, %f", token, &x);
+      ltimes.push_back(x);
     } else if (!strcmp(token,"p")) {
       
       sscanf(line, "%s %s %s %s\n",token,atoken,btoken,ctoken);
@@ -206,7 +240,7 @@ void Geometry::Load() {
       sscanf(btoken,"%lf",&p2);
       sscanf(ctoken,"%lf",&p3);
       glm::vec3 temp_clr(p1,p2,p3);
-      positions.push_back(temp_clr);
+      colors.push_back(temp_clr);
 
       /*
       sscanf(line,"%s %s %s %s\n",token,atoken,btoken,ctoken);
@@ -279,6 +313,10 @@ void Geometry::Load() {
   ComputeGouraudNormals();
 
   std::cout << "loaded " << numTriangles() << " triangles " << std::endl;
+  /*
+  for (uint i = 0; i < meshes.size(); i++) {
+    std::cout << meshes[i].to_string();
+  } */
 }
 
 // =======================================================================

@@ -22,18 +22,6 @@ Mesh::~Mesh() {
 	
 }
 
-std::string vec3_to_string(glm::vec3 a)
-{
-	std::string result;
-	result.append("( ");
-	result.append(std::to_string(a.x));
-	result.append(", ");
-	result.append(std::to_string(a.y));
-	result.append(", ");
-	result.append(std::to_string(a.z));
-	result.append(") ");
-	return result;
-}
 
 std::string Mesh::to_string() {
 	std::string output = "";
@@ -52,12 +40,12 @@ std::string Mesh::to_string() {
 	output.append(std::to_string(indeces[5]));
 	output.append("\nPositions: \n"); 
 	for (uint i = 0; i < positions.size(); i++) {
-		output.append(vec3_to_string(positions[i]));
+		output.append(string_from_vec3(positions[i]));
 		output.append("\n");
 	}
 	output.append("Colors:\n");
 	for (uint i = 0; i < colors.size(); i++) {
-		output.append(vec3_to_string(colors[i]));
+		output.append(string_from_vec3(colors[i]));
 		output.append("\n");
 	}
 	output.append("Timesteps:\n");

@@ -10,6 +10,8 @@
 #include <algorithm>
 #include <vector>
 
+#include <string>
+
 #include "vbo_structs.h"
 
 // Because getting std::max & std::min to work on all platforms is annoying
@@ -18,6 +20,19 @@ inline double mymin(double x, double y) { if (x < y) return x; return y; }
 
 // ====================================================================
 // ====================================================================
+
+static std::string string_from_vec3(glm::vec3 v)
+{
+	std::string result;
+	result.append("( ");
+	result.append(std::to_string(v.x));
+	result.append(", ");
+	result.append(std::to_string(v.y));
+	result.append(", ");
+	result.append(std::to_string(v.z));
+	result.append(")");
+	return result;
+}
 
 class BoundingBox {
 

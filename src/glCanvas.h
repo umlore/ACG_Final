@@ -52,6 +52,12 @@ public:
   static GLuint renderTargetTexture;
   static GLuint depthBuffer;
 
+  static GLuint screenQuadData;
+  static GLuint screenQuadVAO;
+  static GLuint screenQuadShaderProgram;
+  static GLuint screenQuadTexture;
+  static GLuint screenQuadTexSize;
+
   // mouse position
   static int mouseX;
   static int mouseY;

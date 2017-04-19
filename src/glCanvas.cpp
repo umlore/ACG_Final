@@ -48,6 +48,11 @@ GLuint GLCanvas::renderTargetBuffer;
 GLuint GLCanvas::renderTargetTexture;
 GLuint GLCanvas::depthBuffer;
 
+GLuint GLCanvas::screenQuadData;
+GLuint GLCanvas::screenQuadVAO;
+GLuint GLCanvas::screenQuadShaderProgram;
+GLuint GLCanvas::screenQuadTexture;
+GLuint GLCanvas::screenQuadTexSize;
 
 // ========================================================
 // Initialize all appropriate OpenGL variables, set
@@ -126,6 +131,7 @@ void GLCanvas::initialize(ArgParser *_args) {
   camera->glPlaceCamera(); 
 
   /** Initialize the target texture to be rendered to. */
+#if 0
   {
     int width = args->width;
     int height = args->height;
@@ -167,7 +173,6 @@ void GLCanvas::initialize(ArgParser *_args) {
   /** Initialize the stupid quad in world space to render the synthesized texture directly onto, because apparently a framebuffer blit is just
     TOOOOOO hard... */
   {
-    GLuint screenQuadVAO;
     glGenVertexArrays(1, &screenQuadVAO);
     glBindVertexArray(screenQuadVAO);
     static const GLfloat screen_quad_vert_worldlocs[] = 
@@ -180,17 +185,17 @@ void GLCanvas::initialize(ArgParser *_args) {
     	1.0f,  1.0f, 0.0f 
     };
 
-    GLuint screenQuadData;
     glGenBuffers(1, &screenQuadData);
     glBindBuffer(GL_ARRAY_BUFFER, screenQuadData);
     glBufferData(GL_ARRAY_BUFFER, sizeof(screen_quad_vert_worldlocs), screen_quad_vert_worldlocs, GL_STATIC_DRAW); 
 
     // Create and compile our GLSL program from the shaders
-    GLuint screenQuadShaderProgram = LoadShaders( args->path+"/"+"pass"+".vs",
+    screenQuadShaderProgram = LoadShaders( args->path+"/"+"pass"+".vs",
                            		            args->path+"/"+"pass"+".fs");
-    GLuint screenQuadTexture = glGetUniformLocation(screenQuadShaderProgram, "tex");
-    GLuint screenQuadTexSize = glGetUniformLocation(screenQuadShaderProgram, "texSize");
+    screenQuadTexture = glGetUniformLocation(screenQuadShaderProgram, "tex");
+    screenQuadTexSize = glGetUniformLocation(screenQuadShaderProgram, "texSize");
   }
+#endif
 
 
   HandleGLError("finished glcanvas initialize");

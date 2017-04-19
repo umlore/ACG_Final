@@ -89,7 +89,7 @@ public:
     // BASIC RENDERING PARAMETERS
     input_file = "";
     path = "";
-    shader_filename = "test";
+    shader_filename = "hw4_shader";
     width = 300;
     height = 300;
     geometry = true;

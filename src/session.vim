@@ -19,7 +19,7 @@ set background=dark
 set cindent
 set guifont=Consolas:h11
 set helplang=En
-set window=39
+set window=40
 let s:so_save = &so | let s:siso_save = &siso | set so=0 siso=0
 let v:this_session=expand("<sfile>:p")
 silent only
@@ -28,29 +28,33 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
   let s:wipebuf = bufnr('%')
 endif
 set shortmess=aoO
-badd +1 argparser.h
+badd +92 argparser.h
 badd +1 boundingbox.cpp
 badd +1 boundingbox.h
 badd +1 camera.cpp
 badd +1 camera.h
 badd +1 edge.cpp
 badd +1 edge.h
-badd +1 glCanvas.cpp
+badd +189 glCanvas.cpp
 badd +1 glCanvas.h
 badd +1 hash.h
-badd +1 hw4_shader.fs
-badd +1 hw4_shader.vs
+badd +3 hw4_shader.fs
+badd +9 hw4_shader.vs
 badd +1 main.cpp
 badd +1 mesh.h
-badd +1 render.cpp
+badd +222 render.cpp
 badd +1 triangle.h
 badd +1 utils.cpp
 badd +1 utils.h
 badd +1 vbo_structs.h
-badd +0 vertex.h
+badd +1 vertex.h
+badd +10 test.vs
+badd +1 test.fs
+badd +4 pass.vs
+badd +8 pass.fs
 argglobal
 silent! argdel *
-edit vertex.h
+edit glCanvas.cpp
 set splitbelow splitright
 set nosplitbelow
 set nosplitright
@@ -166,12 +170,12 @@ setlocal nowinfixwidth
 setlocal wrap
 setlocal wrapmargin=0
 silent! normal! zE
-let s:l = 1 - ((0 * winheight(0) + 19) / 39)
+let s:l = 190 - ((20 * winheight(0) + 20) / 40)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-1
-normal! 0
+190
+normal! 075|
 tabnext 1
 if exists('s:wipebuf')
   silent exe 'bwipe ' . s:wipebuf

@@ -1,10 +1,10 @@
 #version 330 core
 
 // Interpolated values from the vertex shader
-in vec3 vertexPosition_worldspace;
-in vec3 EyeDirection_cameraspace;
-in vec3 myColor;
-in vec3 vertexNormal_worldspace;
+in vec3 interpWorldPosition;
+in vec3 interpWorldNormal;
+in vec3 interpEyeDirection;
+in vec3 interpColor;
 
 // Ouput data
 out vec3 color;
@@ -19,18 +19,13 @@ void main(){
   float LightPower = 0.0f;
 
   // surface normal
-  vec3 surface_normal =  vertexNormal_worldspace;
+  vec3 surface_normal = interpWorldNormal; 
   
   // Material properties
-  vec3 MaterialDiffuseColor = myColor;
-  
-  vec3 MaterialAmbientColor = vec3(0.3,0.3,0.3) * MaterialDiffuseColor;
-  vec3 MaterialSpecularColor = vec3(0.3,0.3,0.3);
+  vec3 MaterialDiffuseColor = interpColor; 
 
   if(!gl_FrontFacing ) {
     MaterialDiffuseColor = vec3(0.0,0.0,0.6); 
-    MaterialAmbientColor = vec3(0.3,0.3,0.3) * MaterialDiffuseColor;
-    MaterialSpecularColor = vec3(0.1,0.1,0.3);
     surface_normal = -surface_normal;
   }
 

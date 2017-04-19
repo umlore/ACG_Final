@@ -44,6 +44,10 @@ GLuint GLCanvas::programID;
 GLuint GLCanvas::whichshaderID;
 GLuint GLCanvas::colormodeID;
 
+GLuint GLCanvas::renderTargetBuffer;
+GLuint GLCanvas::renderTargetTexture;
+GLuint GLCanvas::depthBuffer;
+
 
 // ========================================================
 // Initialize all appropriate OpenGL variables, set
@@ -120,6 +124,74 @@ void GLCanvas::initialize(ArgParser *_args) {
   float angle = 20.0;
   camera = new PerspectiveCamera(camera_position, point_of_interest, up, angle);
   camera->glPlaceCamera(); 
+
+  /** Initialize the target texture to be rendered to. */
+  {
+    int width = args->width;
+    int height = args->height;
+    // framebuffer
+    glGenFramebuffers(1, &renderTargetBuffer);
+    glBindFramebuffer(GL_FRAMEBUFFER, renderTargetBuffer);
+
+    // target texture
+    glGenTextures(1, &renderTargetTexture);
+    glBindTexture(GL_TEXTURE_2D, renderTargetTexture);
+
+    // Depth buffer
+    glGenRenderbuffers(1, &depthBuffer);
+    glBindRenderbuffer( GL_RENDERBUFFER, depthBuffer);
+    glRenderbufferStorage( GL_RENDERBUFFER, GL_DEPTH_COMPONENT, width, height);
+    glFramebufferRenderbuffer( GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, depthBuffer);
+
+    // target texture config
+    glTexImage2D(GL_TEXTURE_2D, 0,GL_RGB, width, height, 0,GL_RGB, GL_UNSIGNED_BYTE, 0);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+
+    // framebuffer config
+    glFramebufferTexture( GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, renderTargetTexture, 0);
+    GLenum DrawBuffers[1] = {GL_COLOR_ATTACHMENT0};
+    glDrawBuffers(1, DrawBuffers);
+
+    if(glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) 
+    {
+      printf("Failed to complete the framebuffer that will be used for rendering to a target texture.\n");
+      exit(1);
+    }
+    else 
+    {
+    	printf("Successfully initialized and bound framebuffer.\n");
+    }
+  }
+
+  /** Initialize the stupid quad in world space to render the synthesized texture directly onto, because apparently a framebuffer blit is just
+    TOOOOOO hard... */
+  {
+    GLuint screenQuadVAO;
+    glGenVertexArrays(1, &screenQuadVAO);
+    glBindVertexArray(screenQuadVAO);
+    static const GLfloat screen_quad_vert_worldlocs[] = 
+    {
+    	-1.0f, -1.0f, 0.0f,
+    	1.0f, -1.0f, 0.0f,
+    	-1.0f,  1.0f, 0.0f,
+    	-1.0f,  1.0f, 0.0f,
+    	1.0f, -1.0f, 0.0f,
+    	1.0f,  1.0f, 0.0f 
+    };
+
+    GLuint screenQuadData;
+    glGenBuffers(1, &screenQuadData);
+    glBindBuffer(GL_ARRAY_BUFFER, screenQuadData);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(screen_quad_vert_worldlocs), screen_quad_vert_worldlocs, GL_STATIC_DRAW); 
+
+    // Create and compile our GLSL program from the shaders
+    GLuint screenQuadShaderProgram = LoadShaders( args->path+"/"+"pass"+".vs",
+                           		            args->path+"/"+"pass"+".fs");
+    GLuint screenQuadTexture = glGetUniformLocation(screenQuadShaderProgram, "tex");
+    GLuint screenQuadTexSize = glGetUniformLocation(screenQuadShaderProgram, "texSize");
+  }
+
 
   HandleGLError("finished glcanvas initialize");
 }

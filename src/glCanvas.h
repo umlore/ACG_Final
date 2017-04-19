@@ -48,6 +48,10 @@ public:
   static GLuint colormodeID;
   static GLuint whichshaderID;
 
+  static GLuint renderTargetBuffer;
+  static GLuint renderTargetTexture;
+  static GLuint depthBuffer;
+
   // mouse position
   static int mouseX;
   static int mouseY;

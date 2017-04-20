@@ -24,6 +24,7 @@ float floor_factor = 0.75;
 
 
 // the light position can be animated
+/*
 glm::vec3 Geometry::LightPosition() const {
   glm::vec3 min = bbox.getMin();
   glm::vec3 max = bbox.getMax();
@@ -34,14 +35,14 @@ glm::vec3 Geometry::LightPosition() const {
   tmp += glm::vec3(0,0,sin(args->timer) * (max.z-min.z));
   return tmp;
 }
-
+*/
 
 void Geometry::initializeVBOs() {
   glGenBuffers(1,&geometry_tri_verts_VBO);
   glGenBuffers(1,&geometry_tri_indices_VBO);
   glGenBuffers(1,&floor_tri_verts_VBO);
   glGenBuffers(1,&floor_tri_indices_VBO);
-  glGenBuffers(1,&light_vert_VBO);
+  //glGenBuffers(1,&light_verts_VBO);
   bbox.initializeVBOs();
 }
 
@@ -52,18 +53,25 @@ void Geometry::cleanupVBOs() {
   glDeleteBuffers(1,&geometry_tri_indices_VBO);
   glDeleteBuffers(1,&floor_tri_verts_VBO);
   glDeleteBuffers(1,&floor_tri_indices_VBO);
-  glDeleteBuffers(1,&light_vert_VBO);
+  //glDeleteBuffers(1,&light_verts_VBO);
   bbox.cleanupVBOs();
 }
 
 // ================================================================================
 // ================================================================================
-
-void Geometry::SetupLight(const glm::vec3 &light_position) {
-  light_vert.push_back(VBOPosNormalColor(light_position,glm::vec3(1,0,0),glm::vec4(1,1,0,0)));
-  glBindBuffer(GL_ARRAY_BUFFER,light_vert_VBO); 
-  glBufferData(GL_ARRAY_BUFFER,sizeof(VBOPosNormalColor)*1,&light_vert[0],GL_STATIC_DRAW); 
-}
+//TODO (Eugene): Setup lights currently does nothing.  do something
+//void Geometry::SetupLights() {
+  /*
+  for (uint i = 0; i < lights.size(); i++) {
+    glm::vec4 light_color(lights[i].getColor(0).x,lights[i].getColor(0).y,lights[i].getColor(0).z,1);
+    light_verts.push_back(VBOPosNormalColor(lights[i].getPos(0),glm::vec3(1,0,0),light_color));
+  }
+  
+  
+  glBindBuffer(GL_ARRAY_BUFFER,light_verts_VBO); 
+  glBufferData(GL_ARRAY_BUFFER,sizeof(VBOPosNormalColor)*lights.size(),&light_verts[0],GL_STATIC_DRAW); 
+  */
+//}
 
 void Geometry::SetupFloor() {
   glm::vec3 diff = bbox.getMax()-bbox.getMin();
@@ -126,7 +134,9 @@ void Geometry::SetupGeometry() {
 // ================================================================================
 // ================================================================================
 
-void Geometry::DrawLight() {
+//TODO (Eugene): FIX DRAWLIGHT TO DRAW ALL THE LIGHTS
+//void Geometry::DrawLights() {
+  /*
   HandleGLError("enter draw mirror");
   glPointSize(10);
   glBindBuffer(GL_ARRAY_BUFFER, light_vert_VBO);
@@ -141,7 +151,8 @@ void Geometry::DrawLight() {
   glDisableVertexAttribArray(1);
   glDisableVertexAttribArray(2);
   HandleGLError("enter draw mirror");
-}
+  */
+//}
 
 void Geometry::DrawFloor() {
   HandleGLError("enter draw floor");
@@ -186,11 +197,11 @@ void Geometry::setupVBOs() {
   geometry_tri_indices.clear();
   floor_tri_verts.clear(); 
   floor_tri_indices.clear();
-  light_vert.clear();
+  //light_verts.clear();
 
   // setup the new geometry
-  glm::vec3 light_position = LightPosition();
-  SetupLight(light_position);
+  //glm::vec3 light_position = LightPosition();
+  //SetupLights();
   SetupFloor();
   SetupGeometry();
   bbox.setupVBOs();
@@ -234,7 +245,7 @@ void Geometry::drawVBOs() {
 
   /* TODO (Andrew): Draw light will need to be overhauled, because we are going to have a lot 	of lights. ACTUALLY, this probably just draws the square. Still need to change it, but	
    that would be useful.*/
-  DrawLight();
+  //DrawLights();
   if (args->bounding_box) {
     bbox.drawVBOs();
   }

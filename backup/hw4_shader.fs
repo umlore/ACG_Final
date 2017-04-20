@@ -13,20 +13,8 @@ out vec3 color;
 uniform vec3 LightPosition_worldspace;
 uniform int colormode;
 uniform int whichshader;
-uniform vec3 cameraPosition_worldspace;
-
-void main()
-{
-	vec3 origin = vec3(0f,0f,0f);
-	float distance = length( vertexPosition_worldspace - cameraPosition_worldspace)/ 25.0f;
-  vec3 MaterialDiffuseColor = myColor;
-  color = vec3(0.3,0.3,0.3) * MaterialDiffuseColor;
-	//color = (vertexNormal_worldspace + vec3(1f,1f,1f))/2f;
-}
-
 
 // ----------------------------------------------
-/*
 void main(){
 
   vec3 LightColor = vec3(1,1,1);
@@ -91,4 +79,13 @@ void main(){
     color = MaterialAmbientColor;
   }
 }
-*/
+
+
+
+
+
+
+
+
+
+

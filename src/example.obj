@@ -56,3 +56,38 @@ v 1 1 1
 v 1 1 2
 #faces
 f 1 2 3
+
+
+
+l
+lp 2 2 2
+lp 3 3 3
+lp 2.5 2.5 2.5
+lc 1 0 1
+lc 1 1 0
+lc 0 1 1
+lt 0
+lt 2
+lt 4
+
+l
+lp 1 2 1
+lp 2 3 2
+lp 1.5 2.5 1.5
+lc 1 0 1
+lc 1 1 0
+lc 0 1 1
+lt 0
+lt 2
+lt 4
+
+l
+lp 2 2 1
+lp 3 3 2
+lp 2.5 2.5 1.5
+lc 1 0 1
+lc 1 1 0
+lc 0 1 1
+lt 0
+lt 2
+lt 4

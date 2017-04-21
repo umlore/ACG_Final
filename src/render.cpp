@@ -24,6 +24,7 @@ float floor_factor = 0.75;
 
 
 // the light position can be animated
+/*
 glm::vec3 Geometry::LightPosition() const {
   glm::vec3 min = bbox.getMin();
   glm::vec3 max = bbox.getMax();
@@ -34,14 +35,14 @@ glm::vec3 Geometry::LightPosition() const {
   tmp += glm::vec3(0,0,sin(args->timer) * (max.z-min.z));
   return tmp;
 }
-
+*/
 
 void Geometry::initializeVBOs() {
   glGenBuffers(1,&geometry_tri_verts_VBO);
   glGenBuffers(1,&geometry_tri_indices_VBO);
   glGenBuffers(1,&floor_tri_verts_VBO);
   glGenBuffers(1,&floor_tri_indices_VBO);
-  glGenBuffers(1,&light_verts_VBO);
+  //glGenBuffers(1,&light_verts_VBO);
   bbox.initializeVBOs();
 }
 
@@ -52,14 +53,14 @@ void Geometry::cleanupVBOs() {
   glDeleteBuffers(1,&geometry_tri_indices_VBO);
   glDeleteBuffers(1,&floor_tri_verts_VBO);
   glDeleteBuffers(1,&floor_tri_indices_VBO);
-  glDeleteBuffers(1,&light_verts_VBO);
+  //glDeleteBuffers(1,&light_verts_VBO);
   bbox.cleanupVBOs();
 }
 
 // ================================================================================
 // ================================================================================
 //TODO (Eugene): Setup lights currently does nothing.  do something
-void Geometry::SetupLights() {
+//void Geometry::SetupLights() {
   /*
   for (uint i = 0; i < lights.size(); i++) {
     glm::vec4 light_color(lights[i].getColor(0).x,lights[i].getColor(0).y,lights[i].getColor(0).z,1);
@@ -70,7 +71,7 @@ void Geometry::SetupLights() {
   glBindBuffer(GL_ARRAY_BUFFER,light_verts_VBO); 
   glBufferData(GL_ARRAY_BUFFER,sizeof(VBOPosNormalColor)*lights.size(),&light_verts[0],GL_STATIC_DRAW); 
   */
-}
+//}
 
 void Geometry::SetupFloor() {
   glm::vec3 diff = bbox.getMax()-bbox.getMin();
@@ -134,7 +135,7 @@ void Geometry::SetupGeometry() {
 // ================================================================================
 
 //TODO (Eugene): FIX DRAWLIGHT TO DRAW ALL THE LIGHTS
-void Geometry::DrawLights() {
+//void Geometry::DrawLights() {
   /*
   HandleGLError("enter draw mirror");
   glPointSize(10);
@@ -151,7 +152,7 @@ void Geometry::DrawLights() {
   glDisableVertexAttribArray(2);
   HandleGLError("enter draw mirror");
   */
-}
+//}
 
 void Geometry::DrawFloor() {
   HandleGLError("enter draw floor");
@@ -196,11 +197,11 @@ void Geometry::setupVBOs() {
   geometry_tri_indices.clear();
   floor_tri_verts.clear(); 
   floor_tri_indices.clear();
-  light_verts.clear();
+  //light_verts.clear();
 
   // setup the new geometry
   //glm::vec3 light_position = LightPosition();
-  SetupLights();
+  //SetupLights();
   SetupFloor();
   SetupGeometry();
   bbox.setupVBOs();
@@ -208,18 +209,7 @@ void Geometry::setupVBOs() {
 
 void Geometry::drawVBOs() {
 
-  // mode 1: STANDARD PHONG LIGHTING (LIGHT ON)
-  glUniform1i(GLCanvas::colormodeID, 1);
-
-  // shader 0: NO SHADER
-  //glUniform1i(GLCanvas::whichshaderID, 0);
-
-
-  HandleGLError("enter draw vbos");
-  // --------------------------
-  // NEITHER SHADOWS NOR MIRROR
-  /* TODO (Andrew): Used to be if statement for not shadows, not mirror. This will now 
-     be our main rendering loop. */
+  /* Render all the geometry to a texture. */
   {
     //DrawMirror();
     //DrawFloor();
@@ -234,16 +224,9 @@ void Geometry::drawVBOs() {
     }
   } 
 
-  /*TODO (Andrew): Do we want shadows? Shadows are pretty, but they expensive.
-   They are also kind of antithetical to differend rendering. How do commercial grade things 	do this?
-   */
+  /* Render the texture to the screen. */
+  {}
 
-  // mode 0: NO LIGHTING
-  //glUniform1i(GLCanvas::colormodeID, 0);
-
-  /* TODO (Andrew): Draw light will need to be overhauled, because we are going to have a lot 	of lights. ACTUALLY, this probably just draws the square. Still need to change it, but	
-   that would be useful.*/
-  DrawLights();
   if (args->bounding_box) {
     bbox.drawVBOs();
   }

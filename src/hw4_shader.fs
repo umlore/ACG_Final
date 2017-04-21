@@ -10,7 +10,9 @@ in vec3 vertexNormal_worldspace;
 out vec3 color;
 
 // Values that stay constant for the whole mesh.
+uniform vec3 LightPosition_worldspace;
 uniform int colormode;
+uniform int whichshader;
 
 // ----------------------------------------------
 void main(){

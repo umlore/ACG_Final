@@ -131,7 +131,6 @@ void GLCanvas::initialize(ArgParser *_args) {
   camera->glPlaceCamera(); 
 
   /** Initialize the target texture to be rendered to. */
-#if 0
   {
     int width = args->width;
     int height = args->height;
@@ -195,13 +194,31 @@ void GLCanvas::initialize(ArgParser *_args) {
     screenQuadTexture = glGetUniformLocation(screenQuadShaderProgram, "tex");
     screenQuadTexSize = glGetUniformLocation(screenQuadShaderProgram, "texSize");
   }
-#endif
 
 
   HandleGLError("finished glcanvas initialize");
 }
 
 
+void GLCanvas::drawPost()
+{
+		glClearColor(0.2f,0.2f,0.6f,1);
+
+
+		glUseProgram(screenQuadShaderProgram);
+		glDisable(GL_DEPTH_TEST);
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+  	glEnableVertexAttribArray(0);
+		//glActiveTexture(GL_TEXTURE0);
+    //glBindTexture(GL_TEXTURE_2D, renderTargetTexture);
+
+    glBindBuffer(GL_ARRAY_BUFFER, screenQuadData);
+		glUniform2f(screenQuadTexSize, args->width, args->height);
+		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
+
+		glDrawArrays(GL_TRIANGLES, 0, 6);
+		glDisableVertexAttribArray(0);
+}
 
 
 void GLCanvas::animate(){

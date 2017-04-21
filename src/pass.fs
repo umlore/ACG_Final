@@ -7,5 +7,7 @@ out vec3 color;
 
 void main()
 {
-  vec3 abc = texture( texIn, gl_FragCoord.xy/texSize).xyz;
+  //vec3 abc = vec3(gl_FragCoord.x/texSize.x, gl_FragCoord.y/texSize.y, 1.0f);
+	vec3 abc = texture(texIn, gl_FragCoord.xy/texSize).xyz;
+	color = abc;
 }

@@ -78,6 +78,7 @@ public:
   static void setupVBOs();
   static void drawVBOs(const glm::mat4 &ProjectionMatrix,const glm::mat4 &ViewMatrix,const glm::mat4 &ModelMatrix);
   static void cleanupVBOs();
+	static void drawPost();
 
   static void animate();
 

@@ -48,7 +48,6 @@ public:
   static GLuint colormodeID;
   static GLuint whichshaderID;
 	static GLuint cameraLocation; 
-
   // mouse position
   static int mouseX;
   static int mouseY;

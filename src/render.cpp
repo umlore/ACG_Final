@@ -244,8 +244,6 @@ void Geometry::drawVBOs(const glm::mat4 &ProjectionMatrix,const glm::mat4 &ViewM
 
   /* Render all the geometry to a texture. */
   {
-    //DrawMirror();
-    //DrawFloor();
     if (args->geometry) {
       // shader 1: CHECKERBOARD
       // shader 2: ORANGE

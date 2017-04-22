@@ -8,6 +8,10 @@
 #include "glm/ext.hpp"
 #endif
 
+#if (_WIN32)
+	#define uint unsigned int
+#endif
+
 struct mesh_interpolation {
 	glm::vec3 clr;
 	glm::vec3 pos;

@@ -6,7 +6,7 @@
 #include "boundingbox.h"
 
 #if (_WIN32)
-#define uint unsigned_int
+#define uint unsigned int
 #endif
 
 #if 0

@@ -24,6 +24,7 @@ void main()
 	//color = (vertexNormal_worldspace + vec3(1f,1f,1f))/2f;
 }
 
+#if 0
 
 // ----------------------------------------------
 /*
@@ -91,4 +92,4 @@ void main(){
     color = MaterialAmbientColor;
   }
 }
-*/
+#endif

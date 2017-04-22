@@ -7,7 +7,9 @@
 #include "triangle.h"
 #include "argparser.h"
 #include "utils.h"
+#if 0
 #include "glm/ext.hpp"
+#endif
 
 glm::vec4 floor_color(0.9,0.8,0.7,1);
 glm::vec4 geometry_color(0.8,0.8,0.8,1);

@@ -229,17 +229,14 @@ void Geometry::drawVBOs() {
 
   /* Render all the geometry to a texture. */
   {
-    //DrawMirror();
-    //DrawFloor();
     if (args->geometry) {
-      // shader 1: CHECKERBOARD
-      // shader 2: ORANGE
-      // shader 3: other
     	glBindFramebuffer(GL_FRAMEBUFFER, GLCanvas::renderTargetBuffer);
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
       glUniform1i(GLCanvas::whichshaderID, args->whichshader);
+			glEnable(GL_DEPTH_TEST);
       DrawFloor();
       DrawGeometry();
+			glDisable(GL_DEPTH_TEST);
       glUniform1i(GLCanvas::whichshaderID, 0);
 
 			GLCanvas::drawPost();

@@ -227,18 +227,7 @@ void Geometry::setupVBOs() {
 
 void Geometry::drawVBOs() {
 
-  // mode 1: STANDARD PHONG LIGHTING (LIGHT ON)
-  glUniform1i(GLCanvas::colormodeID, 1);
-
-  // shader 0: NO SHADER
-  //glUniform1i(GLCanvas::whichshaderID, 0);
-
-
-  HandleGLError("enter draw vbos");
-  // --------------------------
-  // NEITHER SHADOWS NOR MIRROR
-  /* TODO (Andrew): Used to be if statement for not shadows, not mirror. This will now 
-     be our main rendering loop. */
+  /* Render all the geometry to a texture. */
   {
     //DrawMirror();
     //DrawFloor();
@@ -246,24 +235,19 @@ void Geometry::drawVBOs() {
       // shader 1: CHECKERBOARD
       // shader 2: ORANGE
       // shader 3: other
-			glClearColor(0,0,0,1);
+    	glBindFramebuffer(GL_FRAMEBUFFER, GLCanvas::renderTargetBuffer);
       glUniform1i(GLCanvas::whichshaderID, args->whichshader);
       DrawFloor();
       DrawGeometry();
       glUniform1i(GLCanvas::whichshaderID, 0);
+
+			GLCanvas::drawPost();
     }
   } 
 
-  /*TODO (Andrew): Do we want shadows? Shadows are pretty, but they expensive.
-   They are also kind of antithetical to differend rendering. How do commercial grade things 	do this?
-   */
+  /* Render the texture to the screen. */
+  {}
 
-  // mode 0: NO LIGHTING
-  //glUniform1i(GLCanvas::colormodeID, 0);
-
-  /* TODO (Andrew): Draw light will need to be overhauled, because we are going to have a lot 	of lights. ACTUALLY, this probably just draws the square. Still need to change it, but	
-   that would be useful.*/
-  //DrawLights();
   if (args->bounding_box) {
     bbox.drawVBOs();
   }

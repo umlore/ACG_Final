@@ -49,6 +49,16 @@ public:
   static GLuint whichshaderID;
 	static GLuint cameraLocation; 
 
+  static GLuint renderTargetBuffer;
+  static GLuint renderTargetTexture;
+  static GLuint depthBuffer;
+
+  static GLuint screenQuadData;
+  static GLuint screenQuadVAO;
+  static GLuint screenQuadShaderProgram;
+  static GLuint screenQuadTexture;
+  static GLuint screenQuadTexSize;
+
   // mouse position
   static int mouseX;
   static int mouseY;
@@ -69,6 +79,7 @@ public:
   static void setupVBOs();
   static void drawVBOs(const glm::mat4 &ProjectionMatrix,const glm::mat4 &ViewMatrix,const glm::mat4 &ModelMatrix);
   static void cleanupVBOs();
+	static void drawPost();
 
   static void animate();
 

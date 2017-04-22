@@ -28,6 +28,10 @@ void main(){
   
   vec3 MaterialAmbientColor = vec3(0.3,0.3,0.3) * MaterialDiffuseColor;
   vec3 MaterialSpecularColor = vec3(0.3,0.3,0.3);
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/renderToTexture
   if(!gl_FrontFacing ) {
     MaterialDiffuseColor = vec3(0.0,0.0,0.6); 
     MaterialAmbientColor = vec3(0.3,0.3,0.3) * MaterialDiffuseColor;
@@ -35,6 +39,7 @@ void main(){
     surface_normal = -surface_normal;
   }
 
+<<<<<<< HEAD
   // Direction & distance to the light
   /*
   vec3 dirToLight = (LightPosition_worldspace - vertexPosition_worldspace);
@@ -78,6 +83,9 @@ void main(){
     // mode 2: AMBIENT ONLY (LIGHT OFF) 
     color = MaterialAmbientColor;
   }
+=======
+  color = MaterialDiffuseColor;
+>>>>>>> origin/renderToTexture
 }
 
 

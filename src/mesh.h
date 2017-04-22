@@ -8,6 +8,11 @@
 #include "glm/ext.hpp"
 #endif
 
+struct mesh_interpolation {
+	glm::vec3 clr;
+	glm::vec3 pos;
+};
+
 class Mesh {
 
 public:
@@ -21,9 +26,19 @@ public:
 	void setColors(std::vector<glm::vec3> c) { colors.swap(c); }
 	void setPositions(std::vector<glm::vec3> p) { positions.swap(p); }
 	void setTimesteps(std::vector<double> t) { timesteps.swap(t); }
+	void setFilename(std::string fn) { filename = fn; }
 
 	//ACCESSORS
+	mesh_interpolation getInterpolation(double t);
 	std::string to_string();
+
+	std::string getFilename() { return filename; }
+	int getMinVertexIndex() { return indeces[0]; }
+	int getMaxVertexIndex() { return indeces[1]; }
+	int getMinEdgeIndex() { return indeces[2]; }
+	int getMaxEdgeIndex() { return indeces[3]; }
+	int getMinTriIndex() { return indeces[4]; }
+	int getMaxTriIndex() { return indeces[5]; }
 
 	//VERTICES
 	int numVertices() const { return indeces[1] - indeces[0]; }
@@ -40,14 +55,16 @@ private:
 	std::vector<glm::vec3> colors;
 	std::vector<glm::vec3> positions;
 	std::vector<double> timesteps;
+	std::string filename;
+	uint curidx;
 
 	std::vector<int> indeces;
 	//first vertex 	 0
-	//last vertex 	 1
+	//num vertex 	 1
 	//first edge 	 2
-	//last edge 	 3
+	//num edge 	     3
 	//first tri 	 4
-	//last tri 		 5
+	//num tri 		 5
 
 	//bounding box of this individual object
 	BoundingBox bbox;

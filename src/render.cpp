@@ -100,12 +100,24 @@ void Geometry::SetupFloor() {
 
 
 void Geometry::SetupGeometry() {
+  /*
+  int tri_i = 0;
+
+  for (int i = 0; i < meshes.size(); i++) {
+    while (tri_i <= meshes[i].getMaxTriIndex()) {
+
+    }
+  }
+  */
+  printf ("Setup Geometry\n");
+  
   for (triangleshashtype::iterator iter = triangles.begin();
        iter != triangles.end(); iter++) {
     Triangle *t = iter->second;
     glm::vec3 a = (*t)[0]->getPos();
     glm::vec3 b = (*t)[1]->getPos();
     glm::vec3 c = (*t)[2]->getPos();    
+
     glm::vec3 na = ComputeNormal(a,b,c);
     glm::vec3 nb = na;
     glm::vec3 nc = na;
@@ -120,6 +132,7 @@ void Geometry::SetupGeometry() {
     geometry_tri_verts.push_back(VBOPosNormalColor(c,nc,geometry_color));
     geometry_tri_indices.push_back(VBOIndexedTri(start,start+1,start+2));
   }
+
   glBindBuffer(GL_ARRAY_BUFFER,geometry_tri_verts_VBO); 
   glBufferData(GL_ARRAY_BUFFER,
 	       sizeof(VBOPosNormalColor) * geometry_tri_verts.size(), 
@@ -129,7 +142,10 @@ void Geometry::SetupGeometry() {
   glBufferData(GL_ELEMENT_ARRAY_BUFFER,
 	       sizeof(VBOIndexedTri) * geometry_tri_indices.size(),
 	       &geometry_tri_indices[0], GL_STATIC_DRAW);
+
+  
 }
+
 
 // ================================================================================
 // ================================================================================

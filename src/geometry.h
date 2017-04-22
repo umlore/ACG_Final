@@ -4,6 +4,7 @@
 #include "glCanvas.h"
 #include <vector>
 #include <string>
+#include <map>
 #include "hash.h"
 #include "boundingbox.h"
 #include "vbo_structs.h"
@@ -27,6 +28,7 @@ public:
   // CONSTRUCTOR & DESTRUCTOR
   Geometry(ArgParser *_args) { args = _args; }
   ~Geometry();
+  std::vector<int> ReadObjFile(char* filename);
   void Load(); 
   void ComputeGouraudNormals();
 
@@ -62,6 +64,7 @@ public:
   // OTHER ACCESSORS
   const BoundingBox& getBoundingBox() const { return bbox; }
   //glm::vec3 LightPosition() const;
+  void PrintFileMap();
 
 private:
 
@@ -83,6 +86,8 @@ private:
   triangleshashtype triangles;
   std::vector<Light> lights;
   BoundingBox bbox;
+
+  std::map<std::string, std::vector<int>> filemap;
 
   // VBOs
   GLuint geometry_tri_verts_VBO;

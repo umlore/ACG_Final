@@ -236,6 +236,7 @@ void Geometry::drawVBOs() {
       // shader 2: ORANGE
       // shader 3: other
     	glBindFramebuffer(GL_FRAMEBUFFER, GLCanvas::renderTargetBuffer);
+			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
       glUniform1i(GLCanvas::whichshaderID, args->whichshader);
       DrawFloor();
       DrawGeometry();

@@ -34,7 +34,7 @@ public:
 
   void initializeVBOs(); 
   void setupVBOs(); 
-  void drawVBOs();
+  void drawVBOs(const glm::mat4 &ProjectionMatrix,const glm::mat4 &ViewMatrix);
   void cleanupVBOs();
     
   // ========

@@ -43,18 +43,18 @@ int main(int argc, char *argv[]) {
        Retrofit for dozens/hundreds? */
     glm::vec3 center;
     GLCanvas::bbox.getCenter(center);
-    glm::mat4 myTranslateMatrix = glm::translate(-center);
+    //glm::mat4 myTranslateMatrix = glm::translate(-center);
     double maxDim = GLCanvas::bbox.maxDim();
     float scaleFactor = 2.0 / float(maxDim);
-    glm::mat4 myScalingMatrix = glm::scale(glm::vec3(scaleFactor,scaleFactor,scaleFactor));
-    glm::mat4 ModelMatrix = myScalingMatrix*myTranslateMatrix;
+    //glm::mat4 myScalingMatrix = glm::scale(glm::vec3(scaleFactor,scaleFactor,scaleFactor));
+    //glm::mat4 ModelMatrix = myScalingMatrix*myTranslateMatrix;
     // Build the matrix to position the camera based on keyboard and mouse input
     glm::mat4 ProjectionMatrix = GLCanvas::camera->getProjectionMatrix();
     glm::mat4 ViewMatrix = GLCanvas::camera->getViewMatrix();
 
     /* TODO (Andrew): drawVBOs seems to rely on the idea of one modelMatrix, we will probably
        need to store that matrix on the models, and put the draw function into the model. */
-    GLCanvas::drawVBOs(ProjectionMatrix,ViewMatrix,ModelMatrix);
+    GLCanvas::drawVBOs(ProjectionMatrix,ViewMatrix);
     GLCanvas::animate();
     // Swap buffers
     glfwSwapBuffers(GLCanvas::window);

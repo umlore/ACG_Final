@@ -77,7 +77,7 @@ public:
   static void initialize(ArgParser *_args);
   static void initializeVBOs();
   static void setupVBOs();
-  static void drawVBOs(const glm::mat4 &ProjectionMatrix,const glm::mat4 &ViewMatrix,const glm::mat4 &ModelMatrix);
+  static void drawVBOs(const glm::mat4 &ProjectionMatrix,const glm::mat4 &ViewMatrix);
   static void cleanupVBOs();
 	static void drawPost();
 

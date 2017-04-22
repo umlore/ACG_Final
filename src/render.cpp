@@ -10,6 +10,8 @@
 #if 0
 #include "glm/ext.hpp"
 #endif
+#include <glm/glm.hpp>
+#include <glm/gtx/transform.hpp>
 
 glm::vec4 floor_color(0.9,0.8,0.7,1);
 glm::vec4 geometry_color(0.8,0.8,0.8,1);
@@ -225,7 +227,20 @@ void Geometry::setupVBOs() {
   //bbox.setupVBOs();
 }
 
-void Geometry::drawVBOs() {
+
+
+void Geometry::drawVBOs(const glm::mat4 &ProjectionMatrix,const glm::mat4 &ViewMatrix) {
+
+
+  // prepare data to send to the shaders
+  //glm::vec3 lightPos = geometry->LightPosition();
+  //glm::vec4 lightPos2 = glm::vec4(lightPos.x,lightPos.y,lightPos.z,1);
+  //lightPos2 = ModelMatrix * lightPos2;
+  //glUniform3f(GLCanvas::LightID, 0, 0, 0);
+
+  //glUniformMatrix4fv(GLCanvas::MatrixID, 1, GL_FALSE, &MVP[0][0]);
+  //glUniformMatrix4fv(GLCanvas::ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+
 
   /* Render all the geometry to a texture. */
   {
@@ -235,11 +250,46 @@ void Geometry::drawVBOs() {
       // shader 1: CHECKERBOARD
       // shader 2: ORANGE
       // shader 3: other
+
+
     	glBindFramebuffer(GL_FRAMEBUFFER, GLCanvas::renderTargetBuffer);
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
       glUniform1i(GLCanvas::whichshaderID, args->whichshader);
+      
+      //glUniformMatrix4fv(GLCanvas::MatrixID, 1, GL_FALSE, &MVP[0][0]);
+      //glUniformMatrix4fv(GLCanvas::ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+
+      
+
+      std::cout << "DRAWGEOMETRY START\n";
+      for (int i = 0; i < 1; i++) {
+        glm::mat4 MVP = ProjectionMatrix * ViewMatrix;
+        std::cout << "LOOP START\n";
+        mesh_interpolation mi = meshes[1].getInterpolation(args->timer);
+        std::cout << "Pos: " << string_from_vec3(mi.pos) << '\n';
+
+        glm::mat4 translateMatrix;
+        glm::translate(translateMatrix,mi.pos);
+        translateMatrix[0][3] = mi.pos.x;
+        translateMatrix[1][3] = mi.pos.y;
+        translateMatrix[2][3] = mi.pos.z;
+
+        //MVP = MVP * translateMatrix;
+
+        print_from_mat4(translateMatrix);
+        print_from_mat4(MVP);
+
+        //glm::mat4 modelModelMatrix = (translateMatrix);
+
+        
+
+        glUniformMatrix4fv(GLCanvas::MatrixID, 1, GL_FALSE, &MVP[0][0]);
+        glUniformMatrix4fv(GLCanvas::ModelMatrixID, 1, GL_FALSE, &translateMatrix[0][0]);
+
+        DrawGeometry();
+      }
       DrawFloor();
-      DrawGeometry();
+
       glUniform1i(GLCanvas::whichshaderID, 0);
 
 			GLCanvas::drawPost();

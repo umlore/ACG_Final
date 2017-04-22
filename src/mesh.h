@@ -37,6 +37,9 @@ public:
 	std::string to_string();
 
 	std::string getFilename() { return filename; }
+
+	//COMPLETELY DEFUNCT ACCESSORS - INDECES INFORMATION CAN BE FOUND
+	//IN GEOMETRY FILEMAP INDEXED BY FILENAME
 	int getMinVertexIndex() { return indeces[0]; }
 	int getMaxVertexIndex() { return indeces[1]; }
 	int getMinEdgeIndex() { return indeces[2]; }

@@ -313,24 +313,16 @@ void GLCanvas::setupVBOs(){
 }
 
 
-void GLCanvas::drawVBOs(const glm::mat4 &ProjectionMatrix,const glm::mat4 &ViewMatrix,const glm::mat4 &ModelMatrix){
+void GLCanvas::drawVBOs(const glm::mat4 &ProjectionMatrix,const glm::mat4 &ViewMatrix){
   HandleGLError("enter GlCanvas::drawVBOs()");
 
-  // prepare data to send to the shaders
-  glm::mat4 MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
-  //glm::vec3 lightPos = geometry->LightPosition();
-  //glm::vec4 lightPos2 = glm::vec4(lightPos.x,lightPos.y,lightPos.z,1);
-  //lightPos2 = ModelMatrix * lightPos2;
-  //glUniform3f(GLCanvas::LightID, 0, 0, 0);
-
-  glUniformMatrix4fv(GLCanvas::MatrixID, 1, GL_FALSE, &MVP[0][0]);
-  glUniformMatrix4fv(GLCanvas::ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
   glUniformMatrix4fv(GLCanvas::ViewMatrixID, 1, GL_FALSE, &ViewMatrix[0][0]);
 
-	glm::vec3 cameraPosition = camera->camera_position;
-	glUniform3f(GLCanvas::cameraLocation,cameraPosition.x, cameraPosition.y, cameraPosition.z);
+  glm::vec3 cameraPosition = camera->camera_position;
+  glUniform3f(GLCanvas::cameraLocation,cameraPosition.x, cameraPosition.y, cameraPosition.z);
 
-  geometry->drawVBOs();
+
+  geometry->drawVBOs(ProjectionMatrix, ViewMatrix);
   HandleGLError("leaving GlCanvas::drawVBOs()");
 }
 

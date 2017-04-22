@@ -222,7 +222,7 @@ void Geometry::setupVBOs() {
   //SetupLights();
   SetupFloor();
   SetupGeometry();
-  bbox.setupVBOs();
+  //bbox.setupVBOs();
 }
 
 void Geometry::drawVBOs() {

@@ -217,11 +217,11 @@ void Geometry::drawVBOs() {
       // shader 1: CHECKERBOARD
       // shader 2: ORANGE
       // shader 3: other
-    	//glBindFramebuffer(GL_FRAMEBUFFER, 0);
-      //glUniform1i(GLCanvas::whichshaderID, args->whichshader);
-      //DrawFloor();
-      //DrawGeometry();
-      //glUniform1i(GLCanvas::whichshaderID, 0);
+    	glBindFramebuffer(GL_FRAMEBUFFER, GLCanvas::renderTargetBuffer);
+      glUniform1i(GLCanvas::whichshaderID, args->whichshader);
+      DrawFloor();
+      DrawGeometry();
+      glUniform1i(GLCanvas::whichshaderID, 0);
 
 			GLCanvas::drawPost();
     }

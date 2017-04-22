@@ -36,7 +36,10 @@ void main(){
     surface_normal = -surface_normal;
   }
 
-  color = MaterialDiffuseColor;
+	if (gl_FragCoord.x < 0f)
+	{
+		color = vec3(0,0,0);
+	}
 }
 
 

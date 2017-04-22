@@ -150,7 +150,7 @@ void GLCanvas::animate(){
       frames = 0;
       last_fps_count = this_tick_count;
     }
-    geometry->setupVBOs();
+    //geometry->setupVBOs();
   } else {
     last_tick_count = last_fps_count = GetTickCount();
   }
@@ -181,7 +181,7 @@ void GLCanvas::animate(){
       last_fps_time = this_time;
     }
     args->timer += diff;
-    geometry->setupVBOs();
+    //geometry->setupVBOs();
   } else {
     gettimeofday(&last_time, NULL);
     last_fps_time = last_time;

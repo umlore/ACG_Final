@@ -259,6 +259,7 @@ void Geometry::drawVBOs(const glm::mat4 &ProjectionMatrix,const glm::mat4 &ViewM
 
       
 
+			glEnable(GL_DEPTH_TEST);
       std::cout << "DRAWGEOMETRY START\n";
       for (int i = 0; i < meshes.size(); i++) {
         
@@ -288,6 +289,7 @@ void Geometry::drawVBOs(const glm::mat4 &ProjectionMatrix,const glm::mat4 &ViewM
       //DrawFloor();
 
       glUniform1i(GLCanvas::whichshaderID, 0);
+			glDisable(GL_DEPTH_TEST);
 
 			GLCanvas::drawPost();
     }

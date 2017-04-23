@@ -41,10 +41,10 @@ static void print_from_mat4(glm::mat4 translateMatrix)
     "[%f, %f, %f, %f]\n"
     "[%f, %f, %f, %f]\n"
     "[%f, %f, %f, %f]\n",
-    translateMatrix[0][0], translateMatrix[0][1], translateMatrix[0][2], translateMatrix[0][3],
-    translateMatrix[1][0], translateMatrix[1][1], translateMatrix[1][2], translateMatrix[1][3],
-    translateMatrix[2][0], translateMatrix[2][1], translateMatrix[2][2], translateMatrix[2][3],
-    translateMatrix[3][0], translateMatrix[3][1], translateMatrix[3][2], translateMatrix[3][3]);
+    translateMatrix[0][0], translateMatrix[1][0], translateMatrix[2][0], translateMatrix[3][0],
+    translateMatrix[0][1], translateMatrix[1][1], translateMatrix[2][1], translateMatrix[3][1],
+    translateMatrix[0][2], translateMatrix[1][2], translateMatrix[2][2], translateMatrix[3][2],
+    translateMatrix[0][3], translateMatrix[1][3], translateMatrix[2][3], translateMatrix[3][3]);
 }
 
 class BoundingBox {

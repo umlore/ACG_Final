@@ -260,21 +260,20 @@ void Geometry::drawVBOs(const glm::mat4 &ProjectionMatrix,const glm::mat4 &ViewM
       
 
       std::cout << "DRAWGEOMETRY START\n";
-      for (int i = 0; i < 1; i++) {
-        glm::mat4 MVP = ProjectionMatrix * ViewMatrix;
+      for (int i = 0; i < meshes.size(); i++) {
+        
         std::cout << "LOOP START\n";
-        mesh_interpolation mi = meshes[1].getInterpolation(args->timer);
+        mesh_interpolation mi = meshes[i].getInterpolation(args->timer);
         std::cout << "Pos: " << string_from_vec3(mi.pos) << '\n';
 
-        glm::mat4 translateMatrix;
-        glm::translate(translateMatrix,mi.pos);
-        translateMatrix[0][3] = mi.pos.x;
-        translateMatrix[1][3] = mi.pos.y;
-        translateMatrix[2][3] = mi.pos.z;
+        glm::mat4 ModelMatrix = glm::translate(mi.pos);
+
+        //ModelMatrix = glm::mat4(1.0f);
 
         //MVP = MVP * translateMatrix;
+        glm::mat4 MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 
-        print_from_mat4(translateMatrix);
+        print_from_mat4(ModelMatrix);
         print_from_mat4(MVP);
 
         //glm::mat4 modelModelMatrix = (translateMatrix);
@@ -282,11 +281,11 @@ void Geometry::drawVBOs(const glm::mat4 &ProjectionMatrix,const glm::mat4 &ViewM
         
 
         glUniformMatrix4fv(GLCanvas::MatrixID, 1, GL_FALSE, &MVP[0][0]);
-        glUniformMatrix4fv(GLCanvas::ModelMatrixID, 1, GL_FALSE, &translateMatrix[0][0]);
+        glUniformMatrix4fv(GLCanvas::ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
 
         DrawGeometry();
       }
-      DrawFloor();
+      //DrawFloor();
 
       glUniform1i(GLCanvas::whichshaderID, 0);
 

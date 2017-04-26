@@ -8,6 +8,8 @@ in vec3 vertexNormal_worldspace;
 
 // Ouput data
 out vec3 color;
+out float depth;
+out vec3 normal;
 
 // Values that stay constant for the whole mesh.
 uniform vec3 LightPosition_worldspace;
@@ -27,6 +29,12 @@ void main()
 }
 */
 
+void main()
+{
+	color = myColor;
+}
+
+/*
 // ----------------------------------------------
 void main(){
 
@@ -39,7 +47,6 @@ void main(){
   // Material properties
   vec3 MaterialDiffuseColor = myColor;
   
-	/*
   vec3 MaterialAmbientColor = vec3(0.3,0.3,0.3) * MaterialDiffuseColor;
   vec3 MaterialSpecularColor = vec3(0.3,0.3,0.3);
 
@@ -49,8 +56,8 @@ void main(){
     MaterialSpecularColor = vec3(0.1,0.1,0.3);
     surface_normal = -surface_normal;
   }
-	*/
 
 	color = myColor;
 }
+*/
 

@@ -45,9 +45,9 @@ GLuint GLCanvas::whichshaderID;
 GLuint GLCanvas::colormodeID;
 GLuint GLCanvas::cameraLocation;
 
-GLuint GLCanvas::renderTargetBuffer;
-GLuint GLCanvas::renderTargetTexture;
-GLuint GLCanvas::depthBuffer;
+GLuint GLCanvas::albedoTargetBuffer;
+GLuint GLCanvas::albedoTargetTexture;
+GLuint GLCanvas::albedoTargetDepthBuffer;
 
 GLuint GLCanvas::screenQuadData;
 GLuint GLCanvas::screenQuadVAO;
@@ -132,43 +132,19 @@ void GLCanvas::initialize(ArgParser *_args) {
   camera->glPlaceCamera(); 
 
   /** Initialize the target texture to be rendered to. */
-  {
-    int width = args->width;
-    int height = args->height;
-    // framebuffer
-    glGenFramebuffers(1, &renderTargetBuffer);
-    glBindFramebuffer(GL_FRAMEBUFFER, renderTargetBuffer);
+  /*side = side effect*/
 
-    // target texture
-    glGenTextures(1, &renderTargetTexture);
-    glBindTexture(GL_TEXTURE_2D, renderTargetTexture);
-
-    // Depth buffer
-    glGenRenderbuffers(1, &depthBuffer);
-    glBindRenderbuffer( GL_RENDERBUFFER, depthBuffer);
-    glRenderbufferStorage( GL_RENDERBUFFER, GL_DEPTH_COMPONENT, width, height);
-    glFramebufferRenderbuffer( GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, depthBuffer);
-
-    // target texture config
-    glTexImage2D(GL_TEXTURE_2D, 0,GL_RGB, width, height, 0,GL_RGB, GL_UNSIGNED_BYTE, 0);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-
-    // framebuffer config
-    glFramebufferTexture( GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, renderTargetTexture, 0);
-    GLenum DrawBuffers[1] = {GL_COLOR_ATTACHMENT0};
-    glDrawBuffers(1, DrawBuffers);
-
-    if(glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) 
-    {
-      printf("Failed to complete the framebuffer that will be used for rendering to a target texture.\n");
-      exit(1);
-    }
-    else 
-    {
-    	printf("Successfully initialized and bound framebuffer.\n");
-    }
-  }
+	/* create the buffer for albedo */
+  CreateRenderTarget(args->width, args->height, GL_RGB, GL_RGB, GL_UNSIGNED_BYTE, &albedoTargetBuffer, &albedoTargetTexture, &albedoTargetDepthBuffer);
+	/* create the buffer for depth */
+	/* create the buffer for normals */
+	/* create the buffer for world position */
+		
+	/* Inform opengl that there are a bunch of buffers to be rendered to.*/
+  // framebuffer config
+  glFramebufferTexture( GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, albedoTargetTexture, 0);
+  GLenum DrawBuffers[1] = {GL_COLOR_ATTACHMENT0};
+  glDrawBuffers(1, DrawBuffers);
 
   /** Initialize the stupid quad in world space to render the synthesized texture directly onto, because apparently a framebuffer blit is just
     TOOOOOO hard... */
@@ -196,10 +172,41 @@ void GLCanvas::initialize(ArgParser *_args) {
     screenQuadTexSize = glGetUniformLocation(screenQuadShaderProgram, "texSize");
   }
 
-
   HandleGLError("finished glcanvas initialize");
 }
 
+void GLCanvas::CreateRenderTarget(int width, int height, GLuint internalFormat, GLuint format, GLuint pixelData,
+								/*side*/ GLuint *renderTargetBuffer, /*side*/ GLuint *renderTargetTexture, /*side*/ GLuint *renderTargetDepthBuffer)
+{
+	// framebuffer
+	glGenFramebuffers(1, renderTargetBuffer);
+	glBindFramebuffer(GL_FRAMEBUFFER, *renderTargetBuffer);
+
+	// target texture
+	glGenTextures(1, renderTargetTexture);
+	glBindTexture(GL_TEXTURE_2D, *renderTargetTexture);
+
+	// Depth buffer
+	glGenRenderbuffers(1, renderTargetDepthBuffer);
+	glBindRenderbuffer( GL_RENDERBUFFER, *renderTargetDepthBuffer);
+	glRenderbufferStorage( GL_RENDERBUFFER, GL_DEPTH_COMPONENT, width, height);
+	glFramebufferRenderbuffer( GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, *renderTargetDepthBuffer);
+
+	// target texture config
+	glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, width, height, 0, format, pixelData, 0);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+
+	if(glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) 
+	{
+		printf("Failed to complete the framebuffer that will be used for rendering to a target texture.\n");
+		exit(1);
+	}
+	else 
+	{
+		printf("Successfully initialized and bound framebuffer.\n");
+	}
+}
 
 void GLCanvas::drawPost()
 {
@@ -209,9 +216,10 @@ void GLCanvas::drawPost()
 	glDisable(GL_DEPTH_TEST);
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	glEnableVertexAttribArray(0);
-	glUniform1i(screenQuadTexture, renderTargetTexture);
+	glUniform1i(screenQuadTexture, albedoTargetTexture);
+
 	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, renderTargetTexture);
+	glBindTexture(GL_TEXTURE_2D, albedoTargetTexture);
 
 	glBindBuffer(GL_ARRAY_BUFFER, screenQuadData);
 	glUniform2f(screenQuadTexSize, args->width, args->height);

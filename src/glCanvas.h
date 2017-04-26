@@ -49,9 +49,9 @@ public:
   static GLuint whichshaderID;
 	static GLuint cameraLocation; 
 
-  static GLuint renderTargetBuffer;
-  static GLuint renderTargetTexture;
-  static GLuint depthBuffer;
+  static GLuint albedoTargetBuffer;
+  static GLuint albedoTargetTexture;
+  static GLuint albedoTargetDepthBuffer;
 
   static GLuint screenQuadData;
   static GLuint screenQuadVAO;
@@ -78,6 +78,8 @@ public:
   static void initializeVBOs();
   static void setupVBOs();
   static void drawVBOs(const glm::mat4 &ProjectionMatrix,const glm::mat4 &ViewMatrix);
+	static void CreateRenderTarget(int width, int height, GLuint internalFormat, GLuint format, GLuint pixelData, 
+								/*side*/ GLuint *renderTargetBuffer, /*side*/ GLuint *renderTargetTexture, /*side*/ GLuint *renderTargetDepthBuffer);
   static void cleanupVBOs();
 	static void drawPost();
 

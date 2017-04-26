@@ -46,7 +46,8 @@ void Geometry::initializeVBOs() {
   glGenBuffers(1,&geometry_tri_indices_VBO);
   glGenBuffers(1,&floor_tri_verts_VBO);
   glGenBuffers(1,&floor_tri_indices_VBO);
-  //glGenBuffers(1,&light_verts_VBO);
+  glGenBuffers(1,&lightbox_tri_verts_VBO);
+  glGenBuffers(1,&lightbox_tri_indices_VBO);
   bbox.initializeVBOs();
 }
 
@@ -57,7 +58,8 @@ void Geometry::cleanupVBOs() {
   glDeleteBuffers(1,&geometry_tri_indices_VBO);
   glDeleteBuffers(1,&floor_tri_verts_VBO);
   glDeleteBuffers(1,&floor_tri_indices_VBO);
-  //glDeleteBuffers(1,&light_verts_VBO);
+  glDeleteBuffers(1,&lightbox_tri_verts_VBO);
+  glDeleteBuffers(1,&lightbox_tri_indices_VBO);
   bbox.cleanupVBOs();
 }
 
@@ -96,9 +98,11 @@ void Geometry::SetupLightBox() {
   addEdgeGeometry(lightbox_tri_verts,lightbox_tri_indices,glm::vec3(1,-1,-1),glm::vec3(1,1,-1),black,black,thickness,thickness);
   addEdgeGeometry(lightbox_tri_verts,lightbox_tri_indices,glm::vec3(1,-1,1),glm::vec3(1,1,1),black,black,thickness,thickness);
 
+	HandleGLError("Inside setuplightbox 0");
   glBindBuffer(GL_ARRAY_BUFFER,lightbox_tri_verts_VBO);
   glBufferData(GL_ARRAY_BUFFER,sizeof(VBOPosNormalColor)*lightbox_tri_verts.size(),
       &lightbox_tri_verts[0],GL_STATIC_DRAW);
+	HandleGLError("Inside setuplightbox 1");
   glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,lightbox_tri_indices_VBO);
   glBufferData(GL_ELEMENT_ARRAY_BUFFER,sizeof(VBOIndexedTri) * lightbox_tri_indices.size(),
       &lightbox_tri_indices[0],GL_STATIC_DRAW);
@@ -275,10 +279,15 @@ void Geometry::setupVBOs() {
   // setup the new geometry
   //glm::vec3 light_position = LightPosition();
   //SetupLights();
+	HandleGLError("setupVBOs A");
   SetupFloor();
+	HandleGLError("setupVBOs B");
   SetupGeometry();
+	HandleGLError("setupVBOs C");
+
 
   SetupLightBox();
+	HandleGLError("setupVBOs D");
   //bbox.setupVBOs();
 }
 

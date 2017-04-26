@@ -23,6 +23,10 @@ glm::vec4 green(0,1,0,0.5);
 
 float floor_factor = 0.75;
 
+
+
+GLuint GLCanvas::lights_VAO;
+
 // =======================================================================
 // =======================================================================
 
@@ -80,10 +84,14 @@ void Geometry::cleanupVBOs() {
 //}
 
 void Geometry::SetupLightBox() {
-  float thickness = 0.001;
+  float thickness = 0.1;
   glm::vec4 black(0,0,0,1);
 
-  addEdgeGeometry(lightbox_tri_verts,lightbox_tri_indices,glm::vec3(-1,-1,-1),glm::vec3(-1,-1,1),black,black,thickness,thickness);
+  glGenVertexArrays(1, &GLCanvas::lights_VAO);
+  glBindVertexArray(GLCanvas::lights_VAO);
+
+  //addEdgeGeometry(lightbox_tri_verts,lightbox_tri_indices,glm::vec3(-1,-1,-1),glm::vec3(-1,-1,1),black,black,thickness,thickness);
+  /*
   addEdgeGeometry(lightbox_tri_verts,lightbox_tri_indices,glm::vec3(-1,-1,1),glm::vec3(1,-1,1),black,black,thickness,thickness);
   addEdgeGeometry(lightbox_tri_verts,lightbox_tri_indices,glm::vec3(1,-1,1),glm::vec3(1,-1,-1),black,black,thickness,thickness);
   addEdgeGeometry(lightbox_tri_verts,lightbox_tri_indices,glm::vec3(1,-1,-1),glm::vec3(-1,-1,-1),black,black,thickness,thickness);
@@ -97,6 +105,31 @@ void Geometry::SetupLightBox() {
   addEdgeGeometry(lightbox_tri_verts,lightbox_tri_indices,glm::vec3(-1,-1,1),glm::vec3(-1,1,1),black,black,thickness,thickness);
   addEdgeGeometry(lightbox_tri_verts,lightbox_tri_indices,glm::vec3(1,-1,-1),glm::vec3(1,1,-1),black,black,thickness,thickness);
   addEdgeGeometry(lightbox_tri_verts,lightbox_tri_indices,glm::vec3(1,-1,1),glm::vec3(1,1,1),black,black,thickness,thickness);
+  */
+  glm::vec3 p0(-1,-1,-1);
+  glm::vec3 p1(1,-1,-1);
+  glm::vec3 p2(-1,-1,1);
+  glm::vec3 p3(1,-1,1);
+  glm::vec3 p4(-1,1,-1);
+  glm::vec3 p5(1,1,-1);
+  glm::vec3 p6(-1,1,1);
+  glm::vec3 p7(1,1,1);
+
+  glm::vec3 zero(0,0,0);//for use w/ normals, they don't matter for light boxes
+
+  lightbox_tri_verts.push_back(VBOPosNormalColor(p0,zero,black));
+  lightbox_tri_verts.push_back(VBOPosNormalColor(p1,zero,black));
+  lightbox_tri_verts.push_back(VBOPosNormalColor(p2,zero,black));
+  lightbox_tri_verts.push_back(VBOPosNormalColor(p3,zero,black));
+  lightbox_tri_verts.push_back(VBOPosNormalColor(p4,zero,black));
+  lightbox_tri_verts.push_back(VBOPosNormalColor(p5,zero,black));
+  lightbox_tri_verts.push_back(VBOPosNormalColor(p6,zero,black));
+  lightbox_tri_verts.push_back(VBOPosNormalColor(p7,zero,black));
+
+  lightbox_tri_indices.push_back(VBOIndexedTri(0,1,5));
+  lightbox_tri_indices.push_back(VBOIndexedTri(0,5,4));
+  //lightbox_tri_indices.push_back(VBOIndexedTri(0,1,5));
+
 
 	HandleGLError("Inside setuplightbox 0");
   glBindBuffer(GL_ARRAY_BUFFER,lightbox_tri_verts_VBO);
@@ -228,7 +261,7 @@ void Geometry::DrawLightBox() {
   std::cout << "ENTER DRAWLIGHTBOX\n";
   glBindBuffer(GL_ARRAY_BUFFER,lightbox_tri_verts_VBO);
 
-  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,geometry_tri_indices_VBO);
+  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,lightbox_tri_indices_VBO);
   glEnableVertexAttribArray(0);
   glVertexAttribPointer(0,3,GL_FLOAT,GL_FALSE,sizeof(VBOPosNormalColor),(void*)0);
   glEnableVertexAttribArray(1);

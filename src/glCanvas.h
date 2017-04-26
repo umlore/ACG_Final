@@ -72,6 +72,7 @@ public:
   static bool superKeyPressed;
 
   static GLuint render_VAO;
+  static GLuint lights_VAO;
 
   static void initialize(ArgParser *_args);
   static void initializeVBOs();

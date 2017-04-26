@@ -16,7 +16,7 @@ cubesize = 3
 spacing = 4
 
 #number of lights (randomly distributed)
-numlights = 10
+numlights = 1
 
 #max light intensity
 mli = 10
@@ -50,5 +50,6 @@ for i in range(0,numlights):
 	for p in range(0,lt):
 		f.write("lp %f %f %f\n" % (-1,random.random()*cubesize*spacing, random.random()*cubesize*spacing))
 	for inte in range(0,lt):
-		f.write("li %f\n" % (random.random()*mli))
+		#f.write("li %f\n" % (random.random()*mli))
+		f.write("li 2\n");
 	f.write("lt 0\nlt %f\nlt %f\nlt %f\n" % (1,2,3))

@@ -31,11 +31,6 @@ void main()
 void main()
 {
 	color = myColor;
-
-	float dist = distance(cameraPosition_worldspace , vertexPosition_worldspace);
-	depth = dist;
-
-	normal = vertexNormal_worldspace;
 }
 
 /*

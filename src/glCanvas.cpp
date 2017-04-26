@@ -133,11 +133,13 @@ void GLCanvas::initialize(ArgParser *_args) {
   /** Initialize the target texture to be rendered to. */
   /*side = side effect*/
 
+	printf("Enter create target\n");
 	/* create the buffer for albedo */
   CreateRenderTarget(args->width, args->height, GL_RGB, GL_RGB, GL_UNSIGNED_BYTE, &albedoTargetBuffer, &albedoTargetTexture, &albedoTargetDepthBuffer);
 	/* create the buffer for depth */
 	/* create the buffer for normals */
 	/* create the buffer for world position */
+	printf("Out of create target\n");
 		
 	/* Inform opengl that there are a bunch of buffers to be rendered to.*/
   // framebuffer config

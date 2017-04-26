@@ -32,7 +32,6 @@ void main()
 void main()
 {
 	color = myColor;
-	
 }
 
 /*
@@ -57,8 +56,8 @@ void main(){
     MaterialSpecularColor = vec3(0.1,0.1,0.3);
     surface_normal = -surface_normal;
   }
-	*/
 
 	color = myColor;
 }
+*/
 

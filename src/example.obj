@@ -1,4 +1,4 @@
-o cube.obj
+o cube2.obj
 #colors
 c 0 1 0
 c 1 1 1
@@ -19,7 +19,7 @@ t 3
 t 4
 t 5	
 
-o cube.obj
+o cube2.obj
 #colors
 c 0 1 0
 c 1 1 1

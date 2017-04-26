@@ -72,6 +72,7 @@ private:
   //void SetupLights();
   void SetupFloor();
   void SetupGeometry();
+  void SetupLightBox();
 
   //void DrawLights();
   void DrawFloor();
@@ -95,12 +96,16 @@ private:
   GLuint floor_tri_verts_VBO;
   GLuint floor_tri_indices_VBO;
   //GLuint light_verts_VBO;
+  GLuint lightbox_tri_verts_VBO;
+  GLuint lightbox_tri_indices_VBO;
 
   std::vector<VBOPosNormalColor> geometry_tri_verts; 
   std::vector<VBOIndexedTri> geometry_tri_indices;
   std::vector<VBOPosNormalColor> floor_tri_verts; 
   std::vector<VBOIndexedTri> floor_tri_indices;
   //std::vector<VBOPosNormalColor> light_verts;
+  std::vector<VBOPosNormalColor> lightbox_tri_verts;
+  std::vector<VBOIndexedTri> lightbox_tri_indices;
 
 };
 

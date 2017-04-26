@@ -77,6 +77,33 @@ void Geometry::cleanupVBOs() {
   */
 //}
 
+void Geometry::SetupLightBox() {
+  float thickness = 0.001;
+  glm::vec4 black(0,0,0,1);
+
+  addEdgeGeometry(lightbox_tri_verts,lightbox_tri_indices,glm::vec3(0,0,0),glm::vec3(0,0,1),black,black,thickness,thickness);
+  addEdgeGeometry(lightbox_tri_verts,lightbox_tri_indices,glm::vec3(0,0,1),glm::vec3(1,0,1),black,black,thickness,thickness);
+  addEdgeGeometry(lightbox_tri_verts,lightbox_tri_indices,glm::vec3(1,0,1),glm::vec3(1,0,0),black,black,thickness,thickness);
+  addEdgeGeometry(lightbox_tri_verts,lightbox_tri_indices,glm::vec3(1,0,0),glm::vec3(0,0,0),black,black,thickness,thickness);
+
+  addEdgeGeometry(lightbox_tri_verts,lightbox_tri_indices,glm::vec3(0,1,0),glm::vec3(0,1,1),black,black,thickness,thickness);
+  addEdgeGeometry(lightbox_tri_verts,lightbox_tri_indices,glm::vec3(0,1,1),glm::vec3(1,1,1),black,black,thickness,thickness);
+  addEdgeGeometry(lightbox_tri_verts,lightbox_tri_indices,glm::vec3(1,1,1),glm::vec3(1,1,0),black,black,thickness,thickness);
+  addEdgeGeometry(lightbox_tri_verts,lightbox_tri_indices,glm::vec3(1,1,0),glm::vec3(0,1,0),black,black,thickness,thickness);
+
+  addEdgeGeometry(lightbox_tri_verts,lightbox_tri_indices,glm::vec3(0,0,0),glm::vec3(0,1,0),black,black,thickness,thickness);
+  addEdgeGeometry(lightbox_tri_verts,lightbox_tri_indices,glm::vec3(0,0,1),glm::vec3(0,1,1),black,black,thickness,thickness);
+  addEdgeGeometry(lightbox_tri_verts,lightbox_tri_indices,glm::vec3(1,0,0),glm::vec3(1,1,0),black,black,thickness,thickness);
+  addEdgeGeometry(lightbox_tri_verts,lightbox_tri_indices,glm::vec3(1,0,1),glm::vec3(1,1,1),black,black,thickness,thickness);
+
+  glBindBuffer(GL_ARRAY_BUFFER,lightbox_tri_verts_VBO);
+  glBufferData(GL_ARRAY_BUFFER,sizeof(VBOPosNormalColor)*lightbox_tri_verts.size(),
+      &lightbox_tri_verts[0],GL_STATIC_DRAW);
+  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,lightbox_tri_indices_VBO);
+  glBufferData(GL_ELEMENT_ARRAY_BUFFER,sizeof(VBOIndexedTri) * lightbox_tri_indices.size(),
+      &lightbox_tri_indices[0],GL_STATIC_DRAW);
+}
+
 void Geometry::SetupFloor() {
   glm::vec3 diff = bbox.getMax()-bbox.getMin();
   // create vertices just a bit bigger than the bounding box
@@ -218,12 +245,16 @@ void Geometry::setupVBOs() {
   floor_tri_verts.clear(); 
   floor_tri_indices.clear();
   //light_verts.clear();
+  lightbox_tri_verts.clear();
+  lightbox_tri_indices.clear();
 
   // setup the new geometry
   //glm::vec3 light_position = LightPosition();
   //SetupLights();
   SetupFloor();
   SetupGeometry();
+
+  SetupLightBox();
   //bbox.setupVBOs();
 }
 
@@ -241,6 +272,12 @@ void Geometry::drawVBOs(const glm::mat4 &ProjectionMatrix,const glm::mat4 &ViewM
   //glUniformMatrix4fv(GLCanvas::MatrixID, 1, GL_FALSE, &MVP[0][0]);
   //glUniformMatrix4fv(GLCanvas::ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
 
+
+  {
+    if (args->lightbox) {
+      //TODO (Eugene) render the lights
+    }
+  }
 
   /* Render all the geometry to a texture. */
   {
@@ -260,12 +297,12 @@ void Geometry::drawVBOs(const glm::mat4 &ProjectionMatrix,const glm::mat4 &ViewM
       
 
 			glEnable(GL_DEPTH_TEST);
-      std::cout << "DRAWGEOMETRY START\n";
+      //std::cout << "DRAWGEOMETRY START\n";
       for (int i = 0; i < meshes.size(); i++) {
         
-        std::cout << "LOOP START\n";
+        //std::cout << "LOOP START\n";
         mesh_interpolation mi = meshes[i].getInterpolation(args->timer);
-        std::cout << "Pos: " << string_from_vec3(mi.pos) << '\n';
+        //std::cout << "Pos: " << string_from_vec3(mi.pos) << '\n';
 
         glm::mat4 ModelMatrix = glm::translate(mi.pos);
 
@@ -274,8 +311,8 @@ void Geometry::drawVBOs(const glm::mat4 &ProjectionMatrix,const glm::mat4 &ViewM
         //MVP = MVP * translateMatrix;
         glm::mat4 MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 
-        print_from_mat4(ModelMatrix);
-        print_from_mat4(MVP);
+        //print_from_mat4(ModelMatrix);
+        //print_from_mat4(MVP);
 
         //glm::mat4 modelModelMatrix = (translateMatrix);
 

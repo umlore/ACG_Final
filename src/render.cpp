@@ -231,7 +231,6 @@ void Geometry::setupVBOs() {
 
 void Geometry::drawVBOs(const glm::mat4 &ProjectionMatrix,const glm::mat4 &ViewMatrix) {
 
-
   // prepare data to send to the shaders
   //glm::vec3 lightPos = geometry->LightPosition();
   //glm::vec4 lightPos2 = glm::vec4(lightPos.x,lightPos.y,lightPos.z,1);
@@ -249,23 +248,20 @@ void Geometry::drawVBOs(const glm::mat4 &ProjectionMatrix,const glm::mat4 &ViewM
       // shader 2: ORANGE
       // shader 3: other
 
-
-    	glBindFramebuffer(GL_FRAMEBUFFER, GLCanvas::renderTargetBuffer);
+    	glBindFramebuffer(GL_FRAMEBUFFER, GLCanvas::albedoTargetBuffer);
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
       glUniform1i(GLCanvas::whichshaderID, args->whichshader);
       
       //glUniformMatrix4fv(GLCanvas::MatrixID, 1, GL_FALSE, &MVP[0][0]);
       //glUniformMatrix4fv(GLCanvas::ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
 
-      
-
 			glEnable(GL_DEPTH_TEST);
-      std::cout << "DRAWGEOMETRY START\n";
+      //std::cout << "DRAWGEOMETRY START\n";
       for (int i = 0; i < meshes.size(); i++) {
         
-        std::cout << "LOOP START\n";
+        //std::cout << "LOOP START\n";
         mesh_interpolation mi = meshes[i].getInterpolation(args->timer);
-        std::cout << "Pos: " << string_from_vec3(mi.pos) << '\n';
+        //std::cout << "Pos: " << string_from_vec3(mi.pos) << '\n';
 
         glm::mat4 ModelMatrix = glm::translate(mi.pos);
 
@@ -274,12 +270,10 @@ void Geometry::drawVBOs(const glm::mat4 &ProjectionMatrix,const glm::mat4 &ViewM
         //MVP = MVP * translateMatrix;
         glm::mat4 MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 
-        print_from_mat4(ModelMatrix);
-        print_from_mat4(MVP);
+        //print_from_mat4(ModelMatrix);
+        //print_from_mat4(MVP);
 
         //glm::mat4 modelModelMatrix = (translateMatrix);
-
-        
 
         glUniformMatrix4fv(GLCanvas::MatrixID, 1, GL_FALSE, &MVP[0][0]);
         glUniformMatrix4fv(GLCanvas::ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
@@ -290,13 +284,13 @@ void Geometry::drawVBOs(const glm::mat4 &ProjectionMatrix,const glm::mat4 &ViewM
 
       glUniform1i(GLCanvas::whichshaderID, 0);
 			glDisable(GL_DEPTH_TEST);
-
-			GLCanvas::drawPost();
     }
   } 
 
   /* Render the texture to the screen. */
-  {}
+  {
+			GLCanvas::drawPost();
+	}
 
   if (args->bounding_box) {
     bbox.drawVBOs();

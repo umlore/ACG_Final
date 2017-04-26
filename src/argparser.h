@@ -95,6 +95,7 @@ public:
     geometry = true;
     bounding_box = false;
     gouraud_normals = false;
+    lightbox = true;
     whichshader = 0;
     timer = 0.0;
     animate = false;
@@ -112,6 +113,7 @@ public:
   int height;
   bool geometry;
   bool bounding_box;
+  bool lightbox;
   bool gouraud_normals;
   int whichshader;
   float timer;

@@ -14,7 +14,6 @@ out vec3 normal;
 // Values that stay constant for the whole mesh.
 uniform vec3 LightPosition_worldspace;
 uniform int colormode;
-uniform int whichshader;
 uniform vec3 cameraPosition_worldspace;
 
 /*
@@ -32,6 +31,11 @@ void main()
 void main()
 {
 	color = myColor;
+
+	float dist = distance(cameraPosition_worldspace , vertexPosition_worldspace);
+	depth = dist;
+
+	normal = vertexNormal_worldspace;
 }
 
 /*

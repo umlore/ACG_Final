@@ -240,52 +240,56 @@ void Geometry::drawVBOs(const glm::mat4 &ProjectionMatrix,const glm::mat4 &ViewM
   //glUniformMatrix4fv(GLCanvas::MatrixID, 1, GL_FALSE, &MVP[0][0]);
   //glUniformMatrix4fv(GLCanvas::ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
 
+ 	glBindFramebuffer(GL_FRAMEBUFFER, GLCanvas::albedoTargetBuffer);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
   /* Render all the geometry to a texture. */
-  {
-    if (args->geometry) {
-      // shader 1: CHECKERBOARD
-      // shader 2: ORANGE
-      // shader 3: other
+  if (args->geometry) {
+    //glUniformMatrix4fv(GLCanvas::MatrixID, 1, GL_FALSE, &MVP[0][0]);
+    //glUniformMatrix4fv(GLCanvas::ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
 
-    	glBindFramebuffer(GL_FRAMEBUFFER, GLCanvas::albedoTargetBuffer);
-			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-      glUniform1i(GLCanvas::whichshaderID, args->whichshader);
+		glEnable(GL_DEPTH_TEST);
+    //std::cout << "DRAWGEOMETRY START\n";
+    for (int i = 0; i < meshes.size(); i++) 
+		{
       
-      //glUniformMatrix4fv(GLCanvas::MatrixID, 1, GL_FALSE, &MVP[0][0]);
-      //glUniformMatrix4fv(GLCanvas::ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+      //std::cout << "LOOP START\n";
+      mesh_interpolation mi = meshes[i].getInterpolation(args->timer);
+      //std::cout << "Pos: " << string_from_vec3(mi.pos) << '\n';
 
-			glEnable(GL_DEPTH_TEST);
-      //std::cout << "DRAWGEOMETRY START\n";
-      for (int i = 0; i < meshes.size(); i++) {
-        
-        //std::cout << "LOOP START\n";
-        mesh_interpolation mi = meshes[i].getInterpolation(args->timer);
-        //std::cout << "Pos: " << string_from_vec3(mi.pos) << '\n';
+      glm::mat4 ModelMatrix = glm::translate(mi.pos);
 
-        glm::mat4 ModelMatrix = glm::translate(mi.pos);
+      //ModelMatrix = glm::mat4(1.0f);
 
-        //ModelMatrix = glm::mat4(1.0f);
+      //MVP = MVP * translateMatrix;
+      glm::mat4 MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 
-        //MVP = MVP * translateMatrix;
-        glm::mat4 MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+      //print_from_mat4(ModelMatrix);
+      //print_from_mat4(MVP);
 
-        //print_from_mat4(ModelMatrix);
-        //print_from_mat4(MVP);
+      //glm::mat4 modelModelMatrix = (translateMatrix);
 
-        //glm::mat4 modelModelMatrix = (translateMatrix);
+      glUniformMatrix4fv(GLCanvas::MatrixID, 1, GL_FALSE, &MVP[0][0]);
+      glUniformMatrix4fv(GLCanvas::ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
 
-        glUniformMatrix4fv(GLCanvas::MatrixID, 1, GL_FALSE, &MVP[0][0]);
-        glUniformMatrix4fv(GLCanvas::ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
-        DrawGeometry();
-      }
-      //DrawFloor();
-
-      glUniform1i(GLCanvas::whichshaderID, 0);
-			glDisable(GL_DEPTH_TEST);
+      DrawGeometry();
     }
-  } 
+    //DrawFloor();
+		glDisable(GL_DEPTH_TEST);
+  }
+
+	/* if (lights) */
+	{
+		glEnable(GL_DEPTH_TEST);
+		for (int i = 0; i < 0/*lights.size()*/; i++)
+		{
+			/* Interpolation */
+			/* Transforms */
+			/* Uniforms */
+			/* Draw Call */
+		}
+		glDisable(GL_DEPTH_TEST);
+	}
 
   /* Render the texture to the screen. */
   {

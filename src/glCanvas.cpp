@@ -41,7 +41,6 @@ GLuint GLCanvas::ModelMatrixID;
 GLuint GLCanvas::LightID;
 GLuint GLCanvas::MatrixID;
 GLuint GLCanvas::programID;
-GLuint GLCanvas::whichshaderID;
 GLuint GLCanvas::colormodeID;
 GLuint GLCanvas::cameraLocation;
 
@@ -306,7 +305,6 @@ void GLCanvas::initializeVBOs(){
   GLCanvas::ViewMatrixID = glGetUniformLocation(GLCanvas::programID, "V");
   GLCanvas::ModelMatrixID = glGetUniformLocation(GLCanvas::programID, "M");
   GLCanvas::colormodeID = glGetUniformLocation(GLCanvas::programID, "colormode");
-  GLCanvas::whichshaderID = glGetUniformLocation(GLCanvas::programID, "whichshader");
 	GLCanvas::cameraLocation = glGetUniformLocation(GLCanvas::programID, "cameraPosition_worldspace");
   geometry->initializeVBOs();
   HandleGLError("leaving initilizeVBOs()");

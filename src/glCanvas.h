@@ -46,7 +46,6 @@ public:
   static GLuint MatrixID;
   static GLuint programID;
   static GLuint colormodeID;
-  static GLuint whichshaderID;
 	static GLuint cameraLocation; 
 
   static GLuint albedoTargetBuffer;

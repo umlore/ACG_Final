@@ -81,20 +81,20 @@ void Geometry::SetupLightBox() {
   float thickness = 0.001;
   glm::vec4 black(0,0,0,1);
 
-  addEdgeGeometry(lightbox_tri_verts,lightbox_tri_indices,glm::vec3(0,0,0),glm::vec3(0,0,1),black,black,thickness,thickness);
-  addEdgeGeometry(lightbox_tri_verts,lightbox_tri_indices,glm::vec3(0,0,1),glm::vec3(1,0,1),black,black,thickness,thickness);
-  addEdgeGeometry(lightbox_tri_verts,lightbox_tri_indices,glm::vec3(1,0,1),glm::vec3(1,0,0),black,black,thickness,thickness);
-  addEdgeGeometry(lightbox_tri_verts,lightbox_tri_indices,glm::vec3(1,0,0),glm::vec3(0,0,0),black,black,thickness,thickness);
+  addEdgeGeometry(lightbox_tri_verts,lightbox_tri_indices,glm::vec3(-1,-1,-1),glm::vec3(-1,-1,1),black,black,thickness,thickness);
+  addEdgeGeometry(lightbox_tri_verts,lightbox_tri_indices,glm::vec3(-1,-1,1),glm::vec3(1,-1,1),black,black,thickness,thickness);
+  addEdgeGeometry(lightbox_tri_verts,lightbox_tri_indices,glm::vec3(1,-1,1),glm::vec3(1,-1,-1),black,black,thickness,thickness);
+  addEdgeGeometry(lightbox_tri_verts,lightbox_tri_indices,glm::vec3(1,-1,-1),glm::vec3(-1,-1,-1),black,black,thickness,thickness);
 
-  addEdgeGeometry(lightbox_tri_verts,lightbox_tri_indices,glm::vec3(0,1,0),glm::vec3(0,1,1),black,black,thickness,thickness);
-  addEdgeGeometry(lightbox_tri_verts,lightbox_tri_indices,glm::vec3(0,1,1),glm::vec3(1,1,1),black,black,thickness,thickness);
-  addEdgeGeometry(lightbox_tri_verts,lightbox_tri_indices,glm::vec3(1,1,1),glm::vec3(1,1,0),black,black,thickness,thickness);
-  addEdgeGeometry(lightbox_tri_verts,lightbox_tri_indices,glm::vec3(1,1,0),glm::vec3(0,1,0),black,black,thickness,thickness);
+  addEdgeGeometry(lightbox_tri_verts,lightbox_tri_indices,glm::vec3(-1,1,-1),glm::vec3(-1,1,1),black,black,thickness,thickness);
+  addEdgeGeometry(lightbox_tri_verts,lightbox_tri_indices,glm::vec3(-1,1,1),glm::vec3(1,1,1),black,black,thickness,thickness);
+  addEdgeGeometry(lightbox_tri_verts,lightbox_tri_indices,glm::vec3(1,1,1),glm::vec3(1,1,-1),black,black,thickness,thickness);
+  addEdgeGeometry(lightbox_tri_verts,lightbox_tri_indices,glm::vec3(1,1,-1),glm::vec3(-1,1,-1),black,black,thickness,thickness);
 
-  addEdgeGeometry(lightbox_tri_verts,lightbox_tri_indices,glm::vec3(0,0,0),glm::vec3(0,1,0),black,black,thickness,thickness);
-  addEdgeGeometry(lightbox_tri_verts,lightbox_tri_indices,glm::vec3(0,0,1),glm::vec3(0,1,1),black,black,thickness,thickness);
-  addEdgeGeometry(lightbox_tri_verts,lightbox_tri_indices,glm::vec3(1,0,0),glm::vec3(1,1,0),black,black,thickness,thickness);
-  addEdgeGeometry(lightbox_tri_verts,lightbox_tri_indices,glm::vec3(1,0,1),glm::vec3(1,1,1),black,black,thickness,thickness);
+  addEdgeGeometry(lightbox_tri_verts,lightbox_tri_indices,glm::vec3(-1,-1,-1),glm::vec3(-1,1,-1),black,black,thickness,thickness);
+  addEdgeGeometry(lightbox_tri_verts,lightbox_tri_indices,glm::vec3(-1,-1,1),glm::vec3(-1,1,1),black,black,thickness,thickness);
+  addEdgeGeometry(lightbox_tri_verts,lightbox_tri_indices,glm::vec3(1,-1,-1),glm::vec3(1,1,-1),black,black,thickness,thickness);
+  addEdgeGeometry(lightbox_tri_verts,lightbox_tri_indices,glm::vec3(1,-1,1),glm::vec3(1,1,1),black,black,thickness,thickness);
 
   glBindBuffer(GL_ARRAY_BUFFER,lightbox_tri_verts_VBO);
   glBufferData(GL_ARRAY_BUFFER,sizeof(VBOPosNormalColor)*lightbox_tri_verts.size(),
@@ -218,6 +218,30 @@ void Geometry::DrawFloor() {
   HandleGLError("leaving draw floor");
 }
 
+void Geometry::DrawLightBox() {
+  HandleGLError("enter draw light box");
+
+  std::cout << "ENTER DRAWLIGHTBOX\n";
+  glBindBuffer(GL_ARRAY_BUFFER,lightbox_tri_verts_VBO);
+
+  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,geometry_tri_indices_VBO);
+  glEnableVertexAttribArray(0);
+  glVertexAttribPointer(0,3,GL_FLOAT,GL_FALSE,sizeof(VBOPosNormalColor),(void*)0);
+  glEnableVertexAttribArray(1);
+  glVertexAttribPointer(1,3,GL_FLOAT,GL_FALSE,sizeof(VBOPosNormalColor),(void*)sizeof(glm::vec3) );
+  glEnableVertexAttribArray(2);
+
+  glVertexAttribPointer(2, 3, GL_FLOAT,GL_FALSE,sizeof(VBOPosNormalColor), (void*)(sizeof(glm::vec3)*2));
+  std::cout << "GOT HERE\n";
+  glDrawElements(GL_TRIANGLES, lightbox_tri_indices.size()*3,GL_UNSIGNED_INT, 0);
+
+  glDisableVertexAttribArray(0);
+  glDisableVertexAttribArray(1);
+  glDisableVertexAttribArray(2);
+  std::cout << "EXIT DRAWLIGHTBOX\n";
+  HandleGLError("leaving draw light box");
+}
+
 void Geometry::DrawGeometry() {
   HandleGLError("enter draw geometry");
   glBindBuffer(GL_ARRAY_BUFFER,geometry_tri_verts_VBO); 
@@ -274,12 +298,6 @@ void Geometry::drawVBOs(const glm::mat4 &ProjectionMatrix,const glm::mat4 &ViewM
  	glBindFramebuffer(GL_FRAMEBUFFER, GLCanvas::albedoTargetBuffer);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-  {
-    if (args->lightbox) {
-      //TODO (Eugene) render the lights
-    }
-  }
-
   /* Render all the geometry to a texture. */
   if (args->geometry) {
     //glUniformMatrix4fv(GLCanvas::MatrixID, 1, GL_FALSE, &MVP[0][0]);
@@ -316,14 +334,24 @@ void Geometry::drawVBOs(const glm::mat4 &ProjectionMatrix,const glm::mat4 &ViewM
   }
 
 	/* if (lights) */
-	{
+  if (args->lightbox) {
 		glEnable(GL_DEPTH_TEST);
-		for (int i = 0; i < 0/*lights.size()*/; i++)
+		for (int i = 0; i < numLights(); i++)
 		{
-			/* Interpolation */
+      /* Interpolation */
+      Light* l = getLight(i);
+      light_interpolation li = l->getInterpolation(args->timer);
 			/* Transforms */
+      glm::mat4 ModelMatrix = glm::translate(li.pos);
+      ModelMatrix = ModelMatrix * glm::scale(glm::vec3(li.intensity,li.intensity,li.intensity));
+      glm::mat4 MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			/* Uniforms */
+      glUniformMatrix4fv(GLCanvas::MatrixID, 1, GL_FALSE, &MVP[0][0]);
+      glUniformMatrix4fv(GLCanvas::ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+      std::cout << "AFTER UNIFORMS\n";
 			/* Draw Call */
+      DrawLightBox();
+      std::cout<<"AFTER DRAW CALL\n";
 		}
 		glDisable(GL_DEPTH_TEST);
 	}

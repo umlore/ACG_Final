@@ -51,3 +51,4 @@ for i in range(0,numlights):
 		f.write("lp %f %f %f\n" % (-1,random.random()*cubesize*spacing, random.random()*cubesize*spacing))
 	for inte in range(0,lt):
 		f.write("li %f\n" % (random.random()*mli))
+	f.write("lt 0\nlt %f\nlt %f\nlt %f\n" % (1,2,3))

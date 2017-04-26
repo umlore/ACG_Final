@@ -65,6 +65,8 @@ public:
   const BoundingBox& getBoundingBox() const { return bbox; }
   //glm::vec3 LightPosition() const;
   void PrintFileMap();
+  int numLights() const { return lights.size(); }
+  Light* getLight(int i) { return &(lights[i]); }
 
 private:
 
@@ -77,6 +79,7 @@ private:
   //void DrawLights();
   void DrawFloor();
   void DrawGeometry();
+  void DrawLightBox();
 
   // ==============
   // REPRESENTATION

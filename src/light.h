@@ -39,6 +39,7 @@ public:
 	light_interpolation getInterpolation(double t) {
 		//timesteps[0] is time between type[0] and type[1]
 		//timesteps[max] is time between type[0] and type[0] (full cycle)
+
 		t = fmod(t,timesteps[timesteps.size()-1]);
 		light_interpolation li;
 

@@ -48,14 +48,17 @@ public:
   static GLuint colormodeID;
 	static GLuint cameraLocation; 
 
-  static GLuint albedoTargetBuffer;
-  static GLuint albedoTargetTexture;
-  static GLuint albedoTargetDepthBuffer;
+  static GLuint targetBuffer;
+  static GLuint targetDepthBuffer;
+
+	static GLuint albedoTargetTexture;
+  static GLuint normalTargetTexture;
 
   static GLuint screenQuadData;
   static GLuint screenQuadVAO;
   static GLuint screenQuadShaderProgram;
-  static GLuint screenQuadTexture;
+  static GLuint screenQuadAlbedo;
+  static GLuint screenQuadNormal;
   static GLuint screenQuadTexSize;
 
   // mouse position
@@ -78,10 +81,12 @@ public:
   static void initializeVBOs();
   static void setupVBOs();
   static void drawVBOs(const glm::mat4 &ProjectionMatrix,const glm::mat4 &ViewMatrix);
-	static void CreateRenderTarget(int width, int height, GLuint internalFormat, GLuint format, GLuint pixelData, 
-								/*side*/ GLuint *renderTargetBuffer, /*side*/ GLuint *renderTargetTexture, /*side*/ GLuint *renderTargetDepthBuffer);
   static void cleanupVBOs();
 	static void drawPost();
+
+	/* TEXTURE OUPUT AND FRAMEBUFFER STUFF*/
+	static void CreateBufferTarget( GLuint *targetBuffer, GLuint *targetDepthBuffer);
+	static void CreateAndBindTextureTarget(GLuint internalFormat, GLuint format, GLuint pixelData, GLuint frameBuffer, GLuint *renderTarget);
 
   static void animate();
 

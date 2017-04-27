@@ -53,12 +53,14 @@ public:
 
 	static GLuint albedoTargetTexture;
   static GLuint normalTargetTexture;
+  static GLuint positionTargetTexture;
 
   static GLuint screenQuadData;
   static GLuint screenQuadVAO;
   static GLuint screenQuadShaderProgram;
   static GLuint screenQuadAlbedo;
   static GLuint screenQuadNormal;
+	static GLuint screenQuadPosition;
   static GLuint screenQuadTexSize;
 
   // mouse position

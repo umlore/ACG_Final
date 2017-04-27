@@ -49,6 +49,7 @@ GLuint GLCanvas::targetDepthBuffer;
 
 GLuint GLCanvas::albedoTargetTexture;
 GLuint GLCanvas::normalTargetTexture;
+GLuint GLCanvas::positionTargetTexture;
 
 GLuint GLCanvas::screenQuadData;
 GLuint GLCanvas::screenQuadVAO;
@@ -57,6 +58,7 @@ GLuint GLCanvas::screenQuadTexSize;
 
 GLuint GLCanvas::screenQuadAlbedo;
 GLuint GLCanvas::screenQuadNormal;
+GLuint GLCanvas::screenQuadPosition;
 
 // ========================================================
 // Initialize all appropriate OpenGL variables, set
@@ -144,9 +146,9 @@ void GLCanvas::initialize(ArgParser *_args) {
 	/* create the buffer for albedo */
   CreateAndBindTextureTarget( GL_RGB, GL_RGB, GL_UNSIGNED_BYTE, targetBuffer, &albedoTargetTexture);
 	/* create the buffer for normals */
-  CreateAndBindTextureTarget( GL_RGB, GL_RGB, GL_FLOAT, targetBuffer, &normalTargetTexture);
+  CreateAndBindTextureTarget( GL_RGB16F, GL_RGB, GL_FLOAT, targetBuffer, &normalTargetTexture);
 	/* Create the buffer for the positions */
-  //CreateAndBindTextureTarget( GL_RGB, GL_RGB, GL_FLOAT, targetBuffer, &positionTargetTexture);
+  CreateAndBindTextureTarget( GL_RGB32F, GL_RGB, GL_FLOAT, targetBuffer, &positionTargetTexture);
 
 	printf("Out of create target\n");
 		
@@ -154,7 +156,7 @@ void GLCanvas::initialize(ArgParser *_args) {
   // framebuffer config
   glFramebufferTexture( GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, albedoTargetTexture, 0);
   glFramebufferTexture( GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, normalTargetTexture, 0);
-  //glFramebufferTexture( GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, positionTargetTexture, 0);
+  glFramebufferTexture( GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT2, positionTargetTexture, 0);
   GLenum DrawBuffers[3] = {GL_COLOR_ATTACHMENT0,GL_COLOR_ATTACHMENT1,GL_COLOR_ATTACHMENT2};
   glDrawBuffers(3, DrawBuffers);
 
@@ -182,7 +184,7 @@ void GLCanvas::initialize(ArgParser *_args) {
                            		            args->path+"/"+"pass"+".fs");
     screenQuadAlbedo = glGetUniformLocation(screenQuadShaderProgram, "albedo");
     screenQuadNormal = glGetUniformLocation(screenQuadShaderProgram, "normal");
-    //screenQuadPosition = glGetUniformLocation(screenQuadShaderProgram, "position");
+    screenQuadPosition = glGetUniformLocation(screenQuadShaderProgram, "inposition");
 
     screenQuadTexSize = glGetUniformLocation(screenQuadShaderProgram, "texSize");
   }
@@ -244,12 +246,16 @@ void GLCanvas::drawPost()
 	glEnableVertexAttribArray(0);
 	glUniform1i(screenQuadAlbedo, 0);
 	glUniform1i(screenQuadNormal, 1);
+	glUniform1i(screenQuadPosition, 2);
 
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, albedoTargetTexture);
 
 	glActiveTexture(GL_TEXTURE1);
 	glBindTexture(GL_TEXTURE_2D, normalTargetTexture);
+
+	glActiveTexture(GL_TEXTURE2);
+	glBindTexture(GL_TEXTURE_2D, positionTargetTexture);
 
 	glBindBuffer(GL_ARRAY_BUFFER, screenQuadData);
 	glUniform2f(screenQuadTexSize, args->width, args->height);

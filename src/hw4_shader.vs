@@ -23,8 +23,10 @@ void main(){
   // Output position of the vertex, in clip space : MVP * position
   gl_Position =  MVP * vec4(vertexPosition_modelspace,1);
   
+  vec4 temp = (M * vec4(vertexPosition_modelspace,1));
+
   // Position of the vertex, in worldspace : M * position
-  vertexPosition_worldspace = (M * vec4(vertexPosition_modelspace,1)).xyz;
+  vertexPosition_worldspace = temp.xyz/temp.w;
   
   // Vector that goes from the vertex to the camera, in camera space.
   // In camera space, the camera is at the origin (0,0,0).

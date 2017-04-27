@@ -146,7 +146,7 @@ void GLCanvas::initialize(ArgParser *_args) {
 	/* create the buffer for normals */
   CreateAndBindTextureTarget( GL_RGB, GL_RGB, GL_FLOAT, targetBuffer, &normalTargetTexture);
 	/* Create the buffer for the positions */
-  CreateAndBindTextureTarget( GL_RGB, GL_RGB, GL_FLOAT, targetBuffer, &positionTargetTexture);
+  //CreateAndBindTextureTarget( GL_RGB, GL_RGB, GL_FLOAT, targetBuffer, &positionTargetTexture);
 
 	printf("Out of create target\n");
 		
@@ -154,9 +154,9 @@ void GLCanvas::initialize(ArgParser *_args) {
   // framebuffer config
   glFramebufferTexture( GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, albedoTargetTexture, 0);
   glFramebufferTexture( GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, normalTargetTexture, 0);
-  glFramebufferTexture( GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, positionTargetTexture, 0);
+  //glFramebufferTexture( GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, positionTargetTexture, 0);
   GLenum DrawBuffers[3] = {GL_COLOR_ATTACHMENT0,GL_COLOR_ATTACHMENT1,GL_COLOR_ATTACHMENT2};
-  glDrawBuffers(4, DrawBuffers);
+  glDrawBuffers(3, DrawBuffers);
 
   /** Initialize the stupid quad in world space to render the synthesized texture directly onto, because apparently a framebuffer blit is just
     TOOOOOO hard... */
@@ -182,7 +182,7 @@ void GLCanvas::initialize(ArgParser *_args) {
                            		            args->path+"/"+"pass"+".fs");
     screenQuadAlbedo = glGetUniformLocation(screenQuadShaderProgram, "albedo");
     screenQuadNormal = glGetUniformLocation(screenQuadShaderProgram, "normal");
-    screenQuadPosition = glGetUniformLocation(screenQuadShaderProgram, "position");
+    //screenQuadPosition = glGetUniformLocation(screenQuadShaderProgram, "position");
 
     screenQuadTexSize = glGetUniformLocation(screenQuadShaderProgram, "texSize");
   }

@@ -1,0 +1,12 @@
+o sphere
+c 0 1 0
+p 0 0 0
+t 0
+t 5
+
+l
+lc 1 1 1
+lp 10 10 10
+li .5
+lt 0
+lt 5

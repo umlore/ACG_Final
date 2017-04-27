@@ -1,7 +1,7 @@
 import random
 
 #filename
-f = open('cubes_8000', 'w')
+f = open('bunnies_216_40k', 'w')
 
 #timesteps
 t = 7
@@ -10,19 +10,19 @@ t = 7
 lt = 8
 
 #cubesize (how many models for one size)
-cubesize = 20
+cubesize = 6
 
 #spacing (spacing between models)
-spacing = 5
+spacing = 1
 
 #number of lights (randomly distributed)
 numlights = 100
 
 #max light intensity
-mli = 10
+mli = 1
 
 #which file to generate grid of?
-model = 'cube2.obj'
+model = 'bunny40k'
 
 #generate a grid
 for i in range(0,cubesize):

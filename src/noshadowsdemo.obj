@@ -1,0 +1,54 @@
+o cube2.obj
+c 1 1 1
+p 1 0 0
+t 0
+t 1
+
+o cube2.obj
+c 1 1 1
+p 3 0 0
+t 0
+t 1
+
+o cube2.obj
+c 1 1 1
+p 5 0 0
+t 0
+t 1
+
+o cube2.obj
+c 1 1 1
+p 7 0 0
+t 0
+t 1
+
+o cube2.obj
+c 1 1 1
+p 9 0 0
+t 0
+t 1
+
+o cube2.obj
+c 1 1 1
+p 11 0 0
+t 0
+t 1
+
+o cube2.obj
+c 1 1 1
+p 13 0 0
+t 0
+t 1
+
+o cube2.obj
+c 1 1 1
+p 15 0 0
+t 0
+t 1
+
+l
+lc 1 1 1
+lp 0 0 0
+li 7
+lt 0
+lt 1

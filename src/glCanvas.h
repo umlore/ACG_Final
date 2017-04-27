@@ -42,11 +42,9 @@ public:
 
   static GLuint ViewMatrixID;
   static GLuint ModelMatrixID;
-  static GLuint LightID;
+	static GLuint ColorID;
   static GLuint MatrixID;
   static GLuint programID;
-  static GLuint colormodeID;
-	static GLuint cameraLocation; 
 
   static GLuint targetBuffer;
   static GLuint targetDepthBuffer;

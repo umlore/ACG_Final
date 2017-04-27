@@ -38,11 +38,9 @@ GLuint GLCanvas::render_VAO;
 
 GLuint GLCanvas::ViewMatrixID;
 GLuint GLCanvas::ModelMatrixID;
-GLuint GLCanvas::LightID;
 GLuint GLCanvas::MatrixID;
 GLuint GLCanvas::programID;
-GLuint GLCanvas::colormodeID;
-GLuint GLCanvas::cameraLocation;
+GLuint GLCanvas::ColorID;
 
 GLuint GLCanvas::targetBuffer;
 GLuint GLCanvas::targetDepthBuffer;
@@ -338,11 +336,10 @@ void GLCanvas::initializeVBOs(){
   glGenVertexArrays(1, &render_VAO);
   glBindVertexArray(render_VAO);
   GLCanvas::MatrixID = glGetUniformLocation(GLCanvas::programID, "MVP");
-  GLCanvas::LightID = glGetUniformLocation(GLCanvas::programID, "LightPosition_worldspace");
   GLCanvas::ViewMatrixID = glGetUniformLocation(GLCanvas::programID, "V");
   GLCanvas::ModelMatrixID = glGetUniformLocation(GLCanvas::programID, "M");
-  GLCanvas::colormodeID = glGetUniformLocation(GLCanvas::programID, "colormode");
-	GLCanvas::cameraLocation = glGetUniformLocation(GLCanvas::programID, "cameraPosition_worldspace");
+	GLCanvas::ColorID = glGetUniformLocation(GLCanvas::programID, "colorin");
+
   geometry->initializeVBOs();
   HandleGLError("leaving initilizeVBOs()");
 }
@@ -362,8 +359,6 @@ void GLCanvas::drawVBOs(const glm::mat4 &ProjectionMatrix,const glm::mat4 &ViewM
   glUniformMatrix4fv(GLCanvas::ViewMatrixID, 1, GL_FALSE, &ViewMatrix[0][0]);
 
   glm::vec3 cameraPosition = camera->camera_position;
-  glUniform3f(GLCanvas::cameraLocation,cameraPosition.x, cameraPosition.y, cameraPosition.z);
-
 
   geometry->drawVBOs(ProjectionMatrix, ViewMatrix);
   HandleGLError("leaving GlCanvas::drawVBOs()");

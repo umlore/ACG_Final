@@ -85,27 +85,11 @@ void Geometry::cleanupVBOs() {
 
 void Geometry::SetupLightBox() {
   float thickness = 0.1;
-  glm::vec4 black(0,0,0,1);
+  glm::vec4 black(0,0,0,.2);
 
   glGenVertexArrays(1, &GLCanvas::lights_VAO);
   glBindVertexArray(GLCanvas::lights_VAO);
-
-  //addEdgeGeometry(lightbox_tri_verts,lightbox_tri_indices,glm::vec3(-1,-1,-1),glm::vec3(-1,-1,1),black,black,thickness,thickness);
-  /*
-  addEdgeGeometry(lightbox_tri_verts,lightbox_tri_indices,glm::vec3(-1,-1,1),glm::vec3(1,-1,1),black,black,thickness,thickness);
-  addEdgeGeometry(lightbox_tri_verts,lightbox_tri_indices,glm::vec3(1,-1,1),glm::vec3(1,-1,-1),black,black,thickness,thickness);
-  addEdgeGeometry(lightbox_tri_verts,lightbox_tri_indices,glm::vec3(1,-1,-1),glm::vec3(-1,-1,-1),black,black,thickness,thickness);
-
-  addEdgeGeometry(lightbox_tri_verts,lightbox_tri_indices,glm::vec3(-1,1,-1),glm::vec3(-1,1,1),black,black,thickness,thickness);
-  addEdgeGeometry(lightbox_tri_verts,lightbox_tri_indices,glm::vec3(-1,1,1),glm::vec3(1,1,1),black,black,thickness,thickness);
-  addEdgeGeometry(lightbox_tri_verts,lightbox_tri_indices,glm::vec3(1,1,1),glm::vec3(1,1,-1),black,black,thickness,thickness);
-  addEdgeGeometry(lightbox_tri_verts,lightbox_tri_indices,glm::vec3(1,1,-1),glm::vec3(-1,1,-1),black,black,thickness,thickness);
-
-  addEdgeGeometry(lightbox_tri_verts,lightbox_tri_indices,glm::vec3(-1,-1,-1),glm::vec3(-1,1,-1),black,black,thickness,thickness);
-  addEdgeGeometry(lightbox_tri_verts,lightbox_tri_indices,glm::vec3(-1,-1,1),glm::vec3(-1,1,1),black,black,thickness,thickness);
-  addEdgeGeometry(lightbox_tri_verts,lightbox_tri_indices,glm::vec3(1,-1,-1),glm::vec3(1,1,-1),black,black,thickness,thickness);
-  addEdgeGeometry(lightbox_tri_verts,lightbox_tri_indices,glm::vec3(1,-1,1),glm::vec3(1,1,1),black,black,thickness,thickness);
-  */
+  
   glm::vec3 p0(-1,-1,-1);
   glm::vec3 p1(1,-1,-1);
   glm::vec3 p2(-1,-1,1);
@@ -128,7 +112,21 @@ void Geometry::SetupLightBox() {
 
   lightbox_tri_indices.push_back(VBOIndexedTri(0,1,5));
   lightbox_tri_indices.push_back(VBOIndexedTri(0,5,4));
-  //lightbox_tri_indices.push_back(VBOIndexedTri(0,1,5));
+
+  lightbox_tri_indices.push_back(VBOIndexedTri(3,2,6));
+  lightbox_tri_indices.push_back(VBOIndexedTri(3,6,7));
+
+  lightbox_tri_indices.push_back(VBOIndexedTri(2,0,4));
+  lightbox_tri_indices.push_back(VBOIndexedTri(2,4,6));
+
+  lightbox_tri_indices.push_back(VBOIndexedTri(1,3,7));
+  lightbox_tri_indices.push_back(VBOIndexedTri(1,7,5));
+
+  lightbox_tri_indices.push_back(VBOIndexedTri(4,5,7));
+  lightbox_tri_indices.push_back(VBOIndexedTri(4,7,6));
+
+  lightbox_tri_indices.push_back(VBOIndexedTri(3,1,2));
+  lightbox_tri_indices.push_back(VBOIndexedTri(0,2,1));
 
 
 	HandleGLError("Inside setuplightbox 0");
@@ -257,25 +255,18 @@ void Geometry::DrawFloor() {
 
 void Geometry::DrawLightBox() {
   HandleGLError("enter draw light box");
-
-  std::cout << "ENTER DRAWLIGHTBOX\n";
   glBindBuffer(GL_ARRAY_BUFFER,lightbox_tri_verts_VBO);
-
   glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,lightbox_tri_indices_VBO);
   glEnableVertexAttribArray(0);
   glVertexAttribPointer(0,3,GL_FLOAT,GL_FALSE,sizeof(VBOPosNormalColor),(void*)0);
   glEnableVertexAttribArray(1);
   glVertexAttribPointer(1,3,GL_FLOAT,GL_FALSE,sizeof(VBOPosNormalColor),(void*)sizeof(glm::vec3) );
   glEnableVertexAttribArray(2);
-
   glVertexAttribPointer(2, 3, GL_FLOAT,GL_FALSE,sizeof(VBOPosNormalColor), (void*)(sizeof(glm::vec3)*2));
-  std::cout << "GOT HERE\n";
   glDrawElements(GL_TRIANGLES, lightbox_tri_indices.size()*3,GL_UNSIGNED_INT, 0);
-
   glDisableVertexAttribArray(0);
   glDisableVertexAttribArray(1);
   glDisableVertexAttribArray(2);
-  std::cout << "EXIT DRAWLIGHTBOX\n";
   HandleGLError("leaving draw light box");
 }
 
@@ -390,10 +381,10 @@ void Geometry::drawVBOs(const glm::mat4 &ProjectionMatrix,const glm::mat4 &ViewM
 			/* Uniforms */
       glUniformMatrix4fv(GLCanvas::MatrixID, 1, GL_FALSE, &MVP[0][0]);
       glUniformMatrix4fv(GLCanvas::ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-      std::cout << "AFTER UNIFORMS\n";
+      //std::cout << "AFTER UNIFORMS\n";
 			/* Draw Call */
       DrawLightBox();
-      std::cout<<"AFTER DRAW CALL\n";
+      //std::cout<<"AFTER DRAW CALL\n";
 		}
 		glDisable(GL_DEPTH_TEST);
 	}

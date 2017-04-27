@@ -1,22 +1,22 @@
 import random
 
 #filename
-f = open('cubes_27', 'w')
+f = open('cubes_8000', 'w')
 
 #timesteps
-t = 2
+t = 7
 
 #light timesteps
-lt = 3
+lt = 8
 
 #cubesize (how many models for one size)
-cubesize = 3
+cubesize = 20
 
 #spacing (spacing between models)
-spacing = 4
+spacing = 5
 
 #number of lights (randomly distributed)
-numlights = 1
+numlights = 100
 
 #max light intensity
 mli = 10
@@ -40,16 +40,22 @@ for i in range(0,cubesize):
 			#timesteps
 			#f.write("t 0\nt 1\nt 2\n")
 			x = .5+random.random()*10
-			y = x + .5 + random.random()*10
-			f.write("t 0\nt %f\nt %f\n" % (x,y))
+			f.write("t 0\n");
+			for step in range(0,t):
+				f.write("t %f\n" % (x))
+				x += .5+random.random()*10
 
 for i in range(0,numlights):
 	f.write("l\n")
 	for c in range(0,lt):
 		f.write("lc %f %f %f\n" % (random.random(), random.random(),random.random()))
 	for p in range(0,lt):
-		f.write("lp %f %f %f\n" % (-1,random.random()*cubesize*spacing, random.random()*cubesize*spacing))
+		f.write("lp %f %f %f\n" % (random.random()*cubesize*spacing,random.random()*cubesize*spacing, random.random()*cubesize*spacing))
 	for inte in range(0,lt):
-		#f.write("li %f\n" % (random.random()*mli))
-		f.write("li 2\n");
-	f.write("lt 0\nlt %f\nlt %f\nlt %f\n" % (1,2,3))
+		f.write("li %f\n" % (random.random()*mli))
+		#f.write("li %f\n");
+	f.write("lt 0\n")
+	x = .5+random.random()*10
+	for step in range(0,lt):
+		f.write("lt %f\n" % (x))
+		x += .5+random.random()*10

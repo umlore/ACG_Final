@@ -50,7 +50,7 @@ public:
 
 		double diff = timesteps[curidx+1] - timesteps[curidx];
 		diff = (t-timesteps[curidx])/diff;
-		std::cout << "BLEND RATE: " << diff << '\n';
+		//std::cout << "BLEND RATE: " << diff << '\n';
 
 		li.pos = positions[(curidx+1)%positions.size()] - positions[curidx];
 		li.clr = colors[(curidx+1)%colors.size()] - colors[curidx];

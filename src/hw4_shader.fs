@@ -8,7 +8,7 @@ in vec3 vertexNormal_worldspace;
 
 // Ouput data
 out vec3 color;
-out float depth;
+//out float depth;
 out vec3 normal;
 
 // Values that stay constant for the whole mesh.
@@ -31,7 +31,7 @@ void main()
 void main()
 {
 	color = myColor;
-	//normal = myColor;
+	normal = (vec3(1,1,1) + vertexNormal_worldspace) / 2.0f; 
 }
 
 /*

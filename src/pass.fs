@@ -8,7 +8,8 @@ out vec3 color;
 
 void main()
 {
-	vec3 abc = texture(albedo, gl_FragCoord.xy/texSize).xyz;
-  abc = 0.2f*vec3(gl_FragCoord.x/texSize.x, gl_FragCoord.y/texSize.y, 1.0f)+0.8f*abc;
-	color = abc;
+	vec3 mat = texture(albedo, gl_FragCoord.xy/texSize).xyz;
+	vec3 norm = texture(normal, gl_FragCoord.xy/texSize).xyz;
+  vec3 mix = 0.2f*vec3(gl_FragCoord.x/texSize.x, gl_FragCoord.y/texSize.y, 1.0f)+0.4f*mat+0.4f*norm;
+	color = mix; 
 }

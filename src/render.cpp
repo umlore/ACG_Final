@@ -175,6 +175,9 @@ void Geometry::SetupGeometry() {
     }
   }
   */
+	
+	/*TODO(ANDREW): Shouldn't this not be called? Why are we doing this more than once?
+	 In fact, didn't we already make this change?*/
   printf ("Setup Geometry\n");
   
   for (triangleshashtype::iterator iter = triangles.begin();

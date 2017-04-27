@@ -140,19 +140,23 @@ void GLCanvas::initialize(ArgParser *_args) {
 	printf("Enter create target\n");
 
 	CreateBufferTarget( &targetBuffer, &targetDepthBuffer);
+
 	/* create the buffer for albedo */
   CreateAndBindTextureTarget( GL_RGB, GL_RGB, GL_UNSIGNED_BYTE, targetBuffer, &albedoTargetTexture);
-	/* create the buffer for depth */
 	/* create the buffer for normals */
-  //CreateAndBindTextureTarget( GL_RGB, GL_RGB, GL_FLOAT, targetBuffer, &normalTargetTexture);
-	/* create the buffer for world position */
+  CreateAndBindTextureTarget( GL_RGB, GL_RGB, GL_FLOAT, targetBuffer, &normalTargetTexture);
+	/* Create the buffer for the positions */
+  CreateAndBindTextureTarget( GL_RGB, GL_RGB, GL_FLOAT, targetBuffer, &positionTargetTexture);
+
 	printf("Out of create target\n");
 		
 	/* Inform opengl that there are a bunch of buffers to be rendered to.*/
   // framebuffer config
   glFramebufferTexture( GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, albedoTargetTexture, 0);
-  GLenum DrawBuffers[1] = {GL_COLOR_ATTACHMENT0};
-  glDrawBuffers(1, DrawBuffers);
+  glFramebufferTexture( GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, normalTargetTexture, 0);
+  glFramebufferTexture( GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, positionTargetTexture, 0);
+  GLenum DrawBuffers[3] = {GL_COLOR_ATTACHMENT0,GL_COLOR_ATTACHMENT1,GL_COLOR_ATTACHMENT2};
+  glDrawBuffers(4, DrawBuffers);
 
   /** Initialize the stupid quad in world space to render the synthesized texture directly onto, because apparently a framebuffer blit is just
     TOOOOOO hard... */
@@ -177,10 +181,10 @@ void GLCanvas::initialize(ArgParser *_args) {
     screenQuadShaderProgram = LoadShaders( args->path+"/"+"pass"+".vs",
                            		            args->path+"/"+"pass"+".fs");
     screenQuadAlbedo = glGetUniformLocation(screenQuadShaderProgram, "albedo");
-		printf("screenQuadAlbedo: %i\n", screenQuadAlbedo);
-    //screenQuadNormal = glGetUniformLocation(screenQuadShaderProgram, "normal");
+    screenQuadNormal = glGetUniformLocation(screenQuadShaderProgram, "normal");
+    screenQuadPosition = glGetUniformLocation(screenQuadShaderProgram, "position");
+
     screenQuadTexSize = glGetUniformLocation(screenQuadShaderProgram, "texSize");
-		printf("screenQuadTexSize: %i\n", screenQuadTexSize);
   }
 
   HandleGLError("finished glcanvas initialize");
@@ -239,13 +243,13 @@ void GLCanvas::drawPost()
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	glEnableVertexAttribArray(0);
 	glUniform1i(screenQuadAlbedo, 0);
-	//glUniform1i(screenQuadNormal, normalTargetTexture);
+	glUniform1i(screenQuadNormal, 1);
 
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, albedoTargetTexture);
 
-	//glActiveTexture(GL_TEXTURE1);
-	//glBindTexture(GL_TEXTURE_2D, normalTargetTexture);
+	glActiveTexture(GL_TEXTURE1);
+	glBindTexture(GL_TEXTURE_2D, normalTargetTexture);
 
 	glBindBuffer(GL_ARRAY_BUFFER, screenQuadData);
 	glUniform2f(screenQuadTexSize, args->width, args->height);

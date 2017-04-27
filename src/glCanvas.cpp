@@ -44,15 +44,19 @@ GLuint GLCanvas::programID;
 GLuint GLCanvas::colormodeID;
 GLuint GLCanvas::cameraLocation;
 
-GLuint GLCanvas::albedoTargetBuffer;
+GLuint GLCanvas::targetBuffer;
+GLuint GLCanvas::targetDepthBuffer;
+
 GLuint GLCanvas::albedoTargetTexture;
-GLuint GLCanvas::albedoTargetDepthBuffer;
+GLuint GLCanvas::normalTargetTexture;
 
 GLuint GLCanvas::screenQuadData;
 GLuint GLCanvas::screenQuadVAO;
 GLuint GLCanvas::screenQuadShaderProgram;
-GLuint GLCanvas::screenQuadTexture;
 GLuint GLCanvas::screenQuadTexSize;
+
+GLuint GLCanvas::screenQuadAlbedo;
+GLuint GLCanvas::screenQuadNormal;
 
 // ========================================================
 // Initialize all appropriate OpenGL variables, set
@@ -134,10 +138,13 @@ void GLCanvas::initialize(ArgParser *_args) {
   /*side = side effect*/
 
 	printf("Enter create target\n");
+
+	CreateBufferTarget( &targetBuffer, &targetDepthBuffer);
 	/* create the buffer for albedo */
-  CreateRenderTarget(args->width, args->height, GL_RGB, GL_RGB, GL_UNSIGNED_BYTE, &albedoTargetBuffer, &albedoTargetTexture, &albedoTargetDepthBuffer);
+  CreateAndBindTextureTarget( GL_RGB, GL_RGB, GL_UNSIGNED_BYTE, targetBuffer, &albedoTargetTexture);
 	/* create the buffer for depth */
 	/* create the buffer for normals */
+  //CreateAndBindTextureTarget( GL_RGB, GL_RGB, GL_FLOAT, targetBuffer, &normalTargetTexture);
 	/* create the buffer for world position */
 	printf("Out of create target\n");
 		
@@ -169,34 +176,30 @@ void GLCanvas::initialize(ArgParser *_args) {
     // Create and compile our GLSL program from the shaders
     screenQuadShaderProgram = LoadShaders( args->path+"/"+"pass"+".vs",
                            		            args->path+"/"+"pass"+".fs");
-    screenQuadTexture = glGetUniformLocation(screenQuadShaderProgram, "tex");
+    screenQuadAlbedo = glGetUniformLocation(screenQuadShaderProgram, "albedo");
+		printf("screenQuadAlbedo: %i\n", screenQuadAlbedo);
+    //screenQuadNormal = glGetUniformLocation(screenQuadShaderProgram, "normal");
     screenQuadTexSize = glGetUniformLocation(screenQuadShaderProgram, "texSize");
+		printf("screenQuadTexSize: %i\n", screenQuadTexSize);
   }
 
   HandleGLError("finished glcanvas initialize");
 }
 
-void GLCanvas::CreateRenderTarget(int width, int height, GLuint internalFormat, GLuint format, GLuint pixelData,
-								/*side*/ GLuint *renderTargetBuffer, /*side*/ GLuint *renderTargetTexture, /*side*/ GLuint *renderTargetDepthBuffer)
+void GLCanvas::CreateBufferTarget( GLuint *targetBuffer, GLuint *targetDepthBuffer)
 {
-	// framebuffer
-	glGenFramebuffers(1, renderTargetBuffer);
-	glBindFramebuffer(GL_FRAMEBUFFER, *renderTargetBuffer);
+	int width = args->width;
+	int height = args->height;
 
-	// target texture
-	glGenTextures(1, renderTargetTexture);
-	glBindTexture(GL_TEXTURE_2D, *renderTargetTexture);
+	// framebuffer
+	glGenFramebuffers(1, targetBuffer);
+	glBindFramebuffer(GL_FRAMEBUFFER, *targetBuffer);
 
 	// Depth buffer
-	glGenRenderbuffers(1, renderTargetDepthBuffer);
-	glBindRenderbuffer( GL_RENDERBUFFER, *renderTargetDepthBuffer);
+	glGenRenderbuffers(1, targetDepthBuffer);
+	glBindRenderbuffer( GL_RENDERBUFFER, *targetDepthBuffer);
 	glRenderbufferStorage( GL_RENDERBUFFER, GL_DEPTH_COMPONENT, width, height);
-	glFramebufferRenderbuffer( GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, *renderTargetDepthBuffer);
-
-	// target texture config
-	glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, width, height, 0, format, pixelData, 0);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glFramebufferRenderbuffer( GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, *targetDepthBuffer);
 
 	if(glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) 
 	{
@@ -209,6 +212,24 @@ void GLCanvas::CreateRenderTarget(int width, int height, GLuint internalFormat, 
 	}
 }
 
+
+void GLCanvas::CreateAndBindTextureTarget(GLuint internalFormat, GLuint format, GLuint pixelData, GLuint frameBuffer, GLuint *renderTarget)
+{
+	glBindFramebuffer(GL_FRAMEBUFFER, targetBuffer);
+
+	int width = args->width;
+	int height = args->height;
+
+	// target texture
+	glGenTextures(1, renderTarget);
+	glBindTexture(GL_TEXTURE_2D, *renderTarget);
+
+	// target texture config
+	glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, width, height, 0, format, pixelData, 0);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+}
+
 void GLCanvas::drawPost()
 {
 	glClearColor(0.2f,0.2f,0.6f,1);
@@ -217,10 +238,14 @@ void GLCanvas::drawPost()
 	glDisable(GL_DEPTH_TEST);
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	glEnableVertexAttribArray(0);
-	glUniform1i(screenQuadTexture, albedoTargetTexture);
+	glUniform1i(screenQuadAlbedo, 0);
+	//glUniform1i(screenQuadNormal, normalTargetTexture);
 
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, albedoTargetTexture);
+
+	//glActiveTexture(GL_TEXTURE1);
+	//glBindTexture(GL_TEXTURE_2D, normalTargetTexture);
 
 	glBindBuffer(GL_ARRAY_BUFFER, screenQuadData);
 	glUniform2f(screenQuadTexSize, args->width, args->height);

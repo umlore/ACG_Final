@@ -31,6 +31,7 @@ void main()
 void main()
 {
 	color = myColor;
+	//normal = myColor;
 }
 
 /*

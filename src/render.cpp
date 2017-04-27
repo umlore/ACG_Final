@@ -328,7 +328,7 @@ void Geometry::drawVBOs(const glm::mat4 &ProjectionMatrix,const glm::mat4 &ViewM
   //glUniformMatrix4fv(GLCanvas::MatrixID, 1, GL_FALSE, &MVP[0][0]);
   //glUniformMatrix4fv(GLCanvas::ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
 
- 	glBindFramebuffer(GL_FRAMEBUFFER, GLCanvas::albedoTargetBuffer);
+ 	glBindFramebuffer(GL_FRAMEBUFFER, GLCanvas::targetBuffer);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
   /* Render all the geometry to a texture. */

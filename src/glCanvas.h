@@ -61,6 +61,12 @@ public:
 	static GLuint screenQuadPosition;
   static GLuint screenQuadTexSize;
 
+	static GLuint lightingProgram;
+	static GLuint lightQuadAlbedo;
+	static GLuint lightQuadNormal;
+	static GLuint lightQuadPosition;
+	static GLuint lightQuadTexSize;
+
   // mouse position
   static int mouseX;
   static int mouseY;

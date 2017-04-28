@@ -58,6 +58,12 @@ GLuint GLCanvas::screenQuadAlbedo;
 GLuint GLCanvas::screenQuadNormal;
 GLuint GLCanvas::screenQuadPosition;
 
+GLuint GLCanvas::lightingProgram;
+GLuint GLCanvas::lightQuadAlbedo;
+GLuint GLCanvas::lightQuadNormal;
+GLuint GLCanvas::lightQuadPosition;
+GLuint GLCanvas::lightQuadTexSize;
+
 // ========================================================
 // Initialize all appropriate OpenGL variables, set
 // callback functions, and start the main event loop.
@@ -139,14 +145,24 @@ void GLCanvas::initialize(ArgParser *_args) {
 
 	printf("Enter create target\n");
 
+	/* INFORMATION PASS TEXTURES */
 	CreateBufferTarget( &targetBuffer, &targetDepthBuffer);
-
 	/* create the buffer for albedo */
   CreateAndBindTextureTarget( GL_RGB, GL_RGB, GL_UNSIGNED_BYTE, targetBuffer, &albedoTargetTexture);
 	/* create the buffer for normals */
   CreateAndBindTextureTarget( GL_RGB16F, GL_RGB, GL_FLOAT, targetBuffer, &normalTargetTexture);
 	/* Create the buffer for the positions */
   CreateAndBindTextureTarget( GL_RGB32F, GL_RGB, GL_FLOAT, targetBuffer, &positionTargetTexture);
+
+#if 0
+	/* LIGHTING PASS TEXTURES */
+	CreateBufferTarget( &lightBuffer, 0);
+	/* Create the buffer to accrete light */
+  CreateAndBindTextureTarget( GL_RGB32F, GL_RGB, GL_FLOAT, lightBuffer, &lightTargetTexture);
+
+	lightBuffer
+	lightTargetTexture
+#endif
 
 	printf("Out of create target\n");
 		
@@ -183,8 +199,14 @@ void GLCanvas::initialize(ArgParser *_args) {
     screenQuadAlbedo = glGetUniformLocation(screenQuadShaderProgram, "albedo");
     screenQuadNormal = glGetUniformLocation(screenQuadShaderProgram, "normal");
     screenQuadPosition = glGetUniformLocation(screenQuadShaderProgram, "inposition");
-
     screenQuadTexSize = glGetUniformLocation(screenQuadShaderProgram, "texSize");
+
+		lightingProgram = LoadShaders( args->path+"/"+"pass"+".vs",
+																	args->path+"/"+"lighting"+".fs");
+  	lightQuadAlbedo = glGetUniformLocation(lightingProgram, "albedo");
+  	lightQuadNormal = glGetUniformLocation(lightingProgram, "normal");
+  	lightQuadPosition = glGetUniformLocation(lightingProgram, "inposition");
+  	lightQuadTexSize = glGetUniformLocation(lightingProgram, "texSize");
   }
 
   HandleGLError("finished glcanvas initialize");
@@ -199,11 +221,14 @@ void GLCanvas::CreateBufferTarget( GLuint *targetBuffer, GLuint *targetDepthBuff
 	glGenFramebuffers(1, targetBuffer);
 	glBindFramebuffer(GL_FRAMEBUFFER, *targetBuffer);
 
-	// Depth buffer
-	glGenRenderbuffers(1, targetDepthBuffer);
-	glBindRenderbuffer( GL_RENDERBUFFER, *targetDepthBuffer);
-	glRenderbufferStorage( GL_RENDERBUFFER, GL_DEPTH_COMPONENT, width, height);
-	glFramebufferRenderbuffer( GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, *targetDepthBuffer);
+	if (targetDepthBuffer)
+	{
+		// Depth buffer
+		glGenRenderbuffers(1, targetDepthBuffer);
+		glBindRenderbuffer( GL_RENDERBUFFER, *targetDepthBuffer);
+		glRenderbufferStorage( GL_RENDERBUFFER, GL_DEPTH_COMPONENT, width, height);
+		glFramebufferRenderbuffer( GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, *targetDepthBuffer);
+	}
 
 	if(glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) 
 	{

@@ -362,6 +362,7 @@ void Geometry::drawVBOs(const glm::mat4 &ProjectionMatrix,const glm::mat4 &ViewM
 
       glUniformMatrix4fv(GLCanvas::MatrixID, 1, GL_FALSE, &MVP[0][0]);
       glUniformMatrix4fv(GLCanvas::ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+			glUniform3fv(GLCanvas::ColorID, 1, &mi.clr[0]);
 
       DrawGeometry();
     }
@@ -386,7 +387,7 @@ void Geometry::drawVBOs(const glm::mat4 &ProjectionMatrix,const glm::mat4 &ViewM
       glUniformMatrix4fv(GLCanvas::ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
       //std::cout << "AFTER UNIFORMS\n";
 			/* Draw Call */
-      DrawLightBox();
+      //DrawLightBox();
       //std::cout<<"AFTER DRAW CALL\n";
 		}
 		glDisable(GL_DEPTH_TEST);

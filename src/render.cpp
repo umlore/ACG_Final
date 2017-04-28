@@ -262,14 +262,8 @@ void Geometry::DrawLightBox() {
   glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,lightbox_tri_indices_VBO);
   glEnableVertexAttribArray(0);
   glVertexAttribPointer(0,3,GL_FLOAT,GL_FALSE,sizeof(VBOPosNormalColor),(void*)0);
-  glEnableVertexAttribArray(1);
-  glVertexAttribPointer(1,3,GL_FLOAT,GL_FALSE,sizeof(VBOPosNormalColor),(void*)sizeof(glm::vec3) );
-  glEnableVertexAttribArray(2);
-  glVertexAttribPointer(2, 3, GL_FLOAT,GL_FALSE,sizeof(VBOPosNormalColor), (void*)(sizeof(glm::vec3)*2));
   glDrawElements(GL_TRIANGLES, lightbox_tri_indices.size()*3,GL_UNSIGNED_INT, 0);
   glDisableVertexAttribArray(0);
-  glDisableVertexAttribArray(1);
-  glDisableVertexAttribArray(2);
   HandleGLError("leaving draw light box");
 }
 
@@ -322,6 +316,7 @@ void Geometry::setupVBOs() {
 
 void Geometry::drawVBOs(const glm::mat4 &ProjectionMatrix,const glm::mat4 &ViewMatrix) {
 
+	glUseProgram(GLCanvas::programID);
   // prepare data to send to the shaders
   //glm::vec3 lightPos = geometry->LightPosition();
   //glm::vec4 lightPos2 = glm::vec4(lightPos.x,lightPos.y,lightPos.z,1);
@@ -333,6 +328,10 @@ void Geometry::drawVBOs(const glm::mat4 &ProjectionMatrix,const glm::mat4 &ViewM
 
  	glBindFramebuffer(GL_FRAMEBUFFER, GLCanvas::targetBuffer);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	//GLint id;
+	//glGetIntegerv(GL_CURRENT_PROGRAM,&id);
+	//printf("starting program: %i\n",id);
 
   /* Render all the geometry to a texture. */
   if (args->geometry) {
@@ -372,7 +371,28 @@ void Geometry::drawVBOs(const glm::mat4 &ProjectionMatrix,const glm::mat4 &ViewM
 
 	/* if (lights) */
   if (args->lightbox) {
+
+		glUseProgram(GLCanvas::lightingProgram);
+		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glEnable(GL_DEPTH_TEST);
+
+
+
+		glUniform1i(GLCanvas::lightQuadAlbedo,0);
+		glUniform1i(GLCanvas::lightQuadNormal,1);
+		glUniform1i(GLCanvas::lightQuadPosition,2);
+		glUniform2f(GLCanvas::lightQuadTexSize, args->width, args->height);
+
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, GLCanvas::albedoTargetTexture);
+	
+		glActiveTexture(GL_TEXTURE1);
+		glBindTexture(GL_TEXTURE_2D, GLCanvas::normalTargetTexture);
+	
+		glActiveTexture(GL_TEXTURE2);
+		glBindTexture(GL_TEXTURE_2D, GLCanvas::positionTargetTexture);
+
 		for (int i = 0; i < numLights(); i++)
 		{
       /* Interpolation */
@@ -382,18 +402,20 @@ void Geometry::drawVBOs(const glm::mat4 &ProjectionMatrix,const glm::mat4 &ViewM
       glm::mat4 ModelMatrix = glm::translate(li.pos);
       ModelMatrix = ModelMatrix * glm::scale(glm::vec3(li.intensity,li.intensity,li.intensity));
       glm::mat4 MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
-			/* Uniforms */
-      glUniformMatrix4fv(GLCanvas::MatrixID, 1, GL_FALSE, &MVP[0][0]);
-      glUniformMatrix4fv(GLCanvas::ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+			glUniformMatrix4fv(GLCanvas::lightQuadMVP, 1, GL_FALSE, &MVP[0][0]);
+			glUniformMatrix4fv(GLCanvas::lightQuadM, 1, GL_FALSE, &ModelMatrix[0][0]);
+			/* uniforms */
+			glUniform1f(GLCanvas::lightRadius, li.intensity);
+			glUniform3fv(GLCanvas::lightColorin, 1, &li.clr[0]);
 			/* Draw Call */
       DrawLightBox();
 		}
-		glDisable(GL_DEPTH_TEST);
+		//glDisable(GL_DEPTH_TEST);
 	}
 
   /* Render the texture to the screen. */
   {
-			GLCanvas::drawPost();
+			//GLCanvas::drawPost();
 	}
 
   if (args->bounding_box) {

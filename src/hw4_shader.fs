@@ -14,7 +14,7 @@ uniform vec3 colorin;
 
 void main()
 {
-	color = colorin;//vec3(0.5f,0.5f,0.5f);//myColor;
+	color = colorin;
 	normal = (vec3(1,1,1) + vertexNormal_worldspace) / 2.0f; 
 	outposition = vertexPosition_worldspace;
 }

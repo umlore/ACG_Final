@@ -67,6 +67,14 @@ public:
 	static GLuint lightQuadPosition;
 	static GLuint lightQuadTexSize;
 
+	static GLuint lightBuffer;
+	static GLuint lightDepthBuffer;
+	static GLuint lightTargetTexture;
+	static GLuint lightQuadMVP;
+	static GLuint lightQuadM;
+	static GLuint lightRadius;
+	static GLuint lightColorin;
+
   // mouse position
   static int mouseX;
   static int mouseY;

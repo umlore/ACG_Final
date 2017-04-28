@@ -36,7 +36,6 @@ int main(int argc, char *argv[]) {
   while (!glfwWindowShouldClose(GLCanvas::window))  {
     
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    glUseProgram(GLCanvas::programID);
     GLCanvas::camera->glPlaceCamera();
 
     /* TODO (Andrew): It looks like this is hardcoded to render a single object. 
@@ -55,6 +54,7 @@ int main(int argc, char *argv[]) {
     /* TODO (Andrew): drawVBOs seems to rely on the idea of one modelMatrix, we will probably
        need to store that matrix on the models, and put the draw function into the model. */
     GLCanvas::drawVBOs(ProjectionMatrix,ViewMatrix);
+
     GLCanvas::animate();
     // Swap buffers
     glfwSwapBuffers(GLCanvas::window);

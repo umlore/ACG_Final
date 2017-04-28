@@ -63,6 +63,16 @@ GLuint GLCanvas::lightQuadAlbedo;
 GLuint GLCanvas::lightQuadNormal;
 GLuint GLCanvas::lightQuadPosition;
 GLuint GLCanvas::lightQuadTexSize;
+GLuint GLCanvas::lightQuadMVP;
+GLuint GLCanvas::lightQuadM;
+
+GLuint GLCanvas::lightRadius;
+GLuint GLCanvas::lightColorin;
+
+GLuint GLCanvas::lightBuffer;
+GLuint GLCanvas::lightTargetTexture;
+GLuint GLCanvas::lightDepthBuffer;
+
 
 // ========================================================
 // Initialize all appropriate OpenGL variables, set
@@ -126,6 +136,7 @@ void GLCanvas::initialize(ArgParser *_args) {
 
   programID = LoadShaders( args->path+"/"+args->shader_filename+".vs",
                            args->path+"/"+args->shader_filename+".fs");
+	printf("PROGRAMID: %i\n",programID);
 
   GLCanvas::initializeVBOs();
   GLCanvas::setupVBOs();
@@ -154,15 +165,10 @@ void GLCanvas::initialize(ArgParser *_args) {
 	/* Create the buffer for the positions */
   CreateAndBindTextureTarget( GL_RGB32F, GL_RGB, GL_FLOAT, targetBuffer, &positionTargetTexture);
 
-#if 0
 	/* LIGHTING PASS TEXTURES */
-	CreateBufferTarget( &lightBuffer, 0);
+	CreateBufferTarget( &lightBuffer, &lightDepthBuffer);
 	/* Create the buffer to accrete light */
   CreateAndBindTextureTarget( GL_RGB32F, GL_RGB, GL_FLOAT, lightBuffer, &lightTargetTexture);
-
-	lightBuffer
-	lightTargetTexture
-#endif
 
 	printf("Out of create target\n");
 		
@@ -200,13 +206,22 @@ void GLCanvas::initialize(ArgParser *_args) {
     screenQuadNormal = glGetUniformLocation(screenQuadShaderProgram, "normal");
     screenQuadPosition = glGetUniformLocation(screenQuadShaderProgram, "inposition");
     screenQuadTexSize = glGetUniformLocation(screenQuadShaderProgram, "texSize");
+		printf("screenQuadProgram: %i\n", screenQuadShaderProgram);
 
-		lightingProgram = LoadShaders( args->path+"/"+"pass"+".vs",
+		lightingProgram = LoadShaders( args->path+"/"+"lighting"+".vs",
 																	args->path+"/"+"lighting"+".fs");
   	lightQuadAlbedo = glGetUniformLocation(lightingProgram, "albedo");
   	lightQuadNormal = glGetUniformLocation(lightingProgram, "normal");
   	lightQuadPosition = glGetUniformLocation(lightingProgram, "inposition");
+
   	lightQuadTexSize = glGetUniformLocation(lightingProgram, "texSize");
+
+		lightQuadMVP = glGetUniformLocation(lightingProgram, "MVP");
+		lightQuadM = glGetUniformLocation(lightingProgram, "M");
+
+		lightRadius = glGetUniformLocation(lightingProgram, "radius");
+		lightColorin = glGetUniformLocation(lightingProgram, "colorin");
+		printf("lightProgram: %i\n", lightingProgram);
   }
 
   HandleGLError("finished glcanvas initialize");

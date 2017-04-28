@@ -22,6 +22,6 @@ void main()
 	float rate = length(pos); 
   vec3 mix = 0.2f*vec3(gl_FragCoord.x/texSize.x, gl_FragCoord.y/texSize.y, 1.0f)+0.6f*mat+0.2f*norm;
 
-	color = colorin;//mix;//colorin;//*radius*mix/100f;
+	color = colorin*(radius/10f/5f);//mix;//colorin;//*radius*mix/100f;
 }
 

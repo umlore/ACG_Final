@@ -378,7 +378,6 @@ void Geometry::drawVBOs(const glm::mat4 &ProjectionMatrix,const glm::mat4 &ViewM
 		glEnable(GL_DEPTH_TEST);
 
 
-
 		glUniform1i(GLCanvas::lightQuadAlbedo,0);
 		glUniform1i(GLCanvas::lightQuadNormal,1);
 		glUniform1i(GLCanvas::lightQuadPosition,2);
@@ -393,6 +392,9 @@ void Geometry::drawVBOs(const glm::mat4 &ProjectionMatrix,const glm::mat4 &ViewM
 		glActiveTexture(GL_TEXTURE2);
 		glBindTexture(GL_TEXTURE_2D, GLCanvas::positionTargetTexture);
 
+		glBlendEquation(/*lightBuffer, */GL_FUNC_ADD);
+		glBlendFunc(GL_ONE,GL_ONE);
+		glEnable(GL_BLEND);
 		for (int i = 0; i < numLights(); i++)
 		{
       /* Interpolation */
@@ -407,9 +409,11 @@ void Geometry::drawVBOs(const glm::mat4 &ProjectionMatrix,const glm::mat4 &ViewM
 			/* uniforms */
 			glUniform1f(GLCanvas::lightRadius, li.intensity);
 			glUniform3fv(GLCanvas::lightColorin, 1, &li.clr[0]);
+
 			/* Draw Call */
       DrawLightBox();
 		}
+		glDisable(GL_BLEND);
 		//glDisable(GL_DEPTH_TEST);
 	}
 

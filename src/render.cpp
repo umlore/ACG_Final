@@ -6,6 +6,7 @@
 #include "vertex.h"
 #include "triangle.h"
 #include "argparser.h"
+#include "camera.h"
 #include "utils.h"
 #if 0
 #include "glm/ext.hpp"
@@ -24,7 +25,7 @@ glm::vec4 green(0,1,0,0.5);
 float floor_factor = 0.75;
 
 
-
+//Camera *GLCanvas::camera;
 GLuint GLCanvas::lights_VAO;
 
 // =======================================================================
@@ -363,7 +364,7 @@ void Geometry::drawVBOs(const glm::mat4 &ProjectionMatrix,const glm::mat4 &ViewM
       glUniformMatrix4fv(GLCanvas::ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
 			glUniform3fv(GLCanvas::ColorID, 1, &mi.clr[0]);
 
-      //DrawGeometry();
+      DrawGeometry();
     }
     //DrawFloor();
 		glDisable(GL_DEPTH_TEST);
@@ -375,8 +376,8 @@ void Geometry::drawVBOs(const glm::mat4 &ProjectionMatrix,const glm::mat4 &ViewM
 		glUseProgram(GLCanvas::lightingProgram);
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		glEnable(GL_DEPTH_TEST);
-
+		glClearColor(0,0,0,1);
+		glDisable(GL_DEPTH_TEST);
 
 		glUniform1i(GLCanvas::lightQuadAlbedo,0);
 		glUniform1i(GLCanvas::lightQuadNormal,1);
@@ -392,6 +393,8 @@ void Geometry::drawVBOs(const glm::mat4 &ProjectionMatrix,const glm::mat4 &ViewM
 		glActiveTexture(GL_TEXTURE2);
 		glBindTexture(GL_TEXTURE_2D, GLCanvas::positionTargetTexture);
 
+		glUniform3fv(GLCanvas::lightCamera, 1, &GLCanvas::camera->camera_position[0]);
+
 		glBlendEquation(/*lightBuffer, */GL_FUNC_ADD);
 		glBlendFunc(GL_ONE,GL_ONE);
 		glEnable(GL_BLEND);
@@ -406,6 +409,7 @@ void Geometry::drawVBOs(const glm::mat4 &ProjectionMatrix,const glm::mat4 &ViewM
       glm::mat4 MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(GLCanvas::lightQuadMVP, 1, GL_FALSE, &MVP[0][0]);
 			glUniformMatrix4fv(GLCanvas::lightQuadM, 1, GL_FALSE, &ModelMatrix[0][0]);
+			glUniform3fv(GLCanvas::lightCenter, 1, &li.pos[0]);
 			/* uniforms */
 			glUniform1f(GLCanvas::lightRadius, li.intensity);
 			glUniform3fv(GLCanvas::lightColorin, 1, &li.clr[0]);

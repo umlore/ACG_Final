@@ -72,8 +72,11 @@ public:
 	static GLuint lightTargetTexture;
 	static GLuint lightQuadMVP;
 	static GLuint lightQuadM;
+
 	static GLuint lightRadius;
 	static GLuint lightColorin;
+	static GLuint lightCamera;
+	static GLuint lightCenter;
 
   // mouse position
   static int mouseX;

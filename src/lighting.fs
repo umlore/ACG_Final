@@ -9,6 +9,9 @@ uniform sampler2D inposition;
 uniform vec2 texSize;
 uniform float radius;
 uniform vec3 colorin;
+/* bad name, this is a light position*/
+uniform vec3 cameraPosition;
+uniform vec3 lightCenter; 
 
 out vec3 color;
 
@@ -19,9 +22,13 @@ void main()
 	vec3 norm = texture(normal, gl_FragCoord.xy/texSize).xyz;
 	vec3 pos = texture(inposition, gl_FragCoord.xy/texSize).xyz;
 
-	float rate = length(pos); 
-  vec3 mix = 0.2f*vec3(gl_FragCoord.x/texSize.x, gl_FragCoord.y/texSize.y, 1.0f)+0.6f*mat+0.2f*norm;
+	vec3 directionToLight = normalize(lightCenter - pos);
+	float lightDot = max(0.0f, dot(directionToLight,norm));
 
-	color = colorin*(radius/10f/5f);//mix;//colorin;//*radius*mix/100f;
+	float fragDistToLight = distance(lightCenter, pos);
+	
+	float intensity = 1.0f - (fragDistToLight / radius);
+
+	color = intensity*mat*colorin*lightDot;
 }
 

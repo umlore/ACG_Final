@@ -68,6 +68,8 @@ GLuint GLCanvas::lightQuadM;
 
 GLuint GLCanvas::lightRadius;
 GLuint GLCanvas::lightColorin;
+GLuint GLCanvas::lightCamera;
+GLuint GLCanvas::lightCenter;
 
 GLuint GLCanvas::lightBuffer;
 GLuint GLCanvas::lightTargetTexture;
@@ -221,6 +223,8 @@ void GLCanvas::initialize(ArgParser *_args) {
 
 		lightRadius = glGetUniformLocation(lightingProgram, "radius");
 		lightColorin = glGetUniformLocation(lightingProgram, "colorin");
+		lightCamera = glGetUniformLocation(lightingProgram, "cameraPosition");
+		lightCenter = glGetUniformLocation(lightingProgram, "lightCenter");
 		printf("lightProgram: %i\n", lightingProgram);
   }
 
